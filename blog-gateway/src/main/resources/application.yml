@@ -1,7 +1,7 @@
 # 注册中心 配置中心
 spring:
   application:
-    name: blog-web-backend
+    name: blog-gateway
   cloud:
     nacos:
       discovery:
@@ -12,6 +12,6 @@ spring:
         server-addr: 127.0.0.1:8848
   config:
     # 配置要使用的配置文件
-    import: optional:nacos:blog-web-backend.yml
+    import: optional:nacos:blog-gateway.yml
 
 # 其他配置均在nacos

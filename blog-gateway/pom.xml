@@ -3,10 +3,10 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.xb.blog</groupId>
-    <artifactId>blog-web-backend</artifactId>
+    <artifactId>blog-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>blog-web-backend</name>
-    <description>blog-web-backend</description>
+    <name>blog-gateway</name>
+    <description>blog-gateway</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,12 +22,8 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
 
         <dependency>
@@ -35,6 +31,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--springboot 2.4 以上 添加负载均衡-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-loadbalancer</artifactId>-->
+<!--        </dependency>-->
+
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -72,7 +75,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.xb.blog.web.BlogWebBackendApplication</mainClass>
+                    <mainClass>com.xb.blog.gateway.BlogGatewayApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>
