@@ -12,3 +12,5 @@ buildNumber.properties
 
 .idea
 **/.gitignore
+
+.vscode
