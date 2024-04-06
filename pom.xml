@@ -15,4 +15,10 @@
         <module>blog-web-backend</module>
         <module>blog-common</module>
     </modules>
+
+    <properties>
+        <spring-boot.version>2.7.6</spring-boot.version>
+        <spring-cloud.version>2021.0.5</spring-cloud.version>
+        <swagger.starter.version>3.0.0</swagger.starter.version>
+    </properties>
 </project>

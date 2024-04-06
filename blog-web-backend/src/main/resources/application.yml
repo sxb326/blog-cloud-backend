@@ -1,3 +1,8 @@
+# Tomcat
+server:
+  port: 10000
+  servlet:
+    context-path: /web
 # 注册中心 配置中心
 spring:
   application:
@@ -8,10 +13,11 @@ spring:
         # 注册中心地址
         server-addr: 127.0.0.1:8848
       config:
-        # 配置中心地址
-        server-addr: 127.0.0.1:8848
+        import-check:
+          enabled: false
   config:
-    # 配置要使用的配置文件
-    import: optional:nacos:blog-web-backend.yml
-
+    import: application.yml
+#      config:
+#        # 配置中心地址
+#        server-addr: 127.0.0.1:8848
 # 其他配置均在nacos

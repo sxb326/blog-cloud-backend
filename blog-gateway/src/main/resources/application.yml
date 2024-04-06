@@ -1,3 +1,6 @@
+# Tomcat
+server:
+  port: 88
 # 注册中心 配置中心
 spring:
   application:
@@ -7,11 +10,17 @@ spring:
       discovery:
         # 注册中心地址
         server-addr: 127.0.0.1:8848
-      config:
-        # 配置中心地址
-        server-addr: 127.0.0.1:8848
-  config:
-    # 配置要使用的配置文件
-    import: optional:nacos:blog-gateway.yml
+#      config:
+#        # 配置中心地址
+#        server-addr: 127.0.0.1:8848
 
-# 其他配置均在nacos
+    gateway:
+      routes:
+        - id: web_route
+          uri: lb://blog-web-backend
+          predicates:
+            - Path=/api/web/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+  config:
+    import: application.yml
