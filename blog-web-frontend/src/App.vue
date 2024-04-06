@@ -23,6 +23,7 @@
       <el-icon size="25px"><User /></el-icon>
     </el-col>
   </el-row>
+  <el-button type="primary" @click="handleClick">handleClick</el-button>
   <router-view/>
 </template>
 
@@ -37,6 +38,14 @@ function doSearch() {
   alert('触发搜索,关键字:' + keyWord.value)
 }
 
+import { getCurrentInstance } from 'vue';
+const { proxy } = getCurrentInstance();
+
+let res = ref(null);
+
+async function handleClick() {
+  res.value = await proxy.$api.test.hello();
+}
 </script>
 
 <style scoped>

@@ -1,9 +1,9 @@
 import request from '@/utils/request';
 
 export default {
-  time() {
+  hello() {
     return request({
-      url: '/api/test/time',
+      url: '/test/hello',
       method: 'get',
     });
   },
