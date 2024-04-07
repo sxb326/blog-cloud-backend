@@ -11,7 +11,7 @@
  Target Server Version : 80020 (8.0.20)
  File Encoding         : 65001
 
- Date: 05/04/2024 21:10:50
+ Date: 07/04/2024 22:54:27
 */
 
 SET NAMES utf8mb4;
@@ -45,7 +45,7 @@ CREATE TABLE `t_blog`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_blog_tag`;
 CREATE TABLE `t_blog_tag`  (
-  `uid` int NOT NULL COMMENT '主键',
+  `uid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
   `blog_uid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '博客uid',
   `tag_uid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签uid',
   `status` tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
@@ -59,7 +59,7 @@ CREATE TABLE `t_blog_tag`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_tag`;
 CREATE TABLE `t_tag`  (
-  `uid` int NOT NULL COMMENT '主键',
+  `uid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
   `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签内容',
   `status` tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
   `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
@@ -73,7 +73,7 @@ CREATE TABLE `t_tag`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user`;
 CREATE TABLE `t_user`  (
-  `uid` int NOT NULL COMMENT '主键',
+  `uid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户名',
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '密码',
   `gender` tinyint NULL DEFAULT NULL COMMENT '性别 1：男，2女',
