@@ -16,10 +16,19 @@ spring:
 
     gateway:
       routes:
+        # web服务
         - id: web_route
           uri: lb://blog-web-backend
           predicates:
             - Path=/api/web/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+        # 认证服务
+        - id: auth_route
+          uri: lb://blog-auth
+          predicates:
+            - Path=/api/auth/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
   config:
@@ -28,4 +37,4 @@ spring:
 auth:
   # 不需要登录 即可访问的地址
   excludePaths:
-    - /api/web/test/**
+    - /api/auth/**

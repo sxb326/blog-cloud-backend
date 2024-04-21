@@ -6,14 +6,20 @@ import java.io.Serializable;
 
 /**
  * 全局返回对象
- *
- * @param <T>
  */
 @Data
-public class Result<T> implements Serializable {
+public class Result implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String code;
     private String message;
-    private T data;
+    private Object data;
+
+    public static Result success(Object data) {
+        Result result = new Result();
+        result.setCode("0");
+        result.setCode("success");
+        result.setData(data);
+        return result;
+    }
 }

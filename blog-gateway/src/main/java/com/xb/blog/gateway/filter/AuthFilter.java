@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.jwt.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xb.blog.common.constants.Result;
+import com.xb.blog.common.utils.AuthUtil;
 import com.xb.blog.gateway.constants.AuthProperties;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         //判断是否需要登录
         if (isLoginRequiredForPath(request.getPath().toString())) {
             //判断用户是否已经登录
-            if (!isLoggedIn(request)) {
+            if (!isLogin(request)) {
                 Result result = new Result();
                 result.setCode("99");
                 result.setMessage("NO_LOGIN");
@@ -74,15 +75,13 @@ public class AuthFilter implements GlobalFilter, Ordered {
         return true;
     }
 
-    private String key = "KEY20240421";
-
     /**
      * 判断该请求是否已经登录
      *
      * @param request
      * @return
      */
-    private boolean isLoggedIn(ServerHttpRequest request) {
+    private boolean isLogin(ServerHttpRequest request) {
         //获取请求头中的token
         List<String> headers = request.getHeaders().get("authorization");
         String token = "";
@@ -94,6 +93,6 @@ public class AuthFilter implements GlobalFilter, Ordered {
         }
 
         //校验token
-        return JWTUtil.verify(token, key.getBytes());
+        return AuthUtil.isLogin(token);
     }
 }
