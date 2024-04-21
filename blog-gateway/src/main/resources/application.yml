@@ -24,3 +24,8 @@ spring:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
   config:
     import: application.yml
+
+auth:
+  # 不需要登录 即可访问的地址
+  excludePaths:
+    - /api/web/test/**
