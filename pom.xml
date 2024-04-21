@@ -10,10 +10,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>blog-auth</module>
-        <module>blog-common</module>
-        <module>blog-gateway</module>
-        <module>blog-web-backend</module>
+        <module>xb-blog-auth</module>
+        <module>xb-blog-common</module>
+        <module>xb-blog-gateway</module>
+        <module>xb-blog-web</module>
     </modules>
 
     <properties>
