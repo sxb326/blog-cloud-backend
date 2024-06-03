@@ -1,0 +1,40 @@
+# Tomcat
+server:
+  port: 88
+# 注册中心 配置中心
+spring:
+  application:
+    name: blog-gateway
+  cloud:
+    nacos:
+      discovery:
+        # 注册中心地址
+        server-addr: 127.0.0.1:8848
+#      config:
+#        # 配置中心地址
+#        server-addr: 127.0.0.1:8848
+
+    gateway:
+      routes:
+        # web服务
+        - id: web_route
+          uri: lb://blog-web
+          predicates:
+            - Path=/api/web/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+        # 认证服务
+        - id: auth_route
+          uri: lb://blog-auth
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+  config:
+    import: application.yml
+
+auth:
+  # 不需要登录 即可访问的地址
+  excludePaths:
+    - /api/auth/**

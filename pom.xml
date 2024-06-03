@@ -3,13 +3,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.xb.blog</groupId>
-    <artifactId>blog</artifactId>
+    <artifactId>blog-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>blog</name>
     <description>聚合服务</description>
     <packaging>pom</packaging>
 
     <modules>
-        <module>blog-web-backend</module>
+        <module>blog-auth</module>
+        <module>blog-common</module>
+        <module>blog-gateway</module>
+        <module>blog-web</module>
     </modules>
+
+    <properties>
+        <spring-boot.version>2.7.6</spring-boot.version>
+        <spring-cloud.version>2021.0.5</spring-cloud.version>
+        <swagger.starter.version>3.0.0</swagger.starter.version>
+    </properties>
 </project>

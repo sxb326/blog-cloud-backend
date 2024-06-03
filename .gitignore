@@ -10,5 +10,10 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
+# 后端工程忽略文件
 .idea
 **/.gitignore
+
+# 前端工程忽略文件
+.vscode
+node_modules/
