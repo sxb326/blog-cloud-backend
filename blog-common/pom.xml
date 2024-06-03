@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.xb.blog</groupId>
-        <artifactId>xb-blog-backend</artifactId>
+        <artifactId>blog-backend</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>xb-blog-common</artifactId>
+    <artifactId>blog-common</artifactId>
     <description>公共依赖模块</description>
 
     <properties>

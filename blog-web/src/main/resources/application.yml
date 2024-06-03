@@ -6,7 +6,7 @@ server:
 # 注册中心 配置中心
 spring:
   application:
-    name: xb-blog-web
+    name: blog-web
   cloud:
     nacos:
       discovery:

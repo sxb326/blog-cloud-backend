@@ -4,7 +4,7 @@ server:
 # 注册中心 配置中心
 spring:
   application:
-    name: xb-blog-gateway
+    name: blog-gateway
   cloud:
     nacos:
       discovery:
@@ -18,7 +18,7 @@ spring:
       routes:
         # web服务
         - id: web_route
-          uri: lb://xb-blog-web
+          uri: lb://blog-web
           predicates:
             - Path=/api/web/**
           filters:
@@ -26,7 +26,7 @@ spring:
 
         # 认证服务
         - id: auth_route
-          uri: lb://xb-blog-auth
+          uri: lb://blog-auth
           predicates:
             - Path=/api/auth/**
           filters:

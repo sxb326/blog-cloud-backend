@@ -3,15 +3,15 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>com.xb.blog</groupId>
-        <artifactId>xb-blog-backend</artifactId>
+        <artifactId>blog-backend</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.xb.blog</groupId>
-    <artifactId>xb-blog-web</artifactId>
+    <artifactId>blog-web</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>xb-blog-web</name>
-    <description>xb-blog-web</description>
+    <name>blog-web</name>
+    <description>blog-web</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -23,7 +23,7 @@
         <!--引入公共依赖模块-->
         <dependency>
             <groupId>com.xb.blog</groupId>
-            <artifactId>xb-blog-common</artifactId>
+            <artifactId>blog-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
