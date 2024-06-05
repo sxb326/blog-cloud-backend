@@ -1,15 +1,15 @@
 <template>
-    <el-dialog v-model="dialogVisible" title="登录/注册" width="30%">
+    <el-dialog v-model="dialogVisible" title="登录/注册" width="30%" :destroy-on-close="true">
         <el-form ref="formRef" :model="form" :rules="rules" label-width="auto" style="max-width: 600px">
             <el-form-item label="用户名" prop="username">
                 <el-input v-model="form.username" />
             </el-form-item>
             <el-form-item label="密码" prop="password">
-                <el-input type="password" v-model="form.password" />
+                <el-input v-model="form.password" type="password" />
             </el-form-item>
             <el-form-item style="text-align: center;">
                 <el-button type="primary" @click="login">登录</el-button>
-                <el-button>取消</el-button>
+                <el-button @click="close">取消</el-button>
             </el-form-item>
         </el-form>
     </el-dialog>
@@ -51,7 +51,7 @@ const login = () => {
                     type: 'success',
                 })
                 emit('get-auth-user')
-                dialogVisible.value = false
+                close();
                 return;
             }
             ElMessage({
@@ -60,7 +60,12 @@ const login = () => {
             })
         })
     });
+}
 
+const close = () => {
+    form.username = '';
+    form.password = '';
+    dialogVisible.value = false
 }
 </script>
 
