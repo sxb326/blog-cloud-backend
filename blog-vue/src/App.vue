@@ -1,37 +1,40 @@
 <template>
-    <el-row class="topBar">
-        <el-col :span="2">
-            <img src="/vite.svg" class="logo" alt="Vite logo" />
-        </el-col>
-        <el-col :span="12" class="menu">
-            <div class="menuItem">
-                <router-link to="/">首页</router-link>
-            </div>
-            <div class="menuItem">
-                <router-link to="/test">专栏</router-link>
-            </div>
-        </el-col>
-        <el-col :span="6">
-            <el-input v-model="keyWord" style="width: 240px" placeholder="想搜索点什么呢">
-                <template #suffix>
-                    <el-icon class="el-input__icon" style="cursor: pointer;" @click="doSearch">
-                        <search />
-                    </el-icon>
-                </template>
-            </el-input>
-        </el-col>
-        <!-- <el-col :span="1">
-          <el-icon size="25px">
-            <Bell />
-          </el-icon>
-        </el-col> -->
-        <el-col :span="2">
-            <el-button v-if="isUserEmpty(user)" type="primary" plain @click="openLoginForm">登录/注册</el-button>
-            <div v-else style="cursor: pointer;" @click="logout">{{ user.nickName }}</div>
-        </el-col>
-    </el-row>
-    <el-button type="primary" @click="handleClick">handleClick</el-button>
-    <router-view />
+    <div class="common-layout">
+        <el-container>
+            <el-header>
+                <el-row class="topBar">
+                    <el-col :span="2">
+                        <img src="/vite.svg" class="logo" alt="Vite logo" />
+                    </el-col>
+                    <el-col :span="12" class="menu">
+                        <div class="menuItem">
+                            <router-link to="/">首页</router-link>
+                        </div>
+                        <div class="menuItem">
+                            <router-link to="/test">专栏</router-link>
+                        </div>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-input v-model="keyWord" style="width: 240px" placeholder="想搜索点什么呢">
+                            <template #suffix>
+                                <el-icon class="el-input__icon" style="cursor: pointer;" @click="doSearch">
+                                    <search />
+                                </el-icon>
+                            </template>
+                        </el-input>
+                    </el-col>
+                    <el-col :span="2">
+                        <el-button v-if="isUserEmpty(user)" type="primary" plain
+                            @click="openLoginForm">登录/注册</el-button>
+                        <div v-else style="cursor: pointer;" @click="logout">{{ user.nickName }}</div>
+                    </el-col>
+                </el-row>
+            </el-header>
+            <el-main>
+                <router-view />
+            </el-main>
+        </el-container>
+    </div>
     <loginForm ref="loginFormRef" @get-auth-user="getAuthUser"></loginForm>
 </template>
 
@@ -94,12 +97,6 @@ let keyWord = ref("");
 
 function doSearch() {
     console.log('触发搜索,关键字:' + keyWord.value)
-}
-
-let res = ref("");
-
-async function handleClick() {
-    res.value = await proxy.$api.test.hello();
 }
 
 
