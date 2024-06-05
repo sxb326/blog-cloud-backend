@@ -86,7 +86,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
      */
     private boolean isAuth(ServerHttpRequest request) {
         //获取请求头中的token
-        List<String> headers = request.getHeaders().get("token");
+        List<String> headers = request.getHeaders().get("Token");
         String token = "";
         if (!CollUtil.isEmpty(headers)) {
             token = headers.get(0);

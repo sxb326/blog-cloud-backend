@@ -22,10 +22,10 @@ public class AuthAuthenticationSuccessHandler implements AuthenticationSuccessHa
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
-        //登录成功，生成token，并保存到cookie中
+        //登录成功，生成token，并保存到响应头中
         String token = AuthUtil.createToken(((AuthUser) authentication.getPrincipal()).getUsername());
-        Cookie cookie = new Cookie("token", token);
-        response.addCookie(cookie);
+        response.setHeader("Token", token);
+        response.setHeader("Access-Control-Expose-Headers", "Token");
 
         response.setContentType("application/json;charset=utf-8");
         Result result = new Result();

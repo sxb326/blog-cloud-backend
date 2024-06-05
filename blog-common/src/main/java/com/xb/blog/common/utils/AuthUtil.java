@@ -1,6 +1,6 @@
 package com.xb.blog.common.utils;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
 
 import java.util.HashMap;
@@ -33,5 +33,16 @@ public class AuthUtil {
         Map<String, Object> payload = new HashMap<>();
         payload.put("username", username);
         return JWTUtil.createToken(payload, KEY.getBytes());
+    }
+
+    /**
+     * 解析token 获取username
+     *
+     * @param token
+     * @return
+     */
+    public static String getUsernameFromToken(String token) {
+        JWT jwt = JWTUtil.parseToken(token);
+        return jwt.getPayload("username").toString();
     }
 }
