@@ -13,6 +13,6 @@ public class AuthController {
     @GetMapping("isLogin")
     public Result isLogin(HttpServletRequest request) {
         String token = request.getHeader("authorization");
-        return Result.success(AuthUtil.isLogin(token));
+        return Result.success(AuthUtil.isAuth(token));
     }
 }

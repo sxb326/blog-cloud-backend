@@ -2,7 +2,6 @@ package com.xb.blog.gateway.filter;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.jwt.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xb.blog.common.constants.Result;
 import com.xb.blog.common.utils.AuthUtil;
@@ -12,15 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 认证过滤器：
@@ -42,7 +45,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         //判断是否需要登录
         if (isLoginRequiredForPath(request.getPath().toString())) {
             //判断用户是否已经登录
-            if (!isLogin(request)) {
+            if (!isAuth(request)) {
                 Result result = new Result();
                 result.setCode("99");
                 result.setMessage("NO_LOGIN");
@@ -81,9 +84,9 @@ public class AuthFilter implements GlobalFilter, Ordered {
      * @param request
      * @return
      */
-    private boolean isLogin(ServerHttpRequest request) {
+    private boolean isAuth(ServerHttpRequest request) {
         //获取请求头中的token
-        List<String> headers = request.getHeaders().get("authorization");
+        List<String> headers = request.getHeaders().get("token");
         String token = "";
         if (!CollUtil.isEmpty(headers)) {
             token = headers.get(0);
@@ -93,6 +96,6 @@ public class AuthFilter implements GlobalFilter, Ordered {
         }
 
         //校验token
-        return AuthUtil.isLogin(token);
+        return AuthUtil.isAuth(token);
     }
 }

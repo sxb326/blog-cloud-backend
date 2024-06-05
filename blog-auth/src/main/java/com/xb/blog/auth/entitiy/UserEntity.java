@@ -1,6 +1,7 @@
-package com.xb.blog.common.entity;
+package com.xb.blog.auth.entitiy;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
@@ -67,6 +68,7 @@ public class UserEntity implements Serializable {
 	/**
 	 * 逻辑删除 1：不删除，0：删除
 	 */
+	@TableLogic(value = "1", delval = "0")
 	private Integer status;
 	/**
 	 * 创建时间

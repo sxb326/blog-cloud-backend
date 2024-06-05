@@ -1,7 +1,7 @@
-package com.xb.blog.common.service;
+package com.xb.blog.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xb.blog.common.entity.UserEntity;
+import com.xb.blog.auth.entitiy.UserEntity;
 
 /**
  * 用户表
