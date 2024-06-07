@@ -118,8 +118,8 @@ function doSearch() {
     left: 0;
     right: 0;
     z-index: 999;
-    height: 70px;
-    line-height: 70px;
+    height: 60px;
+    line-height: 60px;
     display: flex;
     align-items: center;
     padding: 0 15px;
@@ -156,7 +156,7 @@ function doSearch() {
 }
 
 #app {
-    padding-top: 40px;
+    padding-top: 30px;
 }
 
 .menuItem {

@@ -28,7 +28,7 @@ body {
 }
 
 .aside-container {
-    height: calc(100vh - 110px);
+    height: calc(100vh - 100px);
     overflow-y: auto;
     background-color: #FFF;
     padding-bottom: 50px;
