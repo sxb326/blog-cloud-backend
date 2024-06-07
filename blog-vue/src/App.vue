@@ -1,35 +1,44 @@
 <template>
-    <div class="common-layout">
-        <el-container>
-            <el-header>
-                <el-row class="topBar">
-                    <el-col :span="2">
-                        <img src="/vite.svg" class="logo" alt="Vite logo" />
-                    </el-col>
-                    <el-col :span="12" class="menu">
-                        <div class="menuItem">
-                            <router-link to="/">首页</router-link>
-                        </div>
-                        <div class="menuItem">
-                            <router-link to="/test">专栏</router-link>
-                        </div>
-                    </el-col>
-                    <el-col :span="6">
-                        <el-input v-model="keyWord" style="width: 240px" placeholder="想搜索点什么呢">
-                            <template #suffix>
-                                <el-icon class="el-input__icon" style="cursor: pointer;" @click="doSearch">
-                                    <search />
-                                </el-icon>
+    <div id="app">
+        <el-header class="header" style="background-color: #FFF;">
+            <el-row class="header-row" justify="space-between" align="middle">
+                <el-col :span="5" class="header-logo">
+                    <h3>分布式博客系统</h3>
+                </el-col>
+                <el-col :span="10" class="header-nav">
+                    <router-link to="/" class="menuItem">首页</router-link>
+                    <router-link to="/test" class="menuItem">专栏</router-link>
+                </el-col>
+                <el-col :span="6">
+                    <el-input v-model="keyWord" style="width: 240px" placeholder="想搜索点什么呢">
+                        <template #suffix>
+                            <el-icon class="el-input__icon" style="cursor: pointer;" @click="doSearch">
+                                <search />
+                            </el-icon>
+                        </template>
+                    </el-input>
+                </el-col>
+                <el-col :span="3" class="header-right">
+                    <el-button v-if="isUserEmpty(user)" type="primary" plain @click="openLoginForm">登录/注册</el-button>
+                    <div v-else class="centered-container">
+                        <el-icon size="30" class="centered-item">
+                            <BellFilled />
+                        </el-icon>
+                        <el-dropdown trigger="click">
+                            <el-avatar :size="30" src="/vite.svg" class="centered-item" />
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item>写篇文章</el-dropdown-item>
+                                    <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+                                </el-dropdown-menu>
                             </template>
-                        </el-input>
-                    </el-col>
-                    <el-col :span="2">
-                        <el-button v-if="isUserEmpty(user)" type="primary" plain
-                            @click="openLoginForm">登录/注册</el-button>
-                        <div v-else style="cursor: pointer;" @click="logout">{{ user.nickName }}</div>
-                    </el-col>
-                </el-row>
-            </el-header>
+                        </el-dropdown>
+
+                    </div>
+                </el-col>
+            </el-row>
+        </el-header>
+        <el-container class="main">
             <el-main>
                 <router-view />
             </el-main>
@@ -103,18 +112,60 @@ function doSearch() {
 </script>
 
 <style scoped>
-.topBar {
-    border-bottom: 1px solid #afafaf;
-    margin-bottom: 10px;
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    height: 70px;
+    line-height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    box-sizing: border-box;
 }
 
-.menu {
-    display: flex
+.header-row {
+    width: 100%;
+}
+
+.header-logo img {
+    height: 20px;
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 150px;
+    margin-right: 10px;
+}
+
+.main {
+    position: fixed;
+    left: 0;
+    right: 0;
+}
+
+#app {
+    padding-top: 40px;
 }
 
 .menuItem {
     margin: 0 10px;
-    color: red;
+    cursor: pointer;
+}
+
+.menuItem:hover {
+    border-bottom: 2px solid #007BFF;
 }
 
 .router-link-active {
@@ -125,5 +176,20 @@ function doSearch() {
 a {
     text-decoration: none;
     color: black;
+}
+
+.centered-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.centered-item {
+    margin-right: 30px;
+    cursor: pointer;
+}
+
+.centered-container :last-child {
+    margin-right: 0;
 }
 </style>
