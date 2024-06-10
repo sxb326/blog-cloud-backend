@@ -38,7 +38,7 @@
                 </el-col>
             </el-row>
         </el-header>
-        <el-container class="main">
+        <el-container>
             <el-main>
                 <router-view />
             </el-main>
@@ -50,12 +50,11 @@
 <script setup>
 import { Search } from '@element-plus/icons-vue';
 import { onMounted, reactive, ref } from 'vue';
-// import request from '@/utils/request'
 import { localStorage } from "@/utils/storage";
 import { getCurrentInstance } from 'vue';
 import loginForm from '@/components/login/loginForm.vue'
-
 const { proxy } = getCurrentInstance();
+import { ElMessage } from 'element-plus'
 
 onMounted(getAuthUser)
 
@@ -80,25 +79,22 @@ async function getAuthUser() {
 function isUserEmpty(obj) {
     return Object.keys(obj).length === 0;
 }
+
+//登录窗口
 const loginFormRef = ref()
-// let isLoginFormDialogShow = ref(false)
 
 const openLoginForm = () => {
     loginFormRef.value.open()
 }
-//登录
-// const login = () => {
-//     const data = {'username': '1', 'password': '1'}
-//     request.post('/auth/login', data).then(result => {
-//         console.log(result)
-//         getAuthUser()
-//     })
-// }
 
 //注销
 const logout = () => {
     localStorage.remove('BLOG_TOKEN')
     getAuthUser()
+    ElMessage({
+        message: '注销成功',
+        type: 'success',
+    })
 }
 
 // 搜索
@@ -107,8 +103,6 @@ let keyWord = ref("");
 function doSearch() {
     console.log('触发搜索,关键字:' + keyWord.value)
 }
-
-
 </script>
 
 <style scoped>
@@ -147,12 +141,6 @@ function doSearch() {
 .search-input {
     width: 150px;
     margin-right: 10px;
-}
-
-.main {
-    position: fixed;
-    left: 0;
-    right: 0;
 }
 
 #app {

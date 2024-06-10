@@ -1,16 +1,14 @@
 <template>
-    <el-container style="height: 100vh;">
+    <el-container>
         <el-aside width="200px" class="aside-container" style="margin-right: 20px;">
             <h3>分类列表</h3>
         </el-aside>
-        <el-container style="display: flex; flex-direction: row;">
-            <el-main style="flex: 1; padding: 0 20px;background-color: #FFF;" class="main-container">
-                <h3>文章列表</h3>
-            </el-main>
-            <el-aside width="200px" class="aside-container" style="margin-left: 20px;">
-                <h3>热门文章</h3>
-            </el-aside>
-        </el-container>
+        <el-main style="" class="main-container">
+            <h3>文章列表</h3>
+        </el-main>
+        <el-aside width="200px" class="aside-container" style="margin-left: 20px;">
+            <h3>热门文章</h3>
+        </el-aside>
     </el-container>
 </template>
 <style>
@@ -25,6 +23,10 @@ body {
 
 .main-container {
     border-radius: 5px;
+    height: calc(100vh - 100px);
+    flex: 1;
+    padding: 0 20px;
+    background-color: #FFF;
 }
 
 .aside-container {

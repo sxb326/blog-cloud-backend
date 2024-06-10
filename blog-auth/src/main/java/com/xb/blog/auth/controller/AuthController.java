@@ -19,7 +19,7 @@ public class AuthController {
     @Autowired
     private AuthUserDetailsService authUserDetailsService;
 
-    @GetMapping("getAuthUser")
+    @GetMapping("/getAuthUser")
     public Result getAuthUser(HttpServletRequest request) {
         String token = request.getHeader("Token");
         if (StrUtil.isNotBlank(token)) {
