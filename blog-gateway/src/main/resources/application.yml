@@ -31,6 +31,14 @@ spring:
             - Path=/api/auth/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+        # 文件服务
+        - id: file_route
+          uri: lb://blog-file
+          predicates:
+            - Path=/api/file/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
   config:
     import: application.yml
 
