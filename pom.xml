@@ -12,11 +12,15 @@
     <modules>
         <module>blog-auth</module>
         <module>blog-common</module>
+        <module>blog-file</module>
         <module>blog-gateway</module>
         <module>blog-web</module>
     </modules>
 
     <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>2.7.6</spring-boot.version>
         <spring-cloud.version>2021.0.5</spring-cloud.version>
         <swagger.starter.version>3.0.0</swagger.starter.version>

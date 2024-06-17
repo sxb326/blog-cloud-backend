@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>com.xb.blog</groupId>
         <artifactId>blog-cloud</artifactId>
@@ -8,19 +8,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.xb.blog</groupId>
-    <artifactId>blog-web</artifactId>
+    <artifactId>blog-file</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>blog-web</name>
-    <description>web端api服务</description>
-
-    <properties>
-        <java.version>1.8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    </properties>
+    <name>blog-file</name>
+    <description>文件存储服务 上传、下载文件</description>
 
     <dependencies>
-        <!--引入公共依赖模块-->
+        <!--引入公共服务-->
         <dependency>
             <groupId>com.xb.blog</groupId>
             <artifactId>blog-common</artifactId>
@@ -29,10 +23,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
         <dependency>
@@ -43,13 +33,6 @@
     </dependencies>
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -77,7 +60,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.xb.blog.web.BlogWebApplication</mainClass>
+                    <mainClass>com.xb.blog.file.BlogFileApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>

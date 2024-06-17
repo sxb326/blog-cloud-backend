@@ -6,10 +6,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient//开启服务的注册发现
 @SpringBootApplication
-public class XbBlogWebApplication {
+public class BlogWebApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(XbBlogWebApplication.class, args);
+        SpringApplication.run(BlogWebApplication.class, args);
     }
 
 }

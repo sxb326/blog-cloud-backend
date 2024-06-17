@@ -11,12 +11,8 @@
     <artifactId>blog-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>blog-gateway</name>
-    <description>blog-gateway</description>
-    <properties>
-        <java.version>1.8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    </properties>
+    <description>网关服务</description>
+
     <dependencies>
         <!--引入公共依赖模块-->
         <dependency>
@@ -90,7 +86,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.xb.blog.gateway.XbBlogGatewayApplication</mainClass>
+                    <mainClass>com.xb.blog.gateway.BlogGatewayApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>

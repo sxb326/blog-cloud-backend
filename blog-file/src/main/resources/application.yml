@@ -1,0 +1,28 @@
+# Tomcat
+server:
+  port: 7000
+  servlet:
+    context-path: /file
+# 注册中心 配置中心
+spring:
+  application:
+    name: blog-file
+  cloud:
+    nacos:
+      discovery:
+        # 注册中心地址
+        server-addr: 127.0.0.1:8848
+      config:
+        import-check:
+          enabled: false
+  config:
+    import: application.yml
+#      config:
+#        # 配置中心地址
+#        server-addr: 127.0.0.1:8848
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog
+    username: root
+    password: root

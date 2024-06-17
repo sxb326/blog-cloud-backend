@@ -9,9 +9,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableConfigurationProperties({AuthProperties.class})//开启配置文件读取
 @EnableDiscoveryClient//开启服务的注册发现
 @SpringBootApplication
-public class XbBlogGatewayApplication {
+public class BlogGatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(XbBlogGatewayApplication.class, args);
+        SpringApplication.run(BlogGatewayApplication.class, args);
     }
 }
