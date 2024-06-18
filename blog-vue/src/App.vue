@@ -5,7 +5,7 @@
                 <el-col :span="5" class="header-logo">
                     <h3>分布式博客系统</h3>
                 </el-col>
-                <el-col :span="10" class="header-nav">
+                <el-col :span="9" class="header-nav">
                     <router-link to="/" class="menuItem">首页</router-link>
                     <router-link to="/test" class="menuItem">专栏</router-link>
                 </el-col>
@@ -13,71 +13,59 @@
                     <el-input v-model="keyWord" style="width: 240px" placeholder="想搜索点什么呢">
                         <template #suffix>
                             <el-icon class="el-input__icon" style="cursor: pointer;" @click="doSearch">
-                                <search />
+                                <search/>
                             </el-icon>
                         </template>
                     </el-input>
                 </el-col>
-                <el-col :span="3" class="header-right">
-                    <el-button v-if="isUserEmpty(user)" type="primary" plain @click="openLoginForm">登录/注册</el-button>
+                <el-col :span="4" class="header-right">
+                    <el-button v-if="userAvatarUid == null" type="primary" plain @click="openLoginForm">登录/注册
+                    </el-button>
                     <div v-else class="centered-container">
+                        <el-button type="primary" :icon="Edit" class="centered-item">写作</el-button>
                         <el-icon size="30" class="centered-item">
-                            <BellFilled />
+                            <BellFilled/>
                         </el-icon>
-                        <el-dropdown trigger="click">
-                            <el-avatar :size="30" src="/vite.svg" class="centered-item" />
-                            <template #dropdown>
-                                <el-dropdown-menu>
-                                    <el-dropdown-item>写篇文章</el-dropdown-item>
-                                    <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </template>
-                        </el-dropdown>
-
+                        <el-avatar :size="30" src="/vite.svg" class="centered-item avatar"/>
                     </div>
                 </el-col>
             </el-row>
         </el-header>
         <el-container>
             <el-main>
-                <router-view />
+                <router-view/>
             </el-main>
         </el-container>
     </div>
-    <loginForm ref="loginFormRef" @get-auth-user="getAuthUser"></loginForm>
+    <loginForm ref="loginFormRef" @check-login-status="checkLoginStatus"></loginForm>
+    <userPopup ref="userPopupRef" @check-login-status="checkLoginStatus"></userPopup>
 </template>
 
 <script setup>
-import { Search } from '@element-plus/icons-vue';
-import { onMounted, reactive, ref } from 'vue';
-import { localStorage } from "@/utils/storage";
-import { getCurrentInstance } from 'vue';
+import {Search,Edit} from '@element-plus/icons-vue';
+import {onMounted, ref} from 'vue';
+import {getCurrentInstance} from 'vue';
 import loginForm from '@/components/login/loginForm.vue'
-const { proxy } = getCurrentInstance();
-import { ElMessage } from 'element-plus'
+import userPopup from "@/components/user/userPopup.vue";
 
-onMounted(getAuthUser)
+const {proxy} = getCurrentInstance();
 
-//获取登录用户
-let user = reactive({});
+onMounted(() => {
+    checkLoginStatus();
+    document.addEventListener('click', documentClick);
+})
+
+//获取登录用户头像uid
+let userAvatarUid = ref("");
 
 //获取当前登录用户
-async function getAuthUser() {
-    const response = await proxy.$api.auth.getAuthUser();
+async function checkLoginStatus() {
+    const response = await proxy.$api.auth.checkLoginStatus();
     if (response.data) {
-        Object.assign(user, response.data);
+        userAvatarUid.value = response.data
     } else {
-        for (const key in user) {
-            if (Object.prototype.hasOwnProperty.call(user, key)) {
-                delete user[key];
-            }
-        }
+        userAvatarUid.value = null;
     }
-}
-
-//判断用户对象是否为空
-function isUserEmpty(obj) {
-    return Object.keys(obj).length === 0;
 }
 
 //登录窗口
@@ -87,14 +75,11 @@ const openLoginForm = () => {
     loginFormRef.value.open()
 }
 
-//注销
-const logout = () => {
-    localStorage.remove('BLOG_TOKEN')
-    getAuthUser()
-    ElMessage({
-        message: '注销成功',
-        type: 'success',
-    })
+//用户信息窗口
+const userPopupRef = ref();
+
+const showUserPopup = (value) => {
+    userPopupRef.value.changeStatus(value)
 }
 
 // 搜索
@@ -103,6 +88,16 @@ let keyWord = ref("");
 function doSearch() {
     console.log('触发搜索,关键字:' + keyWord.value)
 }
+
+//定义点击事件 关闭用户信息窗口
+const documentClick = (event) => {
+    const avatarElement = document.querySelector('.centered-item.avatar');
+    const popupElement = document.querySelector('.user');
+    if (avatarElement || popupElement) {
+        showUserPopup((avatarElement && avatarElement.contains(event.target)) || (popupElement && popupElement.contains(event.target)))
+    }
+};
+
 </script>
 
 <style scoped>
@@ -122,6 +117,8 @@ function doSearch() {
 
 .header-row {
     width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
 }
 
 .header-logo img {
