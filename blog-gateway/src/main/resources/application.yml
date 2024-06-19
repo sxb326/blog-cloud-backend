@@ -33,10 +33,10 @@ spring:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
         # 文件服务
-        - id: file_route
-          uri: lb://blog-file
+        - id: picture_route
+          uri: lb://blog-picture
           predicates:
-            - Path=/api/file/**
+            - Path=/api/picture/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
   config:

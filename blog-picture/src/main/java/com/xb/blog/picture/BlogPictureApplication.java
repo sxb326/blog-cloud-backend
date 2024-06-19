@@ -1,13 +1,13 @@
-package com.xb.blog.file;
+package com.xb.blog.picture;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BlogFileApplication {
+public class BlogPictureApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BlogFileApplication.class, args);
+        SpringApplication.run(BlogPictureApplication.class, args);
     }
 
 }

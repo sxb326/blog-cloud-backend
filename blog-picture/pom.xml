@@ -8,10 +8,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.xb.blog</groupId>
-    <artifactId>blog-file</artifactId>
+    <artifactId>blog-picture</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>blog-file</name>
-    <description>文件存储服务 上传、下载文件</description>
+    <name>blog-picture</name>
+    <description>图片存储服务</description>
 
     <dependencies>
         <!--引入公共服务-->
@@ -60,7 +60,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.xb.blog.file.BlogFileApplication</mainClass>
+                    <mainClass>com.xb.blog.picture.BlogPictureApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>
