@@ -26,7 +26,7 @@
                         <el-icon size="30" class="centered-item">
                             <BellFilled/>
                         </el-icon>
-                        <el-avatar :size="30" src="/vite.svg" class="centered-item avatar"/>
+                        <el-avatar :size="40" :src="pictureUrl + userAvatarUid" class="centered-item avatar"/>
                     </div>
                 </el-col>
             </el-row>
@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import {Search,Edit} from '@element-plus/icons-vue';
+import {Search, Edit} from '@element-plus/icons-vue';
 import {onMounted, ref} from 'vue';
 import {getCurrentInstance} from 'vue';
 import loginForm from '@/components/login/loginForm.vue'
@@ -55,8 +55,10 @@ onMounted(() => {
     document.addEventListener('click', documentClick);
 })
 
+const pictureUrl = ref(import.meta.env.VITE_APP_SERVICE_API + "/picture/");
+
 //获取登录用户头像uid
-let userAvatarUid = ref("");
+let userAvatarUid = ref(null);
 
 //获取当前登录用户
 async function checkLoginStatus() {

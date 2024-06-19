@@ -23,13 +23,21 @@ public class PictureEntity implements Serializable {
      */
     private String name;
     /**
-     * 文件后缀 用于区分文件类型
+     * 存储方式：local本地存储 os对象存储
      */
-    private String suffix;
+    private String storageType;
     /**
-     * 文件路径
+     * 本地存储时 图片访问路径
      */
-    private String path;
+    private String localPath;
+    /**
+     * 对象存储时 bucket名称
+     */
+    private String osBucket;
+    /**
+     * 对象存储时 图片的唯一key
+     */
+    private String osKey;
     /**
      * 逻辑删除 1：不删除，0：删除
      */
