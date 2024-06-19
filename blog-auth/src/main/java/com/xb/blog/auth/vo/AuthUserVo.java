@@ -6,4 +6,5 @@ import lombok.Data;
 public class AuthUserVo {
     private String uid;
     private String nickName;
+    private String picUid;
 }

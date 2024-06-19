@@ -19,14 +19,32 @@
                     </el-input>
                 </el-col>
                 <el-col :span="4" class="header-right">
-                    <el-button v-if="userAvatarUid == null" type="primary" plain @click="openLoginForm">登录/注册
+                    <el-button v-if="isUserEmpty(user)" type="primary" plain @click="openLoginForm">登录/注册
                     </el-button>
                     <div v-else class="centered-container">
                         <el-button type="primary" :icon="Edit" class="centered-item">写作</el-button>
                         <el-icon size="30" class="centered-item">
                             <BellFilled/>
                         </el-icon>
-                        <el-avatar :size="40" :src="pictureUrl + userAvatarUid" class="centered-item avatar"/>
+                        <el-dropdown trigger="click">
+                            <span class="el-dropdown-link">
+                                <el-avatar :size="40" :src="pictureUrl + user.picUid" class="centered-item avatar"/>
+                            </span>
+                            <template #dropdown>
+                                <el-card class="userCard">
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-avatar :size="40" :src="pictureUrl + user.picUid"
+                                                       class="centered-item avatar"/>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            {{ user.nickName }}
+                                        </el-col>
+                                    </el-row>
+                                    <el-button text @click="logout">退出登录</el-button>
+                                </el-card>
+                            </template>
+                        </el-dropdown>
                     </div>
                 </el-col>
             </el-row>
@@ -37,37 +55,43 @@
             </el-main>
         </el-container>
     </div>
-    <loginForm ref="loginFormRef" @check-login-status="checkLoginStatus"></loginForm>
-    <userPopup ref="userPopupRef" @check-login-status="checkLoginStatus"></userPopup>
+    <loginForm ref="loginFormRef" @check-login-status="getAuthUser"></loginForm>
 </template>
 
 <script setup>
+import {ElMessage} from 'element-plus'
 import {Search, Edit} from '@element-plus/icons-vue';
-import {onMounted, ref} from 'vue';
+import {onMounted, reactive, ref} from 'vue';
 import {getCurrentInstance} from 'vue';
+import {localStorage} from "@/utils/storage";
 import loginForm from '@/components/login/loginForm.vue'
-import userPopup from "@/components/user/userPopup.vue";
 
 const {proxy} = getCurrentInstance();
 
-onMounted(() => {
-    checkLoginStatus();
-    document.addEventListener('click', documentClick);
-})
+onMounted(getAuthUser)
 
 const pictureUrl = ref(import.meta.env.VITE_APP_SERVICE_API + "/picture/");
 
 //获取登录用户头像uid
-let userAvatarUid = ref(null);
+let user = reactive({});
 
 //获取当前登录用户
-async function checkLoginStatus() {
-    const response = await proxy.$api.auth.checkLoginStatus();
+async function getAuthUser() {
+    const response = await proxy.$api.auth.getAuthUser();
     if (response.data) {
-        userAvatarUid.value = response.data
+        Object.assign(user, response.data);
     } else {
-        userAvatarUid.value = null;
+        for (const key in user) {
+            if (Object.prototype.hasOwnProperty.call(user, key)) {
+                delete user[key];
+            }
+        }
     }
+}
+
+//判断用户对象是否为空
+function isUserEmpty(obj) {
+    return Object.keys(obj).length === 0;
 }
 
 //登录窗口
@@ -77,13 +101,6 @@ const openLoginForm = () => {
     loginFormRef.value.open()
 }
 
-//用户信息窗口
-const userPopupRef = ref();
-
-const showUserPopup = (value) => {
-    userPopupRef.value.changeStatus(value)
-}
-
 // 搜索
 let keyWord = ref("");
 
@@ -91,14 +108,15 @@ function doSearch() {
     console.log('触发搜索,关键字:' + keyWord.value)
 }
 
-//定义点击事件 关闭用户信息窗口
-const documentClick = (event) => {
-    const avatarElement = document.querySelector('.centered-item.avatar');
-    const popupElement = document.querySelector('.user');
-    if (avatarElement || popupElement) {
-        showUserPopup((avatarElement && avatarElement.contains(event.target)) || (popupElement && popupElement.contains(event.target)))
-    }
-};
+//注销
+const logout = () => {
+    localStorage.remove('BLOG_TOKEN')
+    getAuthUser()
+    ElMessage({
+        message: '注销成功',
+        type: 'success',
+    })
+}
 
 </script>
 
@@ -178,5 +196,9 @@ a {
 
 .centered-container :last-child {
     margin-right: 0;
+}
+
+.userCard {
+    width: 200px;
 }
 </style>
