@@ -18,8 +18,15 @@ public class Result implements Serializable {
     public static Result success(Object data) {
         Result result = new Result();
         result.setCode("0");
-        result.setCode("success");
+        result.setMessage("success");
         result.setData(data);
+        return result;
+    }
+
+    public static Result error(String message) {
+        Result result = new Result();
+        result.setCode("500");
+        result.setMessage(message);
         return result;
     }
 }

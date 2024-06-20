@@ -23,7 +23,8 @@ public class AuthAuthenticationSuccessHandler implements AuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
         //登录成功，生成token，并保存到响应头中
-        String token = AuthUtil.createToken(((AuthUser) authentication.getPrincipal()).getUsername());
+        AuthUser user = (AuthUser) authentication.getPrincipal();
+        String token = AuthUtil.createToken(user.getUid(), user.getUsername());
         response.setHeader("Token", token);
         response.setHeader("Access-Control-Expose-Headers", "Token");
 

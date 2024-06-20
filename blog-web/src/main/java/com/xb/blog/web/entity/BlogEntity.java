@@ -1,4 +1,4 @@
-package com.xb.blog.common.entity;
+package com.xb.blog.web.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;

@@ -1,6 +1,6 @@
-package com.xb.blog.common.dao;
+package com.xb.blog.web.dao;
 
-import com.xb.blog.common.entity.BlogTagEntity;
+import com.xb.blog.web.entity.BlogTagEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

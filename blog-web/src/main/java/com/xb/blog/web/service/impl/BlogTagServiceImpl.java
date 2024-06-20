@@ -1,11 +1,11 @@
-package com.xb.blog.common.service.impl;
+package com.xb.blog.web.service.impl;
 
+import com.xb.blog.web.dao.BlogTagDao;
+import com.xb.blog.web.service.BlogTagService;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import com.xb.blog.common.dao.BlogTagDao;
-import com.xb.blog.common.entity.BlogTagEntity;
-import com.xb.blog.common.service.BlogTagService;
+import com.xb.blog.web.entity.BlogTagEntity;
 
 
 @Service

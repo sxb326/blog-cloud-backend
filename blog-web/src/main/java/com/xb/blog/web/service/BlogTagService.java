@@ -1,7 +1,7 @@
-package com.xb.blog.common.service;
+package com.xb.blog.web.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xb.blog.common.entity.BlogTagEntity;
+import com.xb.blog.web.entity.BlogTagEntity;
 
 /**
  * 博客标签关联表

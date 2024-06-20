@@ -1,7 +1,6 @@
 package com.xb.blog.auth.controller;
 
 import cn.hutool.core.util.StrUtil;
-import com.xb.blog.auth.config.security.model.AuthUser;
 import com.xb.blog.auth.config.security.service.AuthUserDetailsService;
 import com.xb.blog.auth.vo.AuthUserVo;
 import com.xb.blog.common.constants.Result;
@@ -50,7 +49,7 @@ public class AuthController {
         if (StrUtil.isNotBlank(token)) {
             Boolean isAuth = AuthUtil.isAuth(token);
             if (isAuth) {
-                String username = AuthUtil.getUsernameFromToken(token);
+                String username = AuthUtil.getLoginUsername(token);
                 UserDetails user = authUserDetailsService.loadUserByUsername(username);
                 AuthUserVo authUser = new AuthUserVo();
                 BeanUtils.copyProperties(user, authUser);

@@ -1,9 +1,9 @@
-package com.xb.blog.common.service.impl;
+package com.xb.blog.web.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xb.blog.common.dao.BlogDao;
-import com.xb.blog.common.entity.BlogEntity;
-import com.xb.blog.common.service.BlogService;
+import com.xb.blog.web.dao.BlogDao;
+import com.xb.blog.web.entity.BlogEntity;
+import com.xb.blog.web.service.BlogService;
 import org.springframework.stereotype.Service;
 
 

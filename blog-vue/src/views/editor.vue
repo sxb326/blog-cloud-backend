@@ -14,17 +14,26 @@
 
 <script setup>
 import {ref, onMounted} from "vue";
-import {useRoute} from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 import request from '@/utils/request.js'
 
 let title = ref("");
 let content = ref("");
 
+const route = useRoute();
+const router = useRouter();
+
 //根据路径参数中的id 调用后端接口获取博客内容
 const getBlog = () => {
-    let id = useRoute().params.id;
+    let id = route.params.id;
     if (id) {
-
+        request.get('/web/blog/getBlogById/' + id).then(result => {
+            if (result.code === '500') {
+                router.push('/home')
+            }
+            title.value = result.data.title;
+            content.value = result.data.content;
+        })
     }
 }
 
