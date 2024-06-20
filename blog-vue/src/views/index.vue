@@ -6,7 +6,7 @@
                     <h3>分布式博客系统</h3>
                 </el-col>
                 <el-col :span="9" class="header-nav">
-                    <router-link to="/" class="menuItem">首页</router-link>
+                    <router-link to="/home" class="menuItem">首页</router-link>
                     <router-link to="/test" class="menuItem">专栏</router-link>
                 </el-col>
                 <el-col :span="6">
@@ -22,7 +22,8 @@
                     <el-button v-if="isUserEmpty(user)" type="primary" plain @click="openLoginForm">登录/注册
                     </el-button>
                     <div v-else class="centered-container">
-                        <el-button type="primary" :icon="Edit" class="centered-item">写作</el-button>
+                        <el-button type="primary" :icon="Edit" class="centered-item" @click="openEditor">写作
+                        </el-button>
                         <el-icon size="30" class="centered-item">
                             <BellFilled/>
                         </el-icon>
@@ -116,6 +117,10 @@ const logout = () => {
         message: '注销成功',
         type: 'success',
     })
+}
+
+const openEditor = () => {
+    window.open(window.location.origin + '/#/editor')
 }
 
 </script>

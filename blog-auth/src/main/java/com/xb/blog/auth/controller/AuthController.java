@@ -32,12 +32,10 @@ public class AuthController {
         if (StrUtil.isNotBlank(token)) {
             Boolean isAuth = AuthUtil.isAuth(token);
             if (isAuth) {
-                String username = AuthUtil.getUsernameFromToken(token);
-                AuthUser user = (AuthUser) authUserDetailsService.loadUserByUsername(username);
-                return Result.success(user.getPicUid());
+                return Result.success(true);
             }
         }
-        return Result.success(null);
+        return Result.success(false);
     }
 
     /**
