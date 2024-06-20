@@ -12,7 +12,8 @@ export const constantRoutes = [
             {path: '/test', component: () => import('@/views/test/index.vue'),meta: {title: '专栏'}}
         ]
     },
-    {path: '/editor', component: () => import("@/views/editor.vue"), meta: {title: '写文章', needLogin: true}}
+    {path: '/editor', component: () => import("@/views/editor.vue"), meta: {title: '写文章', needLogin: true}},
+    {path: '/editor/:id', component: () => import("@/views/editor.vue"), meta: {title: '写文章', needLogin: true}}
 ];
 
 // 创建路由

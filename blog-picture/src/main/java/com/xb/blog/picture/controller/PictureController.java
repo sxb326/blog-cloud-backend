@@ -1,18 +1,24 @@
 package com.xb.blog.picture.controller;
 
+import com.xb.blog.common.constants.Result;
 import com.xb.blog.picture.entity.PictureEntity;
 import com.xb.blog.picture.service.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.Date;
 
 @RestController
 public class PictureController {
@@ -45,6 +51,29 @@ public class PictureController {
             } else if ("os".equals(storageType)) {
                 //todo 对象存储图片，从对象存储获取图片
             }
+        }
+    }
+
+    @PostMapping("/upload")
+    public Result upload(MultipartFile file) {
+        //todo 判断当前图片保存方式，这里测试方便 先默认为本地存储
+        String path = "D:/blog-cloud-img/" + LocalDate.now() + "/" + file.getOriginalFilename();
+        File f = new File(path);
+        try {
+            if (!f.exists()) {
+                f.mkdirs();
+            }
+            file.transferTo(f);
+            PictureEntity entity = new PictureEntity();
+            entity.setName(file.getOriginalFilename());
+            entity.setStorageType("local");
+            entity.setLocalPath(path);
+            entity.setStatus(1);
+            entity.setCreateTime(new Date());
+            pictureService.save(entity);
+            return Result.success(entity.getUid());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
