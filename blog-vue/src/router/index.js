@@ -10,7 +10,7 @@ export const constantRoutes = [
             {path: '/test', component: () => import('@/views/test/index.vue')}
         ]
     },
-    {path: '/edit', component: () => import("@/views/edit.vue")}
+    {path: '/editor', component: () => import("@/views/editor.vue")}
 ];
 
 // 创建路由

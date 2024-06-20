@@ -51,7 +51,7 @@
         </el-header>
         <el-container>
             <el-main>
-                <router-view/>
+                <router-view class="custom-main-container"/>
             </el-main>
         </el-container>
     </div>
