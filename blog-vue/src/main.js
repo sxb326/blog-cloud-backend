@@ -15,6 +15,13 @@ import { createPersistedState } from 'pinia-plugin-persistedstate';
 import api from '@/api';
 // 全局组件注册
 import components from '@/components/index';
+//md编辑器
+import VMdEditor from '@kangc/v-md-editor';
+import '@kangc/v-md-editor/lib/style/base-editor.css';
+import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
+import '@kangc/v-md-editor/lib/theme/style/github.css';
+// highlightjs
+import hljs from 'highlight.js';
 
 const app = createApp(App);
 
@@ -56,5 +63,11 @@ app.config.globalProperties.$api = api
 Object.keys(components).forEach((key) => {
   app.component(key, components[key]);
 });
+
+//md编辑器
+VMdEditor.use(githubTheme, {
+    Hljs: hljs,
+});
+app.use(VMdEditor);
 
 app.mount('#app')
