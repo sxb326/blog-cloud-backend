@@ -71,7 +71,7 @@ public class PictureController {
             entity.setStatus(1);
             entity.setCreateTime(new Date());
             pictureService.save(entity);
-            return Result.success(entity.getUid());
+            return Result.success(null, entity.getUid());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

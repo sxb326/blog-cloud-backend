@@ -3,6 +3,8 @@ package com.xb.blog.web.vo;
 import com.xb.blog.common.utils.AuthUtil;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 编辑博客时的数据Vo
  */
@@ -31,17 +33,9 @@ public class BlogEditorVo {
     /**
      * 标签集id
      */
-    private String tagsUid;
+    private List<String> tagUids;
     /**
      * 分类id
      */
     private String categoryUid;
-    /**
-     * 专栏集id
-     */
-    private String groupsUid;
-    /**
-     * 作者id
-     */
-    private String author;
 }

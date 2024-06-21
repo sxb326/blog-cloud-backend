@@ -11,7 +11,7 @@
  Target Server Version : 80037 (8.0.37)
  File Encoding         : 65001
 
- Date: 21/06/2024 13:54:32
+ Date: 21/06/2024 17:04:15
 */
 
 SET NAMES utf8mb4;
@@ -29,15 +29,11 @@ CREATE TABLE `t_blog`
     `summary`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章简介',
     `content`       longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '文章内容',
     `pic_uid`       varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '封面图片id',
-    `tags_uid`      varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签集id',
     `category_uid`  varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '分类id',
-    `groups_uid`    varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '专栏集id',
     `click_count`   int NULL DEFAULT NULL COMMENT '点击数',
     `like_count`    int NULL DEFAULT NULL COMMENT '点赞数',
     `collect_count` int NULL DEFAULT NULL COMMENT '收藏数',
     `author`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '作者id',
-    `is_publish`    tinyint NULL DEFAULT NULL COMMENT '是否发布 1：是，0：否',
-    `sort`          int NULL DEFAULT NULL COMMENT '排序字段',
     `status`        tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
     `create_time`   timestamp NULL DEFAULT NULL COMMENT '创建时间',
     `update_time`   timestamp NULL DEFAULT NULL COMMENT '修改时间',
@@ -45,22 +41,47 @@ CREATE TABLE `t_blog`
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Table structure for t_blog_tag
+-- ----------------------------
+DROP TABLE IF EXISTS `t_blog_tag`;
+CREATE TABLE `t_blog_tag`
+(
+    `uid`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
+    `blog_uid`    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '博客uid',
+    `tag_uid`     varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签uid',
+    `status`      tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
+    `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+    `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
+    PRIMARY KEY (`uid`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客标签关联表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for t_category
+-- ----------------------------
+DROP TABLE IF EXISTS `t_category`;
+CREATE TABLE `t_category`
+(
+    `uid`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
+    `name`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '分类名称',
+    `status`      tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
+    `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+    `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
+    `sort`        int NULL DEFAULT NULL COMMENT '排序字段',
+    PRIMARY KEY (`uid`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '分类表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for t_draft
 -- ----------------------------
 DROP TABLE IF EXISTS `t_draft`;
 CREATE TABLE `t_draft`
 (
-    `uid`          varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
-    `title`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章标题',
-    `summary`      varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章简介',
-    `content`      longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '文章内容',
-    `pic_uid`      varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '封面图片id',
-    `tags_uid`     varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签集id',
-    `category_uid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '分类id',
-    `groups_uid`   varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '专栏集id',
-    `author`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '作者id',
-    `create_time`  timestamp NULL DEFAULT NULL COMMENT '创建时间',
-    `update_time`  timestamp NULL DEFAULT NULL COMMENT '修改时间',
+    `uid`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
+    `title`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章标题',
+    `content`     longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '文章内容',
+    `author`      varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '作者id',
+    `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+    `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
     PRIMARY KEY (`uid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '草稿表' ROW_FORMAT = Dynamic;
 
@@ -89,7 +110,7 @@ DROP TABLE IF EXISTS `t_tag`;
 CREATE TABLE `t_tag`
 (
     `uid`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
-    `content`     varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签内容',
+    `name`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签名称',
     `status`      tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
     `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
     `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',

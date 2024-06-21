@@ -7,8 +7,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-@TableName("t_draft")
-public class DraftEntity implements Serializable {
+@TableName("t_category")
+public class CategoryEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -17,17 +17,14 @@ public class DraftEntity implements Serializable {
     @TableId(type = IdType.ASSIGN_UUID)
     private String uid;
     /**
-     * 博客标题
+     * 分类名称
      */
-    private String title;
+    private String name;
     /**
-     * 博客内容
+     * 逻辑删除 1：不删除，0：删除
      */
-    private String content;
-    /**
-     * 作者id
-     */
-    private String author;
+    @TableLogic(value = "1", delval = "0")
+    private Integer status;
     /**
      * 创建时间
      */
@@ -38,4 +35,8 @@ public class DraftEntity implements Serializable {
      */
     @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
+    /**
+     * 排序字段
+     */
+    private Integer sort;
 }

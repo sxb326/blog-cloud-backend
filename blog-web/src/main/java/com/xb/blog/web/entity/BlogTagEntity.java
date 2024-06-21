@@ -7,27 +7,27 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-@TableName("t_draft")
-public class DraftEntity implements Serializable {
+@TableName("t_blog_tag")
+public class BlogTagEntity implements Serializable {
     private static final long serialVersionUID = 1L;
-
     /**
      * 主键
      */
     @TableId(type = IdType.ASSIGN_UUID)
     private String uid;
     /**
-     * 博客标题
+     * 博客id
      */
-    private String title;
+    private String blogUid;
     /**
-     * 博客内容
+     * 标签id
      */
-    private String content;
+    private String tagUid;
     /**
-     * 作者id
+     * 逻辑删除 1：不删除，0：删除
      */
-    private String author;
+    @TableLogic(value = "1", delval = "0")
+    private Integer status;
     /**
      * 创建时间
      */

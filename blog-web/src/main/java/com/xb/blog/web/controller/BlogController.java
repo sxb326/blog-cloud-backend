@@ -1,19 +1,22 @@
 package com.xb.blog.web.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xb.blog.common.constants.Result;
 import com.xb.blog.common.utils.AuthUtil;
 import com.xb.blog.web.common.context.UserContext;
 import com.xb.blog.web.entity.BlogEntity;
+import com.xb.blog.web.entity.BlogTagEntity;
 import com.xb.blog.web.entity.DraftEntity;
 import com.xb.blog.web.service.BlogService;
+import com.xb.blog.web.service.BlogTagService;
 import com.xb.blog.web.service.DraftService;
 import com.xb.blog.web.vo.BlogEditorVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/blog")
@@ -24,6 +27,9 @@ public class BlogController {
 
     @Autowired
     private DraftService draftService;
+
+    @Autowired
+    private BlogTagService blogTagService;
 
     @GetMapping("/id")
     public Result id() {
@@ -42,6 +48,8 @@ public class BlogController {
             }
             BlogEditorVo vo = new BlogEditorVo();
             BeanUtil.copyProperties(draft, vo);
+            vo.setTagUids(blogTagService.list(new QueryWrapper<BlogTagEntity>().eq("blog_uid", draft.getUid()))
+                    .stream().map(BlogTagEntity::getTagUid).collect(Collectors.toList()));
             return Result.success(vo);
         }
 
@@ -53,24 +61,12 @@ public class BlogController {
             }
             BlogEditorVo vo = new BlogEditorVo();
             BeanUtil.copyProperties(blog, vo);
+            vo.setTagUids(blogTagService.list(new QueryWrapper<BlogTagEntity>().eq("blog_uid", blog.getUid()))
+                    .stream().map(BlogTagEntity::getTagUid).collect(Collectors.toList()));
             return Result.success(vo);
         }
 
         return Result.success(null);
-    }
-
-    /**
-     * 保存草稿
-     *
-     * @param vo
-     * @return
-     */
-    @PostMapping("/draft")
-    public Result saveDraft(@RequestBody BlogEditorVo vo) {
-        String userId = UserContext.getUserId();
-        vo.setAuthor(userId);
-        String draftUid = draftService.saveDraft(vo);
-        return Result.success("保存草稿成功！", draftUid);
     }
 
     /**
@@ -84,6 +80,7 @@ public class BlogController {
      */
     @PostMapping("/publish")
     public Result publish(@RequestBody BlogEditorVo vo) {
-        return null;
+        blogService.publish(vo);
+        return Result.success("发布成功！");
     }
 }

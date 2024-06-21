@@ -1,11 +1,9 @@
 package com.xb.blog.web.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.Data;
@@ -44,17 +42,9 @@ public class BlogEntity implements Serializable {
      */
     private String picUid;
     /**
-     * 标签集id
-     */
-    private String tagsUid;
-    /**
      * 分类id
      */
     private String categoryUid;
-    /**
-     * 专栏集id
-     */
-    private String groupsUid;
     /**
      * 点击数
      */
@@ -72,14 +62,6 @@ public class BlogEntity implements Serializable {
      */
     private String author;
     /**
-     * 是否发布 1：是，0：否
-     */
-    private int isPublish;
-    /**
-     * 排序字段
-     */
-    private Long sort;
-    /**
      * 逻辑删除 1：不删除，0：删除
      */
     @TableLogic(value = "1", delval = "0")
@@ -87,9 +69,11 @@ public class BlogEntity implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
     /**
      * 修改时间
      */
-    private Date updateTime;
+    @TableField(fill = FieldFill.UPDATE)
+    private LocalDateTime updateTime;
 }
