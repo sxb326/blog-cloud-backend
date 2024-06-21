@@ -87,6 +87,7 @@ const publish = () => {
     request.get('/web/tag/list').then(result => {
         tags.value = result.data;
     })
+    blog.summary = blog.content.substring(0, 255);
     visible.value = true;
 }
 

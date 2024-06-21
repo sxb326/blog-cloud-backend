@@ -2,7 +2,7 @@ package com.xb.blog.web.common.interceptor;
 
 import cn.hutool.core.util.StrUtil;
 import com.xb.blog.common.utils.AuthUtil;
-import com.xb.blog.web.common.context.UserContext;
+import com.xb.blog.web.common.utils.UserUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -19,13 +19,13 @@ public class UserInterceptor implements HandlerInterceptor {
         String token = request.getHeader("Token");
         if (StrUtil.isNotBlank(token)) {
             String uid = AuthUtil.getLoginUid(token);
-            UserContext.setUserId(uid);
+            UserUtil.setUserId(uid);
         }
         return true;
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        UserContext.clear();
+        UserUtil.clear();
     }
 }

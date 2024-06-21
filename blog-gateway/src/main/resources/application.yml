@@ -47,3 +47,4 @@ auth:
   excludePaths:
     - /api/auth/**
     - /api/picture/**
+    - /api/web/home/**

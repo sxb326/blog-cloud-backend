@@ -3,8 +3,7 @@ package com.xb.blog.web.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xb.blog.common.constants.Result;
-import com.xb.blog.common.utils.AuthUtil;
-import com.xb.blog.web.common.context.UserContext;
+import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.entity.BlogEntity;
 import com.xb.blog.web.entity.BlogTagEntity;
 import com.xb.blog.web.entity.DraftEntity;
@@ -38,7 +37,7 @@ public class BlogController {
 
     @GetMapping("/{id}")
     public Result getBlogById(@PathVariable("id") String id) {
-        String userId = UserContext.getUserId();
+        String userId = UserUtil.getUserId();
 
         //先判断是否存在草稿
         DraftEntity draft = draftService.getById(id);

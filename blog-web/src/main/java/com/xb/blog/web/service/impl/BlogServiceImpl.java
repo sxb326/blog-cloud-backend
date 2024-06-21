@@ -1,12 +1,10 @@
 package com.xb.blog.web.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xb.blog.web.common.context.UserContext;
+import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.BlogDao;
 import com.xb.blog.web.entity.BlogEntity;
-import com.xb.blog.web.entity.BlogTagEntity;
 import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.BlogTagService;
 import com.xb.blog.web.service.DraftService;
@@ -14,9 +12,6 @@ import com.xb.blog.web.vo.BlogEditorVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -40,7 +35,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         BlogEntity blog = new BlogEntity();
         BeanUtil.copyProperties(vo, blog);
         blog.setStatus(1);
-        blog.setAuthor(UserContext.getUserId());
+        blog.setAuthor(UserUtil.getUserId());
         saveOrUpdate(blog);
 
         //保存标签绑定数据

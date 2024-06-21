@@ -2,7 +2,7 @@ package com.xb.blog.web.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xb.blog.web.common.context.UserContext;
+import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.DraftDao;
 import com.xb.blog.web.entity.DraftEntity;
 import com.xb.blog.web.service.BlogTagService;
@@ -30,7 +30,7 @@ public class DraftServiceImpl extends ServiceImpl<DraftDao, DraftEntity> impleme
         //保存草稿主体数据
         DraftEntity entity = new DraftEntity();
         BeanUtil.copyProperties(vo, entity);
-        entity.setAuthor(UserContext.getUserId());
+        entity.setAuthor(UserUtil.getUserId());
         saveOrUpdate(entity);
 
         //保存标签绑定数据
