@@ -66,6 +66,7 @@ import {onMounted, reactive, ref} from 'vue';
 import {getCurrentInstance} from 'vue';
 import {localStorage} from "@/utils/storage";
 import loginForm from '@/components/login/loginForm.vue'
+import request from "@/utils/request.js";
 
 const {proxy} = getCurrentInstance();
 
@@ -120,7 +121,9 @@ const logout = () => {
 }
 
 const openEditor = () => {
-    window.open(window.location.origin + '/#/editor')
+    request.get('/web/blog/id').then(result => {
+        window.open(window.location.origin + '/#/editor/' + result.data)
+    })
 }
 
 </script>

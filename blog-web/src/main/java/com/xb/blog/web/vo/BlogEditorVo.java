@@ -1,5 +1,6 @@
 package com.xb.blog.web.vo;
 
+import com.xb.blog.common.utils.AuthUtil;
 import lombok.Data;
 
 /**
@@ -16,7 +17,31 @@ public class BlogEditorVo {
      */
     private String title;
     /**
+     * 博客简介
+     */
+    private String summary;
+    /**
      * 博客内容
      */
     private String content;
+    /**
+     * 封面图片id
+     */
+    private String picUid;
+    /**
+     * 标签集id
+     */
+    private String tagsUid;
+    /**
+     * 分类id
+     */
+    private String categoryUid;
+    /**
+     * 专栏集id
+     */
+    private String groupsUid;
+    /**
+     * 作者id
+     */
+    private String author;
 }

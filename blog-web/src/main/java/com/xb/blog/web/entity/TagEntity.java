@@ -1,5 +1,6 @@
 package com.xb.blog.web.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -22,7 +23,7 @@ public class TagEntity implements Serializable {
 	/**
 	 * 主键
 	 */
-	@TableId
+	@TableId(type = IdType.ASSIGN_UUID)
 	private String uid;
 	/**
 	 * 标签内容

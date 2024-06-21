@@ -1,6 +1,8 @@
 package com.xb.blog.web.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
@@ -23,7 +25,7 @@ public class BlogEntity implements Serializable {
     /**
      * 主键
      */
-    @TableId
+    @TableId(type = IdType.ASSIGN_UUID)
     private String uid;
     /**
      * 博客标题
@@ -46,17 +48,25 @@ public class BlogEntity implements Serializable {
      */
     private String tagsUid;
     /**
+     * 分类id
+     */
+    private String categoryUid;
+    /**
+     * 专栏集id
+     */
+    private String groupsUid;
+    /**
      * 点击数
      */
-    private Integer clickCount;
+    private Long clickCount;
     /**
      * 点赞数
      */
-    private Integer likeCount;
+    private Long likeCount;
     /**
      * 收藏数
      */
-    private Integer collectCount;
+    private Long collectCount;
     /**
      * 作者id
      */
@@ -64,15 +74,16 @@ public class BlogEntity implements Serializable {
     /**
      * 是否发布 1：是，0：否
      */
-    private Integer isPublish;
+    private int isPublish;
     /**
      * 排序字段
      */
-    private Integer sort;
+    private Long sort;
     /**
      * 逻辑删除 1：不删除，0：删除
      */
-    private Integer status;
+    @TableLogic(value = "1", delval = "0")
+    private int status;
     /**
      * 创建时间
      */
@@ -81,5 +92,4 @@ public class BlogEntity implements Serializable {
      * 修改时间
      */
     private Date updateTime;
-
 }

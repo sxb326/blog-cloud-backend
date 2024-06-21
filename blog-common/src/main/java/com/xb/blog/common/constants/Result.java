@@ -15,11 +15,25 @@ public class Result implements Serializable {
     private String message;
     private Object data;
 
+    public static Result success(String message) {
+        return success(message, null);
+    }
+
     public static Result success(Object data) {
+        return success("success", data);
+    }
+
+    public static Result success(String message, Object data) {
         Result result = new Result();
         result.setCode("0");
-        result.setMessage("success");
+        result.setMessage(message);
         result.setData(data);
+        return result;
+    }
+
+    public static Result unauthorized() {
+        Result result = new Result();
+        result.setCode("403");
         return result;
     }
 
