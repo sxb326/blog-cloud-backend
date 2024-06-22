@@ -40,6 +40,7 @@
                         :rows="2"
                         type="textarea"
                         placeholder="请输入简介"
+                        maxlength="100"
                 />
             </el-form-item>
             <el-form-item>
@@ -87,7 +88,7 @@ const publish = () => {
     request.get('/web/tag/list').then(result => {
         tags.value = result.data;
     })
-    blog.summary = blog.content.substring(0, 255);
+    blog.summary = blog.content.substring(0, 100);
     visible.value = true;
 }
 

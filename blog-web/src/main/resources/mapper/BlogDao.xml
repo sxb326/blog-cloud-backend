@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xb.blog.web.dao.BlogDao">
+    <select id="listBlog" resultType="com.xb.blog.web.vo.BlogListVo">
+        SELECT
+            blog.uid,
+            blog.title,
+            blog.summary,
+            blog.pic_uid picUid,
+            IFNULL(blog.click_count, 0) clickCount,
+            IFNULL(blog.like_count, 0) likeCount,
+            IFNULL(blog.collect_count, 0) collectCount,
+            user.uid authorId,
+            user.nick_name authorName
+        FROM
+            t_blog blog
+                LEFT JOIN t_user user ON blog.author = user.uid
+        WHERE
+            blog.status = 1
+        ORDER BY
+            blog.create_time DESC
+    </select>
+</mapper>

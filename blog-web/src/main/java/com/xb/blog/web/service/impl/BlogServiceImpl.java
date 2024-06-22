@@ -9,9 +9,12 @@ import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.BlogTagService;
 import com.xb.blog.web.service.DraftService;
 import com.xb.blog.web.vo.BlogEditorVo;
+import com.xb.blog.web.vo.BlogListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @Service
@@ -44,5 +47,15 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         //删除草稿表
         draftService.removeById(vo.getUid());
 
+    }
+
+    /**
+     * 查询博客列表
+     *
+     * @return
+     */
+    @Override
+    public List<BlogListVo> listBlog() {
+        return baseMapper.listBlog();
     }
 }

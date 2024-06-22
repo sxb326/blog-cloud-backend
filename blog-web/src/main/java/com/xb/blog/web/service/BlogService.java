@@ -3,6 +3,9 @@ package com.xb.blog.web.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xb.blog.web.entity.BlogEntity;
 import com.xb.blog.web.vo.BlogEditorVo;
+import com.xb.blog.web.vo.BlogListVo;
+
+import java.util.List;
 
 /**
  * 博客表
@@ -17,5 +20,11 @@ public interface BlogService extends IService<BlogEntity> {
      * @param vo
      */
     void publish(BlogEditorVo vo);
+
+    /**
+     * 查询博客列表
+     * @return
+     */
+    List<BlogListVo> listBlog();
 }
 

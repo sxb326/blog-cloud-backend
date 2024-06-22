@@ -2,7 +2,10 @@ package com.xb.blog.web.dao;
 
 import com.xb.blog.web.entity.BlogEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xb.blog.web.vo.BlogListVo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * 博客表
@@ -13,5 +16,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface BlogDao extends BaseMapper<BlogEntity> {
-	
+
+    List<BlogListVo> listBlog();
 }
