@@ -87,3 +87,16 @@ button:focus-visible {
     margin: 0 auto;
     padding: 1.8rem 0 0 0;
 }
+
+::-webkit-scrollbar {
+    width: 4px; /* 设置滚动条宽度 */
+    height: 4px; /* 设置滚动条高度（对于垂直滚动条） */
+    background-color: transparent; /* 设置滚动条背景色 */
+}
+
+/* 滚动条滑块样式 */
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3); /* 设置滑块颜色 */
+    border-radius: 4px; /* 设置滑块圆角 */
+    display: none; /* 默认隐藏滑块 */
+}

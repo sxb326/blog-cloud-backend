@@ -2,7 +2,7 @@
     <el-table :data="list" height="calc(100vh - 100px)" style="width: 100%" :show-header="false">
         <el-table-column>
             <template #default="scope">
-                <div class="blog">
+                <div class="blog" @click="preview(scope.row.uid)">
                     <div style="width: 80%">
                         <h3>{{ scope.row.title }}</h3>
                         <p class="blog-summary">{{ scope.row.summary }}</p>
@@ -49,6 +49,10 @@ const getList = () => {
 }
 
 onMounted(getList)
+
+const preview = (id) => {
+    window.open(window.location.origin + '/#/preview/' + id)
+}
 </script>
 
 <style scoped>
