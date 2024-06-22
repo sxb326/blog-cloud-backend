@@ -3,8 +3,8 @@
         <el-aside width="200px" class="aside-container" style="margin-right: 20px;">
             <h3>分类列表</h3>
         </el-aside>
-        <el-main style="" class="main-container">
-            <el-table :data="list" style="width: 100%" :show-header="false">
+        <el-main class="main-container">
+            <el-table :data="list" height="calc(100vh - 100px)" style="width: 100%" :show-header="false">
                 <el-table-column>
                     <template #default="scope">
                         <div class="blog">
@@ -73,7 +73,7 @@ body {
     border-radius: 5px;
     height: calc(100vh - 100px);
     flex: 1;
-    padding: 0 20px;
+    padding: 0;
     background-color: #FFF;
 }
 
@@ -120,10 +120,11 @@ body {
     margin: 0.6rem 0.8rem 0 0.8rem;
 }
 
-.author{
+.author {
 
 }
-.author:hover{
+
+.author:hover {
     color: #409eff;
 }
 </style>
