@@ -8,12 +8,12 @@ export const constantRoutes = [
         component: () => import('@/views/index.vue'),
         redirect: '/home',
         children: [
-            {path: '/home', component: () => import('@/views/home.vue')},
-            {path: '/test', component: () => import('@/views/test/index.vue'),meta: {title: '专栏'}}
+            {path: '/home', component: () => import('@/views/home.vue')}
         ]
     },
     {path: '/editor', component: () => import("@/views/editor.vue"), meta: {title: '写文章', needLogin: true}},
-    {path: '/editor/:id', component: () => import("@/views/editor.vue"), meta: {title: '写文章', needLogin: true}}
+    {path: '/editor/:id', component: () => import("@/views/editor.vue"), meta: {title: '写文章', needLogin: true}},
+    {path: '/preview/:id', component: () => import("@/views/preview.vue"), meta: {title: '看文章'}}
 ];
 
 // 创建路由

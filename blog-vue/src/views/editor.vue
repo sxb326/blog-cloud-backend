@@ -150,8 +150,13 @@ const getBlog = () => {
     if (id) {
         loading.value = true
         request.get('/web/blog/' + id).then(result => {
-            if (result.code === '403') {
+            if (result.code === '302') {
+                ElMessage({
+                    message: result.message,
+                    type: 'warning',
+                });
                 router.push('/home')
+                return;
             }
             Object.assign(blog, result.data);
             loading.value = false

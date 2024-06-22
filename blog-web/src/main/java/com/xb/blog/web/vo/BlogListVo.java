@@ -2,11 +2,15 @@ package com.xb.blog.web.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 首页列表数据Vo
  */
 @Data
-public class BlogListVo {
+public class BlogListVo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /**
      * 博客ID
      */

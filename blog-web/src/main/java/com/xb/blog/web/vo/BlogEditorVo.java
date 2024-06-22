@@ -3,13 +3,16 @@ package com.xb.blog.web.vo;
 import com.xb.blog.common.utils.AuthUtil;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 编辑博客时的数据Vo
  */
 @Data
-public class BlogEditorVo {
+public class BlogEditorVo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /**
      * 唯一id
      */

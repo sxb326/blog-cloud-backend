@@ -43,7 +43,7 @@ public class BlogController {
         DraftEntity draft = draftService.getById(id);
         if (draft != null) {
             if (!userId.equals(draft.getAuthor())) {
-                return Result.unauthorized();
+                return Result.redirect("权限不足");
             }
             BlogEditorVo vo = new BlogEditorVo();
             BeanUtil.copyProperties(draft, vo);
@@ -56,7 +56,7 @@ public class BlogController {
         BlogEntity blog = blogService.getById(id);
         if (blog != null) {
             if (!userId.equals(blog.getAuthor())) {
-                return Result.unauthorized();
+                return Result.redirect("权限不足");
             }
             BlogEditorVo vo = new BlogEditorVo();
             BeanUtil.copyProperties(blog, vo);

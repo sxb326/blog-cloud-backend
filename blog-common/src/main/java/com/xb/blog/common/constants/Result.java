@@ -31,9 +31,10 @@ public class Result implements Serializable {
         return result;
     }
 
-    public static Result unauthorized() {
+    public static Result redirect(String message) {
         Result result = new Result();
-        result.setCode("403");
+        result.setCode("302");
+        result.setMessage(message);
         return result;
     }
 
