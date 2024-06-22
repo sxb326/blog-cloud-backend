@@ -9,9 +9,9 @@
         <el-aside width="300px" class="aside-container" style="margin-left: 20px;">
             <div class="authorDiv">作者信息</div>
             <div class="directoryDiv">
-                <div v-for="anchor in titles" :key="anchor" :style="{ padding: `10px 0 10px ${anchor.indent * 20}px` }"
-                     @click="directoryClick(anchor)">
-                    <a style="cursor: pointer">{{ anchor.title }}</a>
+                <div v-for="anchor in titles" :key="anchor" :style="{ padding: `5px 0 5px ${anchor.indent * 20}px` }"
+                     @click="directoryClick(anchor)" class="directory-item">
+                    {{ anchor.title }}
                 </div>
             </div>
         </el-aside>
@@ -128,11 +128,25 @@ body {
     border-radius: 5px;
     height: calc(100vh - 50vh);
     text-align: left;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 5px;
+    font-size: 14px;
 }
+
+.directory-item {
+    cursor: pointer;
+    margin: 0 0 0 20px;
+}
+
+.directory-item:hover {
+    color: #409eff;
+}
+
 .main-container:hover::-webkit-scrollbar-thumb {
     display: block;
 }
+
 .directoryDiv:hover::-webkit-scrollbar-thumb {
     display: block;
 }
