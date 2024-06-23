@@ -10,6 +10,7 @@ import com.xb.blog.web.service.BlogTagService;
 import com.xb.blog.web.service.DraftService;
 import com.xb.blog.web.vo.BlogEditorVo;
 import com.xb.blog.web.vo.BlogListVo;
+import com.xb.blog.web.vo.BlogPreviewVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,5 +58,16 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
     @Override
     public List<BlogListVo> listBlog() {
         return baseMapper.listBlog();
+    }
+
+    /**
+     * 根据id获取博客预览数据
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public BlogPreviewVo getBlogPreviewById(String id) {
+        return baseMapper.getBlogPreviewById(id);
     }
 }

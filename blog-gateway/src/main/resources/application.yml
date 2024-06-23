@@ -48,3 +48,4 @@ auth:
     - /api/auth/**
     - /api/picture/**
     - /api/web/home/**
+    - /api/web/preview/**

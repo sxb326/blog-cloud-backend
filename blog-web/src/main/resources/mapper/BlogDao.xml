@@ -20,4 +20,19 @@
         ORDER BY
             blog.create_time DESC
     </select>
+    <select id="getBlogPreviewById" parameterType="String" resultType="com.xb.blog.web.vo.BlogPreviewVo">
+        SELECT
+            blog.uid,
+            blog.title,
+            blog.content,
+            IFNULL(blog.click_count, 0) clickCount,
+            user.uid authorId,
+            user.nick_name authorName,
+            blog.create_time createTime
+        FROM
+            t_blog blog
+                LEFT JOIN t_user user ON blog.author = user.uid
+        WHERE
+            blog.status = 1 AND blog.uid = #{id}
+    </select>
 </mapper>

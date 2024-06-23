@@ -21,11 +21,9 @@ public class PreviewController {
     private BlogService blogService;
 
     @GetMapping("/{id}")
-    public Result getBlogById(@PathVariable("id") String id, HttpServletResponse r) {
-        BlogEntity blog = blogService.getById(id);
-        if (blog != null) {
-            BlogPreviewVo vo = new BlogPreviewVo();
-            BeanUtil.copyProperties(blog, vo);
+    public Result getBlogById(@PathVariable("id") String id) {
+        BlogPreviewVo vo = blogService.getBlogPreviewById(id);
+        if (vo != null) {
             return Result.success(vo);
         }
         return Result.redirect("文章不存在");

@@ -4,6 +4,19 @@
             左侧 点赞、评论、收藏
         </el-aside>
         <el-main class="main-container">
+            <div class="title">
+                <h2>{{ blog.title }}</h2>
+                <div class="blog-stats">
+                    <div class="blog-stat-item">
+                        <span class="author">{{ blog.authorName }}</span>
+                    </div>
+                    <div class="blog-stat-item">{{ blog.createTime }}</div>
+                    <div class="blog-stat-item">
+                        <span><el-icon class="stat-icon"><View/></el-icon></span>
+                        <span>{{ blog.clickCount }}</span>
+                    </div>
+                </div>
+            </div>
             <v-md-preview ref="previewRef" :text="blog.content"></v-md-preview>
         </el-main>
         <el-aside width="300px" class="aside-container" style="margin-left: 20px;">
@@ -74,6 +87,7 @@ const directoryInit = () => {
 const directoryClick = (anchor) => {
     const {lineIndex} = anchor;
     const heading = previewRef.value.$el.querySelector(`[data-v-md-line="${lineIndex}"]`);
+    console.log(heading)
     if (heading) {
         previewRef.value.scrollToTarget({
             target: heading,
@@ -151,4 +165,32 @@ body {
     display: block;
 }
 
+.title {
+    padding: 0 32px;
+}
+
+.blog-stats {
+    display: flex;
+}
+
+.blog-stat-item {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    font-size: 14px;
+    color: darkgray;
+}
+
+.author {
+cursor: pointer;
+}
+
+.author:hover {
+    color: #409eff;
+}
+
+.stat-icon {
+    margin-top: 0.5rem;
+    margin-right: 5px;
+}
 </style>
