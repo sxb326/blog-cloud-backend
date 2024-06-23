@@ -5,7 +5,7 @@
         </el-aside>
         <el-main class="main-container" ref="blogRef">
             <div class="title">
-                <h2>{{ blog.title }}</h2>
+                <h1 style="font-size: 2.1em">{{ blog.title }}</h1>
                 <div class="blog-stats">
                     <div class="blog-stat-item">
                         <span class="author">{{ blog.authorName }}</span>
@@ -32,7 +32,7 @@
     </el-container>
 </template>
 <script setup>
-import {nextTick, onMounted, onUnmounted, reactive, ref} from "vue";
+import {nextTick, onMounted, reactive, ref} from "vue";
 import request from '@/utils/request.js'
 import {useRoute, useRouter} from 'vue-router';
 import {ElMessage} from "element-plus";
@@ -118,10 +118,6 @@ const handleScroll = () => {
 onMounted(() => {
     getBlog();
     blogRef.value.$el.addEventListener('scroll', handleScroll);
-})
-
-onUnmounted(() => {
-    blogRef.value.$el.removeEventListener('scroll', handleScroll);
 })
 </script>
 
