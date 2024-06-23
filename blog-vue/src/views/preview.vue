@@ -3,7 +3,7 @@
         <el-aside width="150px" class="aside-container" style="margin-right: 20px;">
             左侧 点赞、评论、收藏
         </el-aside>
-        <el-main class="main-container">
+        <el-main class="main-container" ref="blogRef">
             <div class="title">
                 <h2>{{ blog.title }}</h2>
                 <div class="blog-stats">
@@ -22,8 +22,9 @@
         <el-aside width="300px" class="aside-container" style="margin-left: 20px;">
             <div class="authorDiv">作者信息</div>
             <div class="directoryDiv">
-                <div v-for="anchor in titles" :key="anchor" :style="{ padding: `5px 0 5px ${anchor.indent * 20}px` }"
-                     @click="directoryClick(anchor)" class="directory-item">
+                <div v-for="anchor in titles" :key="anchor"
+                     :style="{ padding: `5px 0 5px ${anchor.indent * 20}px`,color: directoryId === anchor.id ? '#409eff' : 'black' }"
+                     @click="directoryClick(anchor)" class="directory-item" :id="anchor.id">
                     {{ anchor.title }}
                 </div>
             </div>
@@ -31,7 +32,7 @@
     </el-container>
 </template>
 <script setup>
-import {nextTick, onMounted, reactive, ref} from "vue";
+import {nextTick, onMounted, onUnmounted, reactive, ref} from "vue";
 import request from '@/utils/request.js'
 import {useRoute, useRouter} from 'vue-router';
 import {ElMessage} from "element-plus";
@@ -78,16 +79,19 @@ const directoryInit = () => {
     }
     const hTags = Array.from(new Set(arr.map((title) => title.tagName))).sort();
     titles.value = arr.map((el) => ({
+        id: 'directory-' + el.getAttribute('data-v-md-line'),
         title: el.innerText,
         lineIndex: el.getAttribute('data-v-md-line'),
         indent: hTags.indexOf(el.tagName),
+        pixel: el.getBoundingClientRect().top - 60
     }));
 }
+
+let directoryId = ref('')
 
 const directoryClick = (anchor) => {
     const {lineIndex} = anchor;
     const heading = previewRef.value.$el.querySelector(`[data-v-md-line="${lineIndex}"]`);
-    console.log(heading)
     if (heading) {
         previewRef.value.scrollToTarget({
             target: heading,
@@ -97,7 +101,28 @@ const directoryClick = (anchor) => {
     }
 }
 
-onMounted(getBlog)
+const blogRef = ref(null)
+
+const handleScroll = () => {
+    //滚动到的像素位置
+    let pixel = blogRef.value.$el.scrollTop + blogRef.value.$el.offsetTop + 1
+    const closestTitle = titles.value.reduce((prev, curr) => {
+        if (curr.pixel <= pixel && (prev === null || pixel - curr.pixel < pixel - prev.pixel)) {
+            return curr;
+        }
+        return prev;
+    }, null);
+    directoryId.value = closestTitle ? closestTitle.id : null;
+}
+
+onMounted(() => {
+    getBlog();
+    blogRef.value.$el.addEventListener('scroll', handleScroll);
+})
+
+onUnmounted(() => {
+    blogRef.value.$el.removeEventListener('scroll', handleScroll);
+})
 </script>
 
 <style>
@@ -182,7 +207,7 @@ body {
 }
 
 .author {
-cursor: pointer;
+    cursor: pointer;
 }
 
 .author:hover {
