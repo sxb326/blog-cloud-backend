@@ -1,7 +1,27 @@
 <template>
     <el-container>
-        <el-aside width="150px" class="aside-container" style="margin-right: 20px;">
-            左侧 点赞、评论、收藏
+        <el-aside width="150px" class="aside-container left">
+            <el-badge :value="12">
+                <div class="leftBtn">
+                    <el-icon size="20">
+                        <Pointer/>
+                    </el-icon>
+                </div>
+            </el-badge>
+            <el-badge :value="12">
+                <div class="leftBtn">
+                    <el-icon size="20">
+                        <ChatLineRound/>
+                    </el-icon>
+                </div>
+            </el-badge>
+            <el-badge :value="12">
+                <div class="leftBtn">
+                    <el-icon size="20">
+                        <Star/>
+                    </el-icon>
+                </div>
+            </el-badge>
         </el-aside>
         <el-main class="main-container" ref="blogRef">
             <div class="title">
@@ -19,7 +39,7 @@
             </div>
             <v-md-preview ref="previewRef" :text="blog.content"></v-md-preview>
         </el-main>
-        <el-aside width="300px" class="aside-container" style="margin-left: 20px;">
+        <el-aside width="300px" class="aside-container right">
             <div class="authorDiv">作者信息</div>
             <div class="directoryDiv">
                 <div v-for="anchor in titles" :key="anchor"
@@ -147,6 +167,31 @@ body {
     padding-bottom: 50px;
     position: relative;
     border-radius: 5px;
+}
+
+.left {
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.right {
+    margin-left: 20px;
+}
+
+.leftBtn {
+    border: 1px solid #000000;
+    padding: 15px;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-bottom: 40px;
 }
 
 .authorDiv {
