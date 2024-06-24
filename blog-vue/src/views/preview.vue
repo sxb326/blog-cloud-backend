@@ -41,7 +41,7 @@
         </el-main>
         <el-aside width="300px" class="aside-container right">
             <div class="authorDiv">作者信息</div>
-            <div class="directoryDiv">
+            <div class="directoryDiv" ref="directoryRef">
                 <div v-for="anchor in titles" :key="anchor"
                      :style="{ padding: `5px 0 5px ${anchor.indent * 20}px`,color: directoryId === anchor.id ? '#409eff' : 'black' }"
                      @click="directoryClick(anchor)" class="directory-item" :id="anchor.id">
@@ -90,6 +90,7 @@ const getBlog = () => {
 
 const previewRef = ref(null)
 
+//初始化目录树
 const directoryInit = () => {
     const anchors = previewRef.value.$el.querySelectorAll('h1,h2,h3,h4,h5,h6');
     const arr = Array.from(anchors).filter((title) => !!title.innerText.trim());
@@ -109,6 +110,7 @@ const directoryInit = () => {
 
 let directoryId = ref('')
 
+//目录点击事件
 const directoryClick = (anchor) => {
     const {lineIndex} = anchor;
     const heading = previewRef.value.$el.querySelector(`[data-v-md-line="${lineIndex}"]`);
@@ -127,26 +129,33 @@ const directoryClick = (anchor) => {
 }
 
 const blogRef = ref(null)
+const directoryRef = ref(null)
 
-const handleScroll = () => {
-    //滚动到的像素位置
+//滚动事件监听
+const scrollEventListener = () => {
     let pixel = blogRef.value.$el.scrollTop + blogRef.value.$el.offsetTop + 1
-    const closestTitle = titles.value.reduce((prev, curr) => {
+    const title = titles.value.reduce((prev, curr) => {
         if (curr.pixel <= pixel && (prev === null || pixel - curr.pixel < pixel - prev.pixel)) {
             return curr;
         }
         return prev;
     }, null);
-    directoryId.value = closestTitle ? closestTitle.id : null;
+    if (title) {
+        directoryRef.value.scrollTop = (directoryRef.value.scrollHeight * title.pixel) / blogRef.value.$el.scrollHeight
+        directoryId.value = title.id
+    }
 }
 
+//注册滚动事件
 const addScrollEventListener = () => {
-    blogRef.value.$el.addEventListener('scroll', handleScroll);
+    blogRef.value.$el.addEventListener('scroll', scrollEventListener);
 }
 
+//销毁滚动事件
 const removeScrollEventListener = () => {
-    blogRef.value.$el.removeEventListener('scroll', handleScroll);
+    blogRef.value.$el.removeEventListener('scroll', scrollEventListener);
 }
+
 onMounted(() => {
     getBlog()
     addScrollEventListener()
