@@ -113,11 +113,16 @@ const directoryClick = (anchor) => {
     const {lineIndex} = anchor;
     const heading = previewRef.value.$el.querySelector(`[data-v-md-line="${lineIndex}"]`);
     if (heading) {
+        removeScrollEventListener()
+        directoryId.value = anchor.id
         previewRef.value.scrollToTarget({
             target: heading,
             scrollContainer: document.querySelector(".main-container"),
             top: 60,
         });
+        setTimeout(() => {
+            addScrollEventListener()
+        }, 200);
     }
 }
 
@@ -135,9 +140,16 @@ const handleScroll = () => {
     directoryId.value = closestTitle ? closestTitle.id : null;
 }
 
-onMounted(() => {
-    getBlog();
+const addScrollEventListener = () => {
     blogRef.value.$el.addEventListener('scroll', handleScroll);
+}
+
+const removeScrollEventListener = () => {
+    blogRef.value.$el.removeEventListener('scroll', handleScroll);
+}
+onMounted(() => {
+    getBlog()
+    addScrollEventListener()
 })
 </script>
 
