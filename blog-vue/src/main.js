@@ -22,6 +22,12 @@ import VMdPreview from '@kangc/v-md-editor/lib/preview';
 import '@kangc/v-md-editor/lib/style/preview.css';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import '@kangc/v-md-editor/lib/theme/style/github.css';
+//代码行号
+import createLineNumbertPlugin from '@kangc/v-md-editor/lib/plugins/line-number/index';
+//快捷复制代码
+import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
+import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
+
 // highlightjs
 import hljs from 'highlight.js';
 
@@ -70,11 +76,20 @@ Object.keys(components).forEach((key) => {
 VMdEditor.use(githubTheme, {
     Hljs: hljs,
 });
+//代码行号
+VMdEditor.use(createLineNumbertPlugin())
+//快捷复制代码
+VMdEditor.use(createCopyCodePlugin())
 app.use(VMdEditor);
+
 //md预览
 VMdPreview.use(githubTheme, {
     Hljs: hljs,
 });
+//代码行号
+VMdPreview.use(createLineNumbertPlugin())
+//快捷复制代码
+VMdPreview.use(createCopyCodePlugin())
 app.use(VMdPreview);
 
 app.mount('#app')
