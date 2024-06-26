@@ -1,21 +1,22 @@
 <template>
     <el-container>
         <el-aside width="150px" class="aside-container left">
-            <el-badge :value="12">
-                <div class="leftBtn">
+            <el-badge :value="blog.likeCount">
+                <div class="leftBtn" @click="like(blog.liked)"
+                     :style="{background: blog.liked ? '#409eff' : 'white',color: blog.liked ? 'white' : 'black'}">
                     <el-icon size="20">
                         <Pointer/>
                     </el-icon>
                 </div>
             </el-badge>
-            <el-badge :value="12">
+            <el-badge :value="blog.commentCount">
                 <div class="leftBtn">
                     <el-icon size="20">
                         <ChatLineRound/>
                     </el-icon>
                 </div>
             </el-badge>
-            <el-badge :value="12">
+            <el-badge :value="blog.collectCount">
                 <div class="leftBtn">
                     <el-icon size="20">
                         <Star/>
@@ -160,6 +161,17 @@ onMounted(() => {
     getBlog()
     addScrollEventListener()
 })
+
+const like = (liked) => {
+    const param = {type: 1, objUid: blog.uid, status: !liked}
+    request.post('/web/like/save', param).then(result => {
+        ElMessage({
+            message: result.message,
+            type: 'success',
+        });
+        blog.liked = !liked
+    })
+}
 </script>
 
 <style>

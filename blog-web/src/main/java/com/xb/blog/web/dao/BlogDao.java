@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xb.blog.web.vo.BlogListVo;
 import com.xb.blog.web.vo.BlogPreviewVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,5 +21,5 @@ public interface BlogDao extends BaseMapper<BlogEntity> {
 
     List<BlogListVo> listBlog();
 
-    BlogPreviewVo getBlogPreviewById(String id);
+    BlogPreviewVo getBlogPreviewById(@Param("uid") String uid, @Param("userUid") String userUid);
 }

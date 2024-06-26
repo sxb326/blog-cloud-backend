@@ -68,6 +68,6 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
      */
     @Override
     public BlogPreviewVo getBlogPreviewById(String id) {
-        return baseMapper.getBlogPreviewById(id);
+        return baseMapper.getBlogPreviewById(id, UserUtil.getUserId());
     }
 }

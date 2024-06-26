@@ -38,8 +38,24 @@ public class BlogPreviewVo implements Serializable {
      */
     private Long clickCount;
     /**
+     * 文章点赞数
+     */
+    private Long likeCount;
+    /**
+     * 文章评论数
+     */
+    private Long commentCount;
+    /**
+     * 文章收藏数
+     */
+    private Long collectCount;
+    /**
      * 发布时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createTime;
+    /**
+     * 是否已点赞
+     */
+    private Boolean liked;
 }

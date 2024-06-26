@@ -58,6 +58,10 @@ public class BlogEntity implements Serializable {
      */
     private Long collectCount;
     /**
+     * 评论数
+     */
+    private Long commentCount;
+    /**
      * 作者id
      */
     private String author;

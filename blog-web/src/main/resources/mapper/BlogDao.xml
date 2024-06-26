@@ -3,36 +3,41 @@
 <mapper namespace="com.xb.blog.web.dao.BlogDao">
     <select id="listBlog" resultType="com.xb.blog.web.vo.BlogListVo">
         SELECT
-            blog.uid,
-            blog.title,
-            blog.summary,
-            blog.pic_uid picUid,
-            IFNULL(blog.click_count, 0) clickCount,
-            IFNULL(blog.like_count, 0) likeCount,
-            IFNULL(blog.collect_count, 0) collectCount,
-            user.uid authorId,
-            user.nick_name authorName
+            b.uid,
+            b.title,
+            b.summary,
+            b.pic_uid picUid,
+            IFNULL(b.click_count, 0) clickCount,
+            IFNULL(b.like_count, 0) likeCount,
+            IFNULL(b.collect_count, 0) collectCount,
+            u.uid authorId,
+            u.nick_name authorName
         FROM
-            t_blog blog
-                LEFT JOIN t_user user ON blog.author = user.uid
+            t_blog b
+                LEFT JOIN t_user u ON b.author = u.uid
         WHERE
-            blog.status = 1
+            b.status = 1
         ORDER BY
-            blog.create_time DESC
+            b.create_time DESC
     </select>
     <select id="getBlogPreviewById" parameterType="String" resultType="com.xb.blog.web.vo.BlogPreviewVo">
         SELECT
-            blog.uid,
-            blog.title,
-            blog.content,
-            IFNULL(blog.click_count, 0) clickCount,
-            user.uid authorId,
-            user.nick_name authorName,
-            blog.create_time createTime
+            b.uid,
+            b.title,
+            b.content,
+            IFNULL(b.click_count, 0) clickCount,
+            IFNULL(b.like_count, 0) likeCount,
+            IFNULL(b.comment_count, 0) commentCount,
+            IFNULL(b.collect_count, 0) collectCount,
+            u.uid authorId,
+            u.nick_name authorName,
+            b.create_time createTime,
+            CASE WHEN l.uid IS NOT NULL THEN 1 ELSE 0 END liked
         FROM
-            t_blog blog
-                LEFT JOIN t_user user ON blog.author = user.uid
+            t_blog b
+                LEFT JOIN t_user u ON b.author = u.uid
+                LEFT JOIN t_like l ON l.type = 1 AND b.uid = l.obj_uid AND l.user_uid = #{userUid}
         WHERE
-            blog.status = 1 AND blog.uid = #{id}
+            b.status = 1 AND b.uid = #{uid}
     </select>
 </mapper>

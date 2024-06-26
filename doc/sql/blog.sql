@@ -33,6 +33,7 @@ CREATE TABLE `t_blog`
     `click_count`   int NULL DEFAULT NULL COMMENT '点击数',
     `like_count`    int NULL DEFAULT NULL COMMENT '点赞数',
     `collect_count` int NULL DEFAULT NULL COMMENT '收藏数',
+    `comment_count` int NULL DEFAULT NULL COMMENT '评论数',
     `author`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '作者id',
     `status`        tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
     `create_time`   timestamp NULL DEFAULT NULL COMMENT '创建时间',
