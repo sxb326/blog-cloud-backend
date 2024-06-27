@@ -231,6 +231,11 @@ body {
     margin-bottom: 40px;
 }
 
+.leftBtn:hover {
+    color: white !important;
+    background: #84beff !important;
+}
+
 .authorDiv {
     width: 100%;
     background-color: #FFF;
@@ -257,7 +262,7 @@ body {
 }
 
 .directory-item:hover {
-    color: #409eff;
+    color: rgba(64, 158, 255, 0.93);
 }
 
 .main-container:hover::-webkit-scrollbar-thumb {
@@ -289,7 +294,7 @@ body {
 }
 
 .author:hover {
-    color: #409eff;
+    color: #84beff;
 }
 
 .stat-icon {
