@@ -41,7 +41,7 @@
             b.status = 1 AND b.uid = #{uid}
     </select>
     <update id="updateLikeCount">
-        update t_blog set like_count = like_count + #{count} where uid = #{blogId}
+        update t_blog set like_count = COALESCE(like_count, 0) + #{count} where uid = #{blogId}
     </update>
     <select id="getLikeCountByBlogId" parameterType="String" resultType="Long">
         select like_count from t_blog where uid = #{blogId}
