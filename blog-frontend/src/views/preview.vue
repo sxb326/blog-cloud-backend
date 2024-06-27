@@ -10,7 +10,7 @@
                 </div>
             </el-badge>
             <el-badge :value="blog.commentCount">
-                <div class="leftBtn">
+                <div class="leftBtn" @click="openComment(blog.uid)">
                     <el-icon size="20">
                         <ChatLineRound/>
                     </el-icon>
@@ -50,6 +50,7 @@
                 </div>
             </div>
         </el-aside>
+        <comment ref="commentRef"></comment>
     </el-container>
 </template>
 <script setup>
@@ -58,6 +59,7 @@ import request from '@/utils/request.js'
 import {useRoute, useRouter} from 'vue-router';
 import {ElMessage} from "element-plus";
 import {debounce} from "@/utils/debounce.js";
+import comment from '@/components/comment.vue'
 
 const route = useRoute();
 const router = useRouter();
@@ -179,9 +181,16 @@ const like = (liked) => {
 }
 
 const debounceLike = debounce(like, 200)
+
+//评论
+const commentRef = ref(null)
+
+const openComment = (blogId) => {
+    commentRef.value.open(blogId)
+}
 </script>
 
-<style>
+<style >
 body {
     background-color: #f2f3f5;
 }
@@ -303,5 +312,9 @@ body {
 .stat-icon {
     margin-top: 0.5rem;
     margin-right: 5px;
+}
+
+.el-drawer__header {
+    margin-bottom: 0px !important;
 }
 </style>
