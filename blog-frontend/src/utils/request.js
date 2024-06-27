@@ -33,6 +33,15 @@ service.interceptors.response.use(
             localStorage.set("BLOG_TOKEN", token);
         }
         let data = response.data;
+        //接口未登录
+        if(data.code === '999'){
+            ElMessage({
+                message: data.message,
+                type: 'warning',
+            });
+            return;
+        }
+        //接口报错
         if (data.code === '500') {
             ElMessage({
                 message: data.message,

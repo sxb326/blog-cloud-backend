@@ -13,6 +13,7 @@ import com.xb.blog.web.vo.BlogListVo;
 import com.xb.blog.web.vo.BlogPreviewVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -69,5 +70,19 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
     @Override
     public BlogPreviewVo getBlogPreviewById(String id) {
         return baseMapper.getBlogPreviewById(id, UserUtil.getUserId());
+    }
+
+    /**
+     * 修改点赞数
+     *
+     * @param blogId 博客id
+     * @param count  点赞数 1/-1
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public Long updateLikeCount(String blogId, Long count) {
+        baseMapper.updateLikeCount(blogId, count);
+        return baseMapper.getLikeCountByBlogId(blogId);
     }
 }

@@ -165,10 +165,14 @@ onMounted(() => {
 const like = (liked) => {
     const param = {type: 1, objUid: blog.uid, status: !liked}
     request.post('/web/like/save', param).then(result => {
+        if (!result) {
+            return;
+        }
         ElMessage({
             message: result.message,
             type: 'success',
         });
+        blog.likeCount = result.data;
         blog.liked = !liked
     })
 }

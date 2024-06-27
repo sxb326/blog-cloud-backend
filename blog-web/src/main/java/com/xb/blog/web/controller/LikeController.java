@@ -17,14 +17,14 @@ public class LikeController {
     private LikeService likeService;
 
     /**
-     * 保存点赞行为
+     * 保存点赞行为。返回最新点赞数
      *
      * @param vo
      * @return
      */
     @PostMapping("/save")
     public Result save(@RequestBody LikeSaveVo vo) {
-        likeService.save(vo);
-        return Result.success("操作成功");
+        Long count = likeService.save(vo);
+        return Result.success("操作成功", count);
     }
 }

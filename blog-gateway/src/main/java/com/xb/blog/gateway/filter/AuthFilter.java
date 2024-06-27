@@ -47,8 +47,8 @@ public class AuthFilter implements GlobalFilter, Ordered {
             //判断用户是否已经登录
             if (!isAuth(request)) {
                 Result result = new Result();
-                result.setCode("99");
-                result.setMessage("NO_LOGIN");
+                result.setCode("999");
+                result.setMessage("请先登录");
                 byte[] bytes = new ObjectMapper().writeValueAsBytes(result);
                 return response.writeWith(Mono.fromSupplier(() -> response.bufferFactory().wrap(bytes)));
             }

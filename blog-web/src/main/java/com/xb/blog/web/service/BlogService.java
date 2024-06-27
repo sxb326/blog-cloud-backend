@@ -37,5 +37,14 @@ public interface BlogService extends IService<BlogEntity> {
      * @return
      */
     BlogPreviewVo getBlogPreviewById(String id);
+
+    /**
+     * 修改点赞数
+     *
+     * @param blogId 博客id
+     * @param count  点赞数 1/-1
+     * @return
+     */
+    Long updateLikeCount(String blogId, Long count);
 }
 

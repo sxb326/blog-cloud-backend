@@ -18,8 +18,35 @@ import java.util.List;
  */
 @Mapper
 public interface BlogDao extends BaseMapper<BlogEntity> {
-
+    /**
+     * 查询博客列表数据
+     *
+     * @return
+     */
     List<BlogListVo> listBlog();
 
+    /**
+     * 博客预览时 查询出预览数据
+     *
+     * @param uid
+     * @param userUid
+     * @return
+     */
     BlogPreviewVo getBlogPreviewById(@Param("uid") String uid, @Param("userUid") String userUid);
+
+    /**
+     * 根据博客id 更新点赞数
+     *
+     * @param blogId
+     * @param count
+     */
+    void updateLikeCount(@Param("blogId") String blogId, @Param("count") Long count);
+
+    /**
+     * 根据博客id 查询出点赞数
+     *
+     * @param blogId
+     * @return
+     */
+    Long getLikeCountByBlogId(String blogId);
 }
