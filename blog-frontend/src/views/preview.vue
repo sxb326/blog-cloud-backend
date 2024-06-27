@@ -2,7 +2,7 @@
     <el-container>
         <el-aside width="150px" class="aside-container left">
             <el-badge :value="blog.likeCount">
-                <div class="leftBtn" @click="like(blog.liked)"
+                <div class="leftBtn" @click="debounceLike(blog.liked)"
                      :style="{background: blog.liked ? '#409eff' : 'white',color: blog.liked ? 'white' : 'black'}">
                     <el-icon size="20">
                         <Pointer/>
@@ -57,6 +57,7 @@ import {nextTick, onMounted, reactive, ref} from "vue";
 import request from '@/utils/request.js'
 import {useRoute, useRouter} from 'vue-router';
 import {ElMessage} from "element-plus";
+import {debounce} from "@/utils/debounce.js";
 
 const route = useRoute();
 const router = useRouter();
@@ -176,6 +177,8 @@ const like = (liked) => {
         blog.liked = !liked
     })
 }
+
+const debounceLike = debounce(like, 200)
 </script>
 
 <style>
