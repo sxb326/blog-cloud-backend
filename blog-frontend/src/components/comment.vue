@@ -1,52 +1,39 @@
 <template>
-    <el-drawer v-model="drawerVisible" :title="'评论（' + comment.count + '）'" direction="rtl">
-        <el-table :data="comment.data" height="calc(100vh - 150px)" style="width: 100%" :show-header="false"
-                  v-infinite-scroll="load">
-            <el-table-column>
-                <template #default="scope">
-                    {{ scope.row }}
-                </template>
-            </el-table-column>
-        </el-table>
+    <el-drawer v-model="drawerVisible" :title="'评论（' + count + '）'" direction="rtl">
+        <div v-infinite-scroll="load" infinite-scroll-distance="10" style="overflow: auto; height: calc(100vh - 100px)">
+            <div v-for="item in data" :key="item.uid">
+              {{ item }}
+            </div>
+        </div>
     </el-drawer>
 </template>
 
 <script setup>
-import {reactive, ref} from "vue";
+import {ref} from "vue";
 import request from '@/utils/request.js'
 
-// const imgUrl = import.meta.env.VITE_APP_SERVICE_API + '/picture/';
 const drawerVisible = ref(false)
 
-let comment = reactive({})
+let blogId = ref('')
+let count = ref(0)
 let page = ref(1)
 
 const load = () => {
-console.log("懒加载")
+    page.value++
+    getData()
 }
 
 const open = (id) => {
-    getData(id);
+    blogId.value = id
+    getData()
     drawerVisible.value = true
 }
 
-const getData = (id) => {
-    request.get('/web/comment/' + id + '/' + page.value).then(result => {
-        comment.count = result.data.count
-        comment.data = result.data.data
-        // if (result.code === '302') {
-        //     ElMessage({
-        //         message: result.message,
-        //         type: 'warning',
-        //     });
-        //     router.push('/home')
-        //     return;
-        // }
-        // Object.assign(blog, result.data);
-        // nextTick(() => {
-        //     directoryInit()
-        //     loading.value = false
-        // })
+let data = ref([])
+const getData = () => {
+    request.get('/web/comment/' + blogId.value + '/' + page.value).then(result => {
+        count.value = result.data.count
+        data.value.push(...result.data.data)
     })
 }
 defineExpose({

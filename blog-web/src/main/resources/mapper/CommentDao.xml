@@ -3,19 +3,22 @@
 <mapper namespace="com.xb.blog.web.dao.CommentDao">
     <select id="listPage" resultType="com.xb.blog.web.dto.CommentDto">
         SELECT c.uid,
-               c.parent_uid          parentUid,
-               c.reply_to_uid        replyToUid,
+               c.parent_uid            parentUid,
+               c2.user_uid             replyToUserId,
+               u2.nick_name            replyToUserNickName,
                c.content,
-               IFNULL(like_count, 0) likeCount,
-               c.create_time         createTime,
-               u.uid                 userId,
-               u.nick_name           userNickName,
-               u.pic_uid             picUid
+               COALESCE(c.like_count, 0) likeCount,
+               c.create_time           createTime,
+               u.uid                   userId,
+               u.nick_name             userNickName,
+               u.pic_uid               userPicUid
         FROM t_comment c
-                 LEFT JOIN t_user u ON c.user_uid = u.uid
+                 INNER JOIN t_user u ON c.user_uid = u.uid
+                 LEFT JOIN t_comment c2 on c.reply_to_uid = c2.uid
+                 LEFT JOIN t_user u2 on c2.user_uid = u2.uid
         WHERE c.STATUS = 1
           AND c.blog_uid = #{blogId}
-        ORDER BY c.create_time DESC
-        limit #{page},10
+        ORDER BY c.create_time DESC limit 10
+        OFFSET #{page}
     </select>
 </mapper>

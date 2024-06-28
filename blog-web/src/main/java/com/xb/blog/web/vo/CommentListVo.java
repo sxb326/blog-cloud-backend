@@ -18,6 +18,14 @@ public class CommentListVo implements Serializable {
      */
     private String content;
     /**
+     * 回复的用户id
+     */
+    private String replyToUserId;
+    /**
+     * 回复的用户昵称
+     */
+    private String replyToUserNickName;
+    /**
      * 评论点赞数
      */
     private Long likeCount;
@@ -36,11 +44,7 @@ public class CommentListVo implements Serializable {
     /**
      * 用户头像id
      */
-    private String picUid;
-    /**
-     * 回复评论id
-     */
-    private String replyToUid;
+    private String userPicUid;
     /**
      * 下级评论集合
      */

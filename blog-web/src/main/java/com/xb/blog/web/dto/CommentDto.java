@@ -17,9 +17,13 @@ public class CommentDto implements Serializable {
      */
     private String parentUid;
     /**
-     * 回复评论id
+     * 回复的用户id
      */
-    private String replyToUid;
+    private String replyToUserId;
+    /**
+     * 回复的用户昵称
+     */
+    private String replyToUserNickName;
     /**
      * 评论内容
      */
@@ -43,5 +47,5 @@ public class CommentDto implements Serializable {
     /**
      * 用户头像id
      */
-    private String picUid;
+    private String userPicUid;
 }
