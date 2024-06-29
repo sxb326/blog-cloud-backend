@@ -3,6 +3,7 @@ package com.xb.blog.web.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.CommentDao;
 import com.xb.blog.web.entity.CommentEntity;
 import com.xb.blog.web.service.CommentService;
@@ -25,7 +26,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
     @Override
     public CommentVo getTreeDataById(String id, Long page) {
         page = (page - 1) * 10 + 1;
-        List<CommentDto> list = baseMapper.listPage(id, page);
+        List<CommentDto> list = baseMapper.listPage(id, UserUtil.getUserId(), page);
         CommentVo vo = new CommentVo();
         vo.setCount(Long.valueOf(baseMapper.selectCount(new QueryWrapper<CommentEntity>().eq("blog_uid", id))));
         vo.setData(getSubComments(list, "0"));

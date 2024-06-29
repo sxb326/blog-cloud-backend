@@ -33,6 +33,14 @@ public class CommentDto implements Serializable {
      */
     private Long likeCount;
     /**
+     * 是否已点赞
+     */
+    private Boolean liked;
+    /**
+     * 评论数
+     */
+    private Long commentCount;
+    /**
      * 评论时间
      */
     private LocalDateTime createTime;

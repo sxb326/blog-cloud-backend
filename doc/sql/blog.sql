@@ -85,6 +85,7 @@ CREATE TABLE `t_comment`
     `reply_to_uid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '回复评论id',
     `content`     varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '评论内容',
     `like_count`  int NULL DEFAULT NULL COMMENT '评论点赞数',
+    `comment_count`  int NULL DEFAULT NULL COMMENT '评论数',
     `status`      tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
     `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
     PRIMARY KEY (`uid`) USING BTREE

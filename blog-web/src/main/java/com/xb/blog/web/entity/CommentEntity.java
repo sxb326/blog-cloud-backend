@@ -41,6 +41,10 @@ public class CommentEntity implements Serializable {
      */
     private Long likeCount;
     /**
+     * 评论数
+     */
+    private Long commentCount;
+    /**
      * 逻辑删除 1：不删除，0：删除
      */
     @TableLogic(value = "1", delval = "0")

@@ -1,12 +1,12 @@
 <template>
     <el-container>
-        <el-aside width="200px" class="aside-container" style="margin-right: 20px;">
+        <el-aside width="200px" class="aside-container left">
             <h3>分类列表</h3>
         </el-aside>
         <el-main class="main-container">
             <List></List>
         </el-main>
-        <el-aside width="200px" class="aside-container" style="margin-left: 20px;">
+        <el-aside width="200px" class="aside-container right">
             <h3>热门文章</h3>
         </el-aside>
     </el-container>
@@ -33,11 +33,20 @@ body {
 }
 
 .aside-container {
+    text-align: center;
     height: calc(100vh - 100px);
     overflow-y: auto;
     background-color: #FFF;
     padding-bottom: 50px;
     position: relative;
     border-radius: 5px;
+}
+
+.left {
+    margin-right: 20px
+}
+
+.right {
+    margin-left: 20px
 }
 </style>

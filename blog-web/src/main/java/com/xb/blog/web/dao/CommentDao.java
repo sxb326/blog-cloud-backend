@@ -16,5 +16,5 @@ public interface CommentDao extends BaseMapper<CommentEntity> {
      * @param blogId
      * @return
      */
-    List<CommentDto> listPage(@Param("blogId") String blogId, @Param("page") Long page);
+    List<CommentDto> listPage(@Param("blogId") String blogId, @Param("userId") String userId, @Param("page") Long page);
 }

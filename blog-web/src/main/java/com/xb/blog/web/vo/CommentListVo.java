@@ -1,5 +1,6 @@
 package com.xb.blog.web.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -30,8 +31,17 @@ public class CommentListVo implements Serializable {
      */
     private Long likeCount;
     /**
+     * 是否已点赞
+     */
+    private Boolean liked;
+    /**
+     * 评论数
+     */
+    private Long commentCount;
+    /**
      * 评论时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createTime;
     /**
      * 用户id

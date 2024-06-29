@@ -83,7 +83,6 @@ button:focus-visible {
 /*自定义的中间容器样式，要求居中、两边存在一定的边距*/
 .custom-main-container {
     max-width: 1280px;
-    text-align: center;
     margin: 0 auto;
     padding: 1.8rem 0 0 0;
 }

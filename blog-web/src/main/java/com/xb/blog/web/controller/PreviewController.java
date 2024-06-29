@@ -4,7 +4,9 @@ import cn.hutool.core.bean.BeanUtil;
 import com.xb.blog.common.constants.Result;
 import com.xb.blog.web.entity.BlogEntity;
 import com.xb.blog.web.service.BlogService;
+import com.xb.blog.web.service.CommentService;
 import com.xb.blog.web.vo.BlogPreviewVo;
+import com.xb.blog.web.vo.CommentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,5 +29,14 @@ public class PreviewController {
             return Result.success(vo);
         }
         return Result.redirect("文章不存在");
+    }
+
+    @Autowired
+    private CommentService commentService;
+
+    @GetMapping("/comment/{id}/{page}")
+    public Result getById(@PathVariable("id") String id, @PathVariable("page") Long page) {
+        CommentVo vo = commentService.getTreeDataById(id,page);
+        return Result.success(vo);
     }
 }
