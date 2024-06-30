@@ -2,7 +2,7 @@
     <el-drawer v-model="drawerVisible" :title="'评论（' + count + '）'" direction="rtl" :destroy-on-close="true"
                @closed="closed">
         <div v-infinite-scroll="load" infinite-scroll-distance="10" infinite-scroll-immediate="false"
-             style="overflow: auto; height: calc(100vh - 100px)">
+             style="overflow: auto; height: calc(100vh - 200px)">
             <div v-for="(item,index) in data" :key="item.uid">
                 <el-row class="comment">
                     <el-col :span="3">
@@ -63,6 +63,15 @@
                 </el-row>
             </div>
         </div>
+        <div class="commentDiv">
+            <el-input
+                    v-model="comment"
+                    :rows="2"
+                    type="textarea"
+                    placeholder="评论一下吧" input-style="{background: red}"
+            />
+            <el-button type="primary" style="margin-top: 5px;float: right">发表</el-button>
+        </div>
     </el-drawer>
 </template>
 
@@ -79,6 +88,7 @@ let blogId = ref('')
 let count = ref(0)
 let page = ref(1)
 let data = ref([])
+let comment = ref('')
 
 const load = () => {
     page.value++
@@ -180,5 +190,9 @@ defineExpose({
 
 .blog-stat-item span {
     margin-right: 1px;
+}
+
+.commentDiv {
+    margin: 5px;
 }
 </style>
