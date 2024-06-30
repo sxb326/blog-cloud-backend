@@ -25,7 +25,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
      */
     @Override
     public CommentVo getTreeDataById(String id, Long page) {
-        page = (page - 1) * 10 + 1;
+        page = (page - 1) * 10;
         List<CommentDto> list = baseMapper.listPage(id, UserUtil.getUserId(), page);
         CommentVo vo = new CommentVo();
         vo.setCount(Long.valueOf(baseMapper.selectCount(new QueryWrapper<CommentEntity>().eq("blog_uid", id))));

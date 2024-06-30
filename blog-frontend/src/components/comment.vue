@@ -6,7 +6,7 @@
             <div v-for="item in data" :key="item.uid">
                 <el-row class="comment">
                     <el-col :span="3">
-                        <el-avatar :size="40" :src="pictureUrl + item.userPicUid" class="centered-item avatar"/>
+                        <el-avatar :size="35" :src="pictureUrl + item.userPicUid" class="centered-item avatar"/>
                     </el-col>
                     <el-col :span="21">
                         <el-row class="nickName">{{ item.userNickName }}</el-row>
@@ -22,17 +22,40 @@
                                 <span>{{ item.commentCount }}</span>
                             </el-col>
                         </el-row>
-                        <el-row v-if="item.subComments.length > 0">
+                        <div v-if="item.subComments.length > 0" class="levle2Comment">
                             <div v-for="sub in item.subComments" :key="sub.uid">
-                                <el-col :span="3">
-                                    <el-avatar :size="40" :src="pictureUrl + sub.userPicUid"
-                                               class="centered-item avatar"/>
-                                </el-col>
-                                <el-col :span="21">
+                                <el-row class="comment">
+                                    <el-col :span="3">
+                                        <el-avatar :size="30" :src="pictureUrl + sub.userPicUid"
+                                                   class="centered-item avatar"/>
+                                    </el-col>
+                                    <el-col :span="21">
+                                        <el-row v-if="sub.replyToUserId == null">
+                                            <span class="nickName">{{ sub.userNickName }}</span>
+                                            ：{{ sub.content }}
+                                        </el-row>
+                                        <el-row v-else>
+                                            <span class="nickName">{{ sub.userNickName }}</span>
+                                            &nbsp;回复&nbsp;
+                                            <span class="nickName">{{ sub.replyToUserNickName }}</span>
+                                            ：{{ sub.content }}
+                                        </el-row>
+                                        <el-row class="bottom">
+                                            <el-col :span="7">{{ sub.createTime }}</el-col>
+                                            <el-col :span="2" class="blog-stat-item">
+                                                <span><el-icon class="stat-icon"><Pointer/></el-icon></span>
+                                                <span>{{ sub.likeCount }}</span>
+                                            </el-col>
+                                            <el-col :span="2" class="blog-stat-item">
+                                                <span><el-icon class="stat-icon"><ChatLineRound/></el-icon></span>
+                                                <span>{{ sub.commentCount }}</span>
+                                            </el-col>
+                                        </el-row>
+                                    </el-col>
+                                </el-row>
 
-                                </el-col>
                             </div>
-                        </el-row>
+                        </div>
                     </el-col>
                 </el-row>
             </div>
@@ -86,6 +109,10 @@ defineExpose({
 <style scoped>
 .comment {
     margin-bottom: 15px;
+}
+
+.levle2Comment {
+    margin-top: 15px;
 }
 
 .nickName {
