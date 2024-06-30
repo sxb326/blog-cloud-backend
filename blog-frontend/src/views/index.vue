@@ -65,7 +65,7 @@ import {Search, Edit} from '@element-plus/icons-vue';
 import {onMounted, reactive, ref} from 'vue';
 import {getCurrentInstance} from 'vue';
 import {localStorage} from "@/utils/storage";
-import loginForm from '@/components/login/loginForm.vue'
+import loginForm from '@/components/login/LoginForm.vue'
 import request from "@/utils/request.js";
 
 const {proxy} = getCurrentInstance();

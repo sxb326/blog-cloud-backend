@@ -59,7 +59,7 @@ import request from '@/utils/request.js'
 import {useRoute, useRouter} from 'vue-router';
 import {ElMessage} from "element-plus";
 import {debounce} from "@/utils/debounce.js";
-import comment from '@/components/comment.vue'
+import comment from '@/components/comment/CommentList.vue'
 
 const route = useRoute();
 const router = useRouter();

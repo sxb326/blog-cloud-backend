@@ -49,4 +49,12 @@ public interface BlogDao extends BaseMapper<BlogEntity> {
      * @return
      */
     Long getLikeCountByBlogId(String blogId);
+
+    /**
+     * 根据博客id 更新评论数
+     *
+     * @param blogId
+     * @param count
+     */
+    void updateCommentCount(@Param("blogId") String blogId, @Param("count") Long count);
 }

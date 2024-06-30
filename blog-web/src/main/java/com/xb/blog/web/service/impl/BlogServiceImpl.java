@@ -85,4 +85,17 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         baseMapper.updateLikeCount(blogId, count);
         return baseMapper.getLikeCountByBlogId(blogId);
     }
+
+    /**
+     * 修改评论数
+     *
+     * @param blogId
+     * @param count
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public void updateCommentCount(String blogId, Long count) {
+        baseMapper.updateCommentCount(blogId, count);
+    }
 }

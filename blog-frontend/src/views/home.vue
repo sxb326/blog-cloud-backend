@@ -4,7 +4,7 @@
             <h3>分类列表</h3>
         </el-aside>
         <el-main class="main-container">
-            <List></List>
+            <BlogList></BlogList>
         </el-main>
         <el-aside width="200px" class="aside-container right">
             <h3>热门文章</h3>
@@ -12,7 +12,7 @@
     </el-container>
 </template>
 <script setup>
-import List from '@/components/home/list.vue'
+import BlogList from '@/components/home/BlogList.vue'
 </script>
 <style>
 body {

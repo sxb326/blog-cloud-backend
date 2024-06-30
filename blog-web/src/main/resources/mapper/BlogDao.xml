@@ -46,4 +46,7 @@
     <select id="getLikeCountByBlogId" parameterType="String" resultType="Long">
         select like_count from t_blog where uid = #{blogId}
     </select>
+    <update id="updateCommentCount">
+        update t_blog set comment_count = COALESCE(comment_count, 0) + #{count} where uid = #{blogId}
+    </update>
 </mapper>

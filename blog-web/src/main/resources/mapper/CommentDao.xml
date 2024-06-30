@@ -30,4 +30,7 @@
     <select id="getLikeCountByCommentId" parameterType="String" resultType="Long">
         select like_count from t_comment where uid = #{commentId}
     </select>
+    <update id="updateCommentCount">
+        update t_comment set comment_count = COALESCE(comment_count, 0) + #{count} where uid = #{commentId}
+    </update>
 </mapper>

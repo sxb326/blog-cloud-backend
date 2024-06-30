@@ -1,24 +1,34 @@
 package com.xb.blog.web.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.CommentDao;
 import com.xb.blog.web.entity.CommentEntity;
+import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.CommentService;
 import com.xb.blog.web.dto.CommentDto;
 import com.xb.blog.web.vo.CommentListVo;
+import com.xb.blog.web.vo.CommentSaveVo;
 import com.xb.blog.web.vo.CommentVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> implements CommentService {
+
+    @Autowired
+    private BlogService blogService;
+
     /**
      * 获取评论树数据
      *
@@ -65,5 +75,34 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
                     vo.setSubComments(getSubComments(list, c.getUid()));
                     return vo;
                 }).collect(Collectors.toList());
+    }
+
+    /**
+     * 保存评论 返回评论的评论数量和博客的评论数量
+     *
+     * @param vo
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public void save(CommentSaveVo vo) {
+        //保存评论表
+        CommentEntity entity = new CommentEntity();
+        entity.setBlogUid(vo.getBlogUid());
+        entity.setUserUid(UserUtil.getUserId());
+        entity.setParentUid(vo.getParentUid());
+        entity.setReplyToUid(StrUtil.isNotBlank(vo.getReplyToUid()) ? vo.getReplyToUid() : null);
+        entity.setContent(vo.getContent());
+        entity.setStatus(1);
+        save(entity);
+
+        Map<String, Long> map = new HashMap<>();
+
+        //更新目标评论的评论数
+        String commentUid = StrUtil.isNotBlank(vo.getReplyToUid()) ? vo.getReplyToUid() : vo.getParentUid();
+        baseMapper.updateCommentCount(commentUid, 1L);
+
+        //更新博客评论数
+        blogService.updateCommentCount(vo.getBlogUid(), 1L);
     }
 }

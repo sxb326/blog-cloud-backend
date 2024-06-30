@@ -2,6 +2,7 @@ package com.xb.blog.web.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xb.blog.web.entity.CommentEntity;
+import com.xb.blog.web.vo.CommentSaveVo;
 import com.xb.blog.web.vo.CommentVo;
 
 public interface CommentService extends IService<CommentEntity> {
@@ -21,4 +22,12 @@ public interface CommentService extends IService<CommentEntity> {
      * @return
      */
     Long updateLikeCount(String commentId, Long count);
+
+    /**
+     * 保存评论
+     *
+     * @param vo
+     * @return
+     */
+    void save(CommentSaveVo vo);
 }
