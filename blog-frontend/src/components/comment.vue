@@ -3,7 +3,7 @@
                @closed="closed">
         <div v-infinite-scroll="load" infinite-scroll-distance="10" infinite-scroll-immediate="false"
              style="overflow: auto; height: calc(100vh - 100px)">
-            <div v-for="item in data" :key="item.uid">
+            <div v-for="(item,index) in data" :key="item.uid">
                 <el-row class="comment">
                     <el-col :span="3">
                         <el-avatar :size="35" :src="pictureUrl + item.userPicUid" class="centered-item avatar"/>
@@ -14,7 +14,8 @@
                         <el-row class="bottom">
                             <el-col :span="7">{{ item.createTime }}</el-col>
                             <el-col :span="2" class="blog-stat-item">
-                                <span><el-icon class="stat-icon"><Pointer/></el-icon></span>
+                                <span :style="{color: item.liked ? '#409eff' : ''}"><el-icon class="stat-icon"
+                                                                                             @click="debounceLike(item.uid,item.liked,index)"><Pointer/></el-icon></span>
                                 <span>{{ item.likeCount }}</span>
                             </el-col>
                             <el-col :span="2" class="blog-stat-item">
@@ -23,7 +24,7 @@
                             </el-col>
                         </el-row>
                         <div v-if="item.subComments.length > 0" class="levle2Comment">
-                            <div v-for="sub in item.subComments" :key="sub.uid">
+                            <div v-for="(sub,si) in item.subComments" :key="sub.uid">
                                 <el-row class="comment">
                                     <el-col :span="3">
                                         <el-avatar :size="30" :src="pictureUrl + sub.userPicUid"
@@ -42,8 +43,10 @@
                                         </el-row>
                                         <el-row class="bottom">
                                             <el-col :span="7">{{ sub.createTime }}</el-col>
-                                            <el-col :span="2" class="blog-stat-item">
-                                                <span><el-icon class="stat-icon"><Pointer/></el-icon></span>
+                                            <el-col :span="2" :style="{color: item.liked ? '#409eff' : ''}"
+                                                    class="blog-stat-item">
+                                                <span><el-icon class="stat-icon"
+                                                               @click="debounceLike(sub.uid,sub.liked,index,si)"><Pointer/></el-icon></span>
                                                 <span>{{ sub.likeCount }}</span>
                                             </el-col>
                                             <el-col :span="2" class="blog-stat-item">
@@ -66,6 +69,8 @@
 <script setup>
 import {ref} from "vue";
 import request from '@/utils/request.js'
+import {ElMessage} from "element-plus";
+import {debounce} from "@/utils/debounce.js";
 
 const drawerVisible = ref(false)
 const pictureUrl = ref(import.meta.env.VITE_APP_SERVICE_API + "/picture/");
@@ -100,6 +105,28 @@ const closed = () => {
     data.value = []
     page.value = 1
 }
+
+const like = (uid, liked, x, y) => {
+    const param = {type: 2, objUid: uid, status: !liked}
+    request.post('/web/like/save', param).then(result => {
+        if (!result) {
+            return;
+        }
+        ElMessage({
+            message: result.message,
+            type: 'success',
+        });
+        if (y != undefined) {
+            data.value[x].subComments[y].liked = !liked
+            data.value[x].subComments[y].likeCount = result.data
+        } else {
+            data.value[x].liked = !liked
+            data.value[x].likeCount = result.data
+        }
+    })
+}
+
+const debounceLike = debounce(like, 200)
 
 defineExpose({
     open

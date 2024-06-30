@@ -11,6 +11,8 @@ import com.xb.blog.web.dto.CommentDto;
 import com.xb.blog.web.vo.CommentListVo;
 import com.xb.blog.web.vo.CommentVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +33,20 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
         vo.setCount(Long.valueOf(baseMapper.selectCount(new QueryWrapper<CommentEntity>().eq("blog_uid", id))));
         vo.setData(getSubComments(list, "0"));
         return vo;
+    }
+
+    /**
+     * 修改点赞数
+     *
+     * @param commentId
+     * @param count
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public Long updateLikeCount(String commentId, Long count) {
+        baseMapper.updateLikeCount(commentId, count);
+        return baseMapper.getLikeCountByCommentId(commentId);
     }
 
     /**

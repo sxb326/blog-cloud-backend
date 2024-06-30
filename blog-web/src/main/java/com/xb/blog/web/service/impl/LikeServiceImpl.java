@@ -8,6 +8,7 @@ import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.LikeDao;
 import com.xb.blog.web.entity.LikeEntity;
 import com.xb.blog.web.service.BlogService;
+import com.xb.blog.web.service.CommentService;
 import com.xb.blog.web.service.LikeService;
 import com.xb.blog.web.vo.LikeSaveVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
 
     @Autowired
     private BlogService blogService;
+
+    @Autowired
+    private CommentService commentService;
 
     /**
      * 保存点赞行为
@@ -51,8 +55,9 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
         if (type == 1) {
             return blogService.updateLikeCount(vo.getObjUid(), status ? 1L : -1L);
         } else if (type == 2) {
-            //todo 暂不实现
+            return commentService.updateLikeCount(vo.getObjUid(), status ? 1L : -1L);
         }
+
         return 0L;
     }
 }

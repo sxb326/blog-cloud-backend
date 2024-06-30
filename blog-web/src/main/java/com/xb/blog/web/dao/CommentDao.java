@@ -17,4 +17,20 @@ public interface CommentDao extends BaseMapper<CommentEntity> {
      * @return
      */
     List<CommentDto> listPage(@Param("blogId") String blogId, @Param("userId") String userId, @Param("page") Long page);
+
+    /**
+     * 修改评论的点赞数
+     *
+     * @param commentId
+     * @param count
+     */
+    void updateLikeCount(@Param("commentId") String commentId, @Param("count") Long count);
+
+    /**
+     * 根据评论id获取最新点赞数
+     *
+     * @param commentId
+     * @return
+     */
+    Long getLikeCountByCommentId(@Param("commentId") String commentId);
 }

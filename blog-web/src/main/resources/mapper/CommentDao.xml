@@ -24,4 +24,10 @@
         ORDER BY c.create_time DESC limit 10
         OFFSET #{page}
     </select>
+    <update id="updateLikeCount">
+        update t_comment set like_count = COALESCE(like_count, 0) + #{count} where uid = #{commentId}
+    </update>
+    <select id="getLikeCountByCommentId" parameterType="String" resultType="Long">
+        select like_count from t_comment where uid = #{commentId}
+    </select>
 </mapper>

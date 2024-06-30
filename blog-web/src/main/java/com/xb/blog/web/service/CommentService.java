@@ -11,5 +11,14 @@ public interface CommentService extends IService<CommentEntity> {
      * @param id
      * @return
      */
-    CommentVo getTreeDataById(String id,Long page);
+    CommentVo getTreeDataById(String id, Long page);
+
+    /**
+     * 修改点赞数
+     *
+     * @param commentId
+     * @param count
+     * @return
+     */
+    Long updateLikeCount(String commentId, Long count);
 }
