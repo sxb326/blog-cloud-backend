@@ -54,5 +54,13 @@ public interface BlogService extends IService<BlogEntity> {
      * @return
      */
     void updateCommentCount(String blogId, Long count);
+
+    /**
+     * 根据博客id获取博客的评论数
+     *
+     * @param blogId
+     * @return
+     */
+    Long getCommentCount(String blogId);
 }
 

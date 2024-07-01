@@ -1,8 +1,8 @@
 package com.xb.blog.web.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xb.blog.web.entity.CommentEntity;
 import com.xb.blog.web.dto.CommentDto;
+import com.xb.blog.web.entity.CommentEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,9 +14,13 @@ public interface CommentDao extends BaseMapper<CommentEntity> {
      * 根据博客id查询评论数据
      *
      * @param blogId
+     * @param parentId 如果不为null 查询这个父id及其子评论数据
+     * @param userId
+     * @param page
      * @return
      */
-    List<CommentDto> listPage(@Param("blogId") String blogId, @Param("userId") String userId, @Param("page") Long page);
+    List<CommentDto> listPage(@Param("blogId") String blogId, @Param("parentId") String parentId,
+                              @Param("userId") String userId, @Param("page") Long page);
 
     /**
      * 修改评论的点赞数

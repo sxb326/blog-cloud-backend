@@ -21,8 +21,13 @@
                  LEFT JOIN t_like l ON l.type = 2 AND c.uid = l.obj_uid AND l.user_uid = #{userId}
         WHERE c.STATUS = 1
           AND c.blog_uid = #{blogId}
-        ORDER BY c.create_time DESC limit 10
-        OFFSET #{page}
+        <if test="parentId != null">
+            AND (c.uid = #{parentId} OR c.parent_uid = #{parentId})
+        </if>
+        ORDER BY c.create_time DESC
+        <if test="page != null">
+            limit 10 OFFSET #{page}
+        </if>
     </select>
     <update id="updateLikeCount">
         update t_comment set like_count = COALESCE(like_count, 0) + #{count} where uid = #{commentId}

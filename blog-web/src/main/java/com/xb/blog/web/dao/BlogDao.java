@@ -1,7 +1,7 @@
 package com.xb.blog.web.dao;
 
-import com.xb.blog.web.entity.BlogEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xb.blog.web.entity.BlogEntity;
 import com.xb.blog.web.vo.BlogListVo;
 import com.xb.blog.web.vo.BlogPreviewVo;
 import org.apache.ibatis.annotations.Mapper;
@@ -57,4 +57,12 @@ public interface BlogDao extends BaseMapper<BlogEntity> {
      * @param count
      */
     void updateCommentCount(@Param("blogId") String blogId, @Param("count") Long count);
+
+    /**
+     * 根据博客id 查询出评论数
+     *
+     * @param blogId
+     * @return
+     */
+    Long getCommentCountByBlogId(String blogId);
 }

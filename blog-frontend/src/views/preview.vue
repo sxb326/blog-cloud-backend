@@ -50,7 +50,7 @@
                 </div>
             </div>
         </el-aside>
-        <comment ref="commentRef"></comment>
+        <CommentList ref="commentRef" @refresh-comment-count="refreshCommentCount"></CommentList>
     </el-container>
 </template>
 <script setup>
@@ -59,7 +59,7 @@ import request from '@/utils/request.js'
 import {useRoute, useRouter} from 'vue-router';
 import {ElMessage} from "element-plus";
 import {debounce} from "@/utils/debounce.js";
-import comment from '@/components/comment/CommentList.vue'
+import CommentList from '@/components/comment/CommentList.vue'
 
 const route = useRoute();
 const router = useRouter();
@@ -187,6 +187,10 @@ const commentRef = ref(null)
 
 const openComment = (blogId) => {
     commentRef.value.open(blogId)
+}
+
+const refreshCommentCount = (count) => {
+    blog.commentCount = count
 }
 </script>
 

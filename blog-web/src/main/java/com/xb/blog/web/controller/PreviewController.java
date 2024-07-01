@@ -1,8 +1,6 @@
 package com.xb.blog.web.controller;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.xb.blog.common.constants.Result;
-import com.xb.blog.web.entity.BlogEntity;
 import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.CommentService;
 import com.xb.blog.web.vo.BlogPreviewVo;
@@ -13,14 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-
 @RestController
 @RequestMapping("/preview")
 public class PreviewController {
 
     @Autowired
     private BlogService blogService;
+
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping("/{id}")
     public Result getBlogById(@PathVariable("id") String id) {
@@ -31,12 +30,9 @@ public class PreviewController {
         return Result.redirect("文章不存在");
     }
 
-    @Autowired
-    private CommentService commentService;
-
     @GetMapping("/comment/{id}/{page}")
     public Result getById(@PathVariable("id") String id, @PathVariable("page") Long page) {
-        CommentVo vo = commentService.getTreeDataById(id,page);
+        CommentVo vo = commentService.getTreeDataById(id, null, page);
         return Result.success(vo);
     }
 }

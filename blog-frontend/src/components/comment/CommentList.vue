@@ -3,11 +3,13 @@
                @closed="closed">
         <el-row>
             <el-col :span="3">
-                当前用户头像
+                <el-avatar :size="40" :src="pictureUrl + picUid"
+                           class="centered-item avatar" style="margin-top: 15px"/>
             </el-col>
             <el-col :span="21">
                 <CommentBox style="margin-bottom: 20px" :blog-uid="blogId" :parent-uid="'0'"
-                            :reply-to-uid="''"></CommentBox>
+                            :reply-to-uid="''" :comment-placeholder="'评论一下吧'"
+                            @refresh-comment="refreshComment"></CommentBox>
             </el-col>
         </el-row>
         <div v-infinite-scroll="load" infinite-scroll-distance="10" infinite-scroll-immediate="false"
@@ -34,7 +36,8 @@
                             </el-col>
                         </el-row>
                         <CommentBox v-if="item.showBox" :blog-uid="blogId" :parent-uid="item.uid"
-                                    :reply-to-uid="''"></CommentBox>
+                                    :reply-to-uid="''" :comment-placeholder="'回复 '+ item.userNickName +'：'"
+                                    @refresh-comment="refreshComment"></CommentBox>
                         <div v-if="item.subComments.length > 0" class="level2Comment">
                             <el-row class="comment" v-for="(sub,si) in item.subComments" :key="sub.uid">
                                 <el-col :span="3">
@@ -71,7 +74,8 @@
                                         <el-col :span="10"></el-col>
                                     </el-row>
                                     <CommentBox v-if="sub.showBox" :blog-uid="blogId" :parent-uid="item.uid"
-                                                :reply-to-uid="sub.uid"></CommentBox>
+                                                :reply-to-uid="sub.uid" :comment-placeholder="'回复 '+ sub.userNickName +'：'"
+                                                @refresh-comment="refreshComment"></CommentBox>
                                 </el-col>
                             </el-row>
                         </div>
@@ -88,9 +92,11 @@ import request from '@/utils/request.js'
 import {ElMessage} from "element-plus";
 import {debounce} from "@/utils/debounce.js";
 import CommentBox from "@/components/comment/CommentBox.vue";
+import {localStorage} from "@/utils/storage";
 
 const drawerVisible = ref(false)
 const pictureUrl = ref(import.meta.env.VITE_APP_SERVICE_API + "/picture/");
+const picUid = localStorage.get("BLOG_USER").picUid
 
 let blogId = ref('')
 let count = ref(0)
@@ -100,14 +106,12 @@ let data = ref([])
 const load = () => {
     page.value++
     getData()
-
 }
 
 const open = (id) => {
     blogId.value = id
     getData()
     drawerVisible.value = true
-
 }
 
 const getData = () => {
@@ -170,6 +174,37 @@ const comment = (showBox, x, y) => {
 
 const debounceLike = debounce(like, 200)
 const debounceComment = debounce(comment, 200)
+
+const emit = defineEmits(['refresh-comment-count'])
+
+//保存评论回调
+const refreshComment = () => {
+    //查看已保存评论的位置，如果为空。说明是顶部评论框。如果不为空 将对应子评论框隐藏
+    if (showIndexs.length > 0) {
+        let x = showIndexs[0].x
+        let y = showIndexs[0].y
+        showIndexs = []
+        //隐藏子评论框
+        if (y !== undefined) {
+            data.value[x].subComments[y].showBox = false
+        } else {
+            data.value[x].showBox = false
+        }
+        //根据父评论id重新获取评论数据
+        request.get('/web/comment/' + blogId.value + "/" + data.value[x].uid).then(result => {
+            data.value[x] = result.data.data[0]
+            count.value = result.data.count
+            emit('refresh-comment-count', result.data.count)
+        })
+    } else {
+        page.value = 1
+        request.get('/web/preview/comment/' + blogId.value + '/' + page.value).then(result => {
+            data.value = result.data.data
+            count.value = result.data.count
+            emit('refresh-comment-count', result.data.count)
+        })
+    }
+}
 
 defineExpose({
     open

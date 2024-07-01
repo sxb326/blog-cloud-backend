@@ -49,4 +49,7 @@
     <update id="updateCommentCount">
         update t_blog set comment_count = COALESCE(comment_count, 0) + #{count} where uid = #{blogId}
     </update>
+    <select id="getCommentCountByBlogId" parameterType="String" resultType="Long">
+        select COALESCE(comment_count, 0) from t_blog where uid = #{blogId}
+    </select>
 </mapper>

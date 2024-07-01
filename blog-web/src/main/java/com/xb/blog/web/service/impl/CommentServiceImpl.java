@@ -2,14 +2,13 @@ package com.xb.blog.web.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.CommentDao;
+import com.xb.blog.web.dto.CommentDto;
 import com.xb.blog.web.entity.CommentEntity;
 import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.CommentService;
-import com.xb.blog.web.dto.CommentDto;
 import com.xb.blog.web.vo.CommentListVo;
 import com.xb.blog.web.vo.CommentSaveVo;
 import com.xb.blog.web.vo.CommentVo;
@@ -30,17 +29,19 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
     private BlogService blogService;
 
     /**
-     * 获取评论树数据
+     * 根据博客id获取评论数据
      *
-     * @param id
+     * @param blogId
+     * @param parentId 如果不为null 查询这个父id及其子评论数据
+     * @param page
      * @return
      */
     @Override
-    public CommentVo getTreeDataById(String id, Long page) {
-        page = (page - 1) * 10;
-        List<CommentDto> list = baseMapper.listPage(id, UserUtil.getUserId(), page);
+    public CommentVo getTreeDataById(String blogId, String parentId, Long page) {
+        if (page != null) page = (page - 1) * 10;
+        List<CommentDto> list = baseMapper.listPage(blogId, parentId, UserUtil.getUserId(), page);
         CommentVo vo = new CommentVo();
-        vo.setCount(Long.valueOf(baseMapper.selectCount(new QueryWrapper<CommentEntity>().eq("blog_uid", id))));
+        vo.setCount(blogService.getCommentCount(blogId));
         vo.setData(getSubComments(list, "0"));
         return vo;
     }

@@ -82,6 +82,7 @@ async function getAuthUser() {
     const response = await proxy.$api.auth.getAuthUser();
     if (response.data) {
         Object.assign(user, response.data);
+        localStorage.set("BLOG_USER", response.data);
     } else {
         for (const key in user) {
             if (Object.prototype.hasOwnProperty.call(user, key)) {

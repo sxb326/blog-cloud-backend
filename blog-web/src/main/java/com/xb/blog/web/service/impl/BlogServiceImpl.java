@@ -98,4 +98,15 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
     public void updateCommentCount(String blogId, Long count) {
         baseMapper.updateCommentCount(blogId, count);
     }
+
+    /**
+     * 根据博客id获取博客的评论数
+     *
+     * @param blogId
+     * @return
+     */
+    @Override
+    public Long getCommentCount(String blogId) {
+        return baseMapper.getCommentCountByBlogId(blogId);
+    }
 }
