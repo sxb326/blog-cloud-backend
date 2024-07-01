@@ -100,8 +100,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
         Map<String, Long> map = new HashMap<>();
 
         //更新目标评论的评论数
-        String commentUid = StrUtil.isNotBlank(vo.getReplyToUid()) ? vo.getReplyToUid() : vo.getParentUid();
-        baseMapper.updateCommentCount(commentUid, 1L);
+        baseMapper.updateCommentCount(vo.getParentUid(), 1L);
+        if (StrUtil.isNotBlank(vo.getReplyToUid())) {
+            baseMapper.updateCommentCount(vo.getReplyToUid(), 1L);
+        }
 
         //更新博客评论数
         blogService.updateCommentCount(vo.getBlogUid(), 1L);

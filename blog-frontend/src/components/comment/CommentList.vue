@@ -96,7 +96,7 @@ import {localStorage} from "@/utils/storage";
 
 const drawerVisible = ref(false)
 const pictureUrl = ref(import.meta.env.VITE_APP_SERVICE_API + "/picture/");
-const picUid = localStorage.get("BLOG_USER").picUid
+const picUid = localStorage.get("BLOG_USER")?localStorage.get("BLOG_USER").picUid:''
 
 let blogId = ref('')
 let count = ref(0)
