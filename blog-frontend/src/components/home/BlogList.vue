@@ -1,37 +1,33 @@
 <template>
-    <el-table :data="list" height="calc(100vh - 100px)" style="width: 100%" :show-header="false">
-        <el-table-column>
-            <template #default="scope">
-                <div class="blog" @click="preview(scope.row.uid)">
-                    <div style="width: 80%">
-                        <h3>{{ scope.row.title }}</h3>
-                        <p class="blog-summary">{{ scope.row.summary }}</p>
-                        <div class="blog-stats">
-                            <div class="blog-stat-item">
-                                <span class="author">{{ scope.row.authorName }}</span>
-                            </div>
-                            <div class="blog-stat-item">|</div>
-                            <div class="blog-stat-item">
-                                <span><el-icon class="stat-icon"><View/></el-icon></span>
-                                <span>{{ scope.row.clickCount }}</span>
-                            </div>
-                            <div class="blog-stat-item">
-                                <span><el-icon class="stat-icon"><Pointer/></el-icon></span>
-                                <span>{{ scope.row.likeCount }}</span>
-                            </div>
-                            <div class="blog-stat-item">
-                                <span><el-icon class="stat-icon"><Star/></el-icon></span>
-                                <span>{{ scope.row.collectCount }}</span>
-                            </div>
-                        </div>
+    <div class="blogList" v-infinite-scroll="load" infinite-scroll-distance="10" infinite-scroll-immediate="false">
+        <div class="blog" v-for="item in list" :key="item.uid" @click="preview(item.uid)">
+            <div style="width: 100%">
+                <h3>{{ item.title }}</h3>
+                <p class="blog-summary">{{ item.summary }}</p>
+                <div class="blog-stats">
+                    <div class="blog-stat-item">
+                        <span class="author">{{ item.authorName }}</span>
                     </div>
-                    <div class="coverDiv" v-if="scope.row.picUid !== null">
-                        <img :src="imgUrl + scope.row.picUid" style="width:120px;height:120px"/>
+                    <div class="blog-stat-item">|</div>
+                    <div class="blog-stat-item">
+                        <span><el-icon class="stat-icon"><View/></el-icon></span>
+                        <span>{{ item.clickCount }}</span>
+                    </div>
+                    <div class="blog-stat-item">
+                        <span><el-icon class="stat-icon"><Pointer/></el-icon></span>
+                        <span>{{ item.likeCount }}</span>
+                    </div>
+                    <div class="blog-stat-item">
+                        <span><el-icon class="stat-icon"><Star/></el-icon></span>
+                        <span>{{ item.collectCount }}</span>
                     </div>
                 </div>
-            </template>
-        </el-table-column>
-    </el-table>
+            </div>
+            <div class="coverDiv" v-if="item.picUid !== null">
+                <img :src="imgUrl + item.picUid" style="width:120px;height:120px"/>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -43,9 +39,16 @@ const imgUrl = import.meta.env.VITE_APP_SERVICE_API + '/picture/';
 let list = ref([]);
 
 const getList = () => {
-    request.get('/web/home/list').then(result => {
-        list.value = result.data;
+    request.get('/web/home/list/' + page.value).then(result => {
+        list.value.push(...result.data)
     })
+}
+
+let page = ref(1)
+
+const load = () => {
+    page.value++
+    getList()
 }
 
 onMounted(getList)
@@ -56,10 +59,21 @@ const preview = (id) => {
 </script>
 
 <style scoped>
+.blogList {
+    overflow: auto;
+    height: calc(100vh - 100px);
+    padding: 10px 5px;
+}
+
 .blog {
     cursor: pointer;
     display: flex;
     margin: 0 0.5rem;
+    padding: 10px;
+}
+
+.blog:hover {
+    background-color: #f2f3f5;
 }
 
 .blog-summary {

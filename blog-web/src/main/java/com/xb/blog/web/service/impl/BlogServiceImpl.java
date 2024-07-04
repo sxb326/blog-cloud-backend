@@ -1,6 +1,9 @@
 package com.xb.blog.web.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.BlogDao;
@@ -12,11 +15,17 @@ import com.xb.blog.web.vo.BlogEditorVo;
 import com.xb.blog.web.vo.BlogListVo;
 import com.xb.blog.web.vo.BlogPreviewVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -27,6 +36,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
 
     @Autowired
     private BlogTagService blogTagService;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     /**
      * 发布博客
@@ -57,8 +69,64 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
      * @return
      */
     @Override
-    public List<BlogListVo> listBlog() {
-        return baseMapper.listBlog();
+    public List<BlogListVo> listBlog(Long page) {
+        //换算分页参数（使用OFFSET关键字进行分页，故此处起始页码应为0）
+        page = page != null ? (page - 1) * 10 : 0L;
+
+        //定义缓存Keu格式（每页数据单独缓存，且固定每页条数为10条）
+        String lockKey = "HOME_BLOG_LIST_LOCK_SIZE_10_PAGE_" + page;
+        String dataKey = "HOME_BLOG_LIST_DATA_SIZE_10_PAGE_" + page;
+
+        //从缓存中获取数据
+        String cache = redisTemplate.opsForValue().get(dataKey);
+        if (StrUtil.isNotBlank(cache)) {
+            //缓存中有数据 直接返回
+            return JSONUtil.toList(cache, BlogListVo.class);
+        }
+
+        //获取分布式锁
+        String uuid = UUID.randomUUID().toString();
+        Boolean lock = redisTemplate.opsForValue().setIfAbsent(lockKey, uuid);
+
+        if (lock) {
+            //拿到分布式锁，查询数据库
+            try {
+                List<BlogListVo> list = baseMapper.listBlog(page);
+                if (CollUtil.isEmpty(list)) {
+                    //设置空值 避免缓存穿透
+                    redisTemplate.opsForValue().set(dataKey, JSONUtil.toJsonStr(list), 10, TimeUnit.SECONDS);
+                } else {
+                    redisTemplate.opsForValue().set(dataKey, JSONUtil.toJsonStr(list), 10, TimeUnit.MINUTES);
+                }
+                return list;
+            } finally {
+                //使用lua脚本 保证释放分布式锁的原子性
+                String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+                redisTemplate.execute(new DefaultRedisScript<>(script, Long.class)
+                        , Arrays.asList(lockKey), uuid);
+            }
+        }
+
+        //未拿到分布式锁，进行一定次数的重试
+        for (int i = 0; i < 3; i++) {
+            try {
+                //适当休眠 避免cpu空转
+                Thread.sleep(200);
+
+                //再次查询缓存
+                cache = redisTemplate.opsForValue().get(dataKey);
+                if (StrUtil.isNotBlank(cache)) {
+                    //缓存中有数据 直接返回
+                    return JSONUtil.toList(cache, BlogListVo.class);
+                }
+
+            } catch (InterruptedException exception) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        //重试获取数据失败 返回空集合
+        return Collections.emptyList();
     }
 
     /**

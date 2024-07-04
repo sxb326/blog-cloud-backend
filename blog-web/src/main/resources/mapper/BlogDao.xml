@@ -19,6 +19,9 @@
             b.status = 1
         ORDER BY
             b.create_time DESC
+        <if test="page != null">
+            limit 10 OFFSET #{page}
+        </if>
     </select>
     <select id="getBlogPreviewById" parameterType="String" resultType="com.xb.blog.web.vo.BlogPreviewVo">
         SELECT

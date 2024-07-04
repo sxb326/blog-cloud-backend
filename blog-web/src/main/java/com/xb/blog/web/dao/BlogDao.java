@@ -23,7 +23,7 @@ public interface BlogDao extends BaseMapper<BlogEntity> {
      *
      * @return
      */
-    List<BlogListVo> listBlog();
+    List<BlogListVo> listBlog(@Param("page") Long page);
 
     /**
      * 博客预览时 查询出预览数据

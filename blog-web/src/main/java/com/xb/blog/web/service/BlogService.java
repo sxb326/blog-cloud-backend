@@ -28,7 +28,7 @@ public interface BlogService extends IService<BlogEntity> {
      *
      * @return
      */
-    List<BlogListVo> listBlog();
+    List<BlogListVo> listBlog(Long page);
 
     /**
      * 根据id获取博客预览数据
