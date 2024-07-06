@@ -70,12 +70,15 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
      */
     @Override
     public List<BlogListVo> listBlog(Long page) {
-        //换算分页参数（使用OFFSET关键字进行分页，故此处起始页码应为0）
-        page = page != null ? (page - 1) * 10 : 0L;
+        //处理特殊情况
+        if (page == null) page = 1L;
 
         //定义缓存Keu格式（每页数据单独缓存，且固定每页条数为10条）
         String lockKey = "HOME_BLOG_LIST_LOCK_SIZE_10_PAGE_" + page;
         String dataKey = "HOME_BLOG_LIST_DATA_SIZE_10_PAGE_" + page;
+
+        //换算分页参数（使用OFFSET关键字进行分页，故此处起始页码应为0）
+        page = (page - 1L) * 10L;
 
         //从缓存中获取数据
         String cache = redisTemplate.opsForValue().get(dataKey);
