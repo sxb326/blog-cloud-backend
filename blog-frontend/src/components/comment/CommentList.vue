@@ -14,7 +14,7 @@
         </el-row>
         <div v-infinite-scroll="load" infinite-scroll-distance="10" infinite-scroll-immediate="false"
              v-loading="loading"
-             style="overflow: auto; height: calc(100vh - 200px)">
+             style="overflow: auto; height: calc(100vh - 240px)">
             <div v-for="(item,index) in data" :key="item.uid">
                 <el-row class="comment">
                     <el-col :span="3">

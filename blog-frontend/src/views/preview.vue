@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-aside width="150px" class="aside-container left">
-            <el-badge :value="blog.likeCount">
+            <el-badge :value="blog.likeCount" :max="999">
                 <div class="leftBtn" @click="debounceLike(blog.liked)"
                      :style="{background: blog.liked ? '#409eff' : 'white',color: blog.liked ? 'white' : 'black'}">
                     <el-icon size="20">
@@ -9,14 +9,14 @@
                     </el-icon>
                 </div>
             </el-badge>
-            <el-badge :value="blog.commentCount">
+            <el-badge :value="blog.commentCount" :max="999">
                 <div class="leftBtn" @click="openComment(blog.uid)">
                     <el-icon size="20">
                         <ChatLineRound/>
                     </el-icon>
                 </div>
             </el-badge>
-            <el-badge :value="blog.collectCount">
+            <el-badge :value="blog.collectCount" :max="999">
                 <div class="leftBtn">
                     <el-icon size="20">
                         <Star/>
