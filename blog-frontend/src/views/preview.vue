@@ -44,9 +44,12 @@
             <div class="authorDiv">作者信息</div>
             <div class="directoryDiv" ref="directoryRef">
                 <div v-for="anchor in titles" :key="anchor"
-                     :style="{ padding: `5px 0 5px ${anchor.indent * 20}px`,color: directoryId === anchor.id ? '#409eff' : 'black' }"
-                     @click="directoryClick(anchor)" class="directory-item" :id="anchor.id">
-                    {{ anchor.title }}
+                     @click="directoryClick(anchor)" :id="anchor.id" class="directory-div"
+                     :style="{'border-left': directoryId === anchor.id ? '2px solid #007BFF' : 'none'}">
+                    <div class="directory-item"
+                         :style="{ padding: `5px 0 5px ${anchor.indent * 20}px`,color: directoryId === anchor.id ? '#409eff' : 'black'}">
+                        {{ anchor.title }}
+                    </div>
                 </div>
             </div>
         </el-aside>
@@ -194,7 +197,7 @@ const refreshCommentCount = (count) => {
 }
 </script>
 
-<style >
+<style>
 body {
     background-color: #f2f3f5;
 }
@@ -272,13 +275,17 @@ body {
     font-size: 14px;
 }
 
+.directory-div:hover {
+    border-left: 2px solid #007BFF !important;
+}
+
 .directory-item {
     cursor: pointer;
     margin: 0 0 0 20px;
 }
 
 .directory-item:hover {
-    color: rgba(64, 158, 255, 0.93);
+    color: rgba(64, 158, 255, 0.93) !important;
 }
 
 .main-container:hover::-webkit-scrollbar-thumb {
