@@ -17,6 +17,7 @@ import com.xb.blog.web.vo.BlogPreviewVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -179,5 +180,18 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
     @Override
     public Long getCommentCount(String blogId) {
         return baseMapper.getCommentCountByBlogId(blogId);
+    }
+
+    /**
+     * 根据博客id修改博客的点击量
+     * 因为修改点击量的场景是在预览文章时，所以这里采用异步调用的方式，不影响文章数据的返回
+     *
+     * @param blogId
+     * @param count
+     */
+    @Async
+    @Override
+    public void updateClickCount(String blogId, Long count) {
+        baseMapper.updateClickCount(blogId, count);
     }
 }

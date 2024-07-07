@@ -55,4 +55,7 @@
     <select id="getCommentCountByBlogId" parameterType="String" resultType="Long">
         select COALESCE(comment_count, 0) from t_blog where uid = #{blogId}
     </select>
+    <update id="updateClickCount">
+        update t_blog set click_count = COALESCE(click_count, 0) + #{count} where uid = #{blogId}
+    </update>
 </mapper>
