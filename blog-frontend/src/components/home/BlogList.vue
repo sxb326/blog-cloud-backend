@@ -1,5 +1,5 @@
 <template>
-    <div class="blogList" v-infinite-scroll="load" infinite-scroll-distance="10" infinite-scroll-immediate="false">
+    <div class="blogList" v-infinite-scroll="load" infinite-scroll-distance="10" infinite-scroll-immediate="false" v-loading="loading">
         <div class="blog" v-for="item in list" :key="item.uid" @click="preview(item.uid)">
             <div style="width: 100%">
                 <h3>{{ item.title }}</h3>
@@ -37,10 +37,13 @@ import request from '@/utils/request.js'
 const imgUrl = import.meta.env.VITE_APP_SERVICE_API + '/picture/';
 
 let list = ref([]);
+let loading = ref(false)
 
 const getList = () => {
+    loading.value = true
     request.get('/web/home/list/' + page.value).then(result => {
         list.value.push(...result.data)
+        loading.value = false
     })
 }
 

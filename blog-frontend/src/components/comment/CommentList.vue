@@ -13,6 +13,7 @@
             </el-col>
         </el-row>
         <div v-infinite-scroll="load" infinite-scroll-distance="10" infinite-scroll-immediate="false"
+             v-loading="loading"
              style="overflow: auto; height: calc(100vh - 200px)">
             <div v-for="(item,index) in data" :key="item.uid">
                 <el-row class="comment">
@@ -74,7 +75,8 @@
                                         <el-col :span="10"></el-col>
                                     </el-row>
                                     <CommentBox v-if="sub.showBox" :blog-uid="blogId" :parent-uid="item.uid"
-                                                :reply-to-uid="sub.uid" :comment-placeholder="'回复 '+ sub.userNickName +'：'"
+                                                :reply-to-uid="sub.uid"
+                                                :comment-placeholder="'回复 '+ sub.userNickName +'：'"
                                                 @refresh-comment="refreshComment"></CommentBox>
                                 </el-col>
                             </el-row>
@@ -96,12 +98,13 @@ import {localStorage} from "@/utils/storage";
 
 const drawerVisible = ref(false)
 const pictureUrl = ref(import.meta.env.VITE_APP_SERVICE_API + "/picture/");
-const picUid = localStorage.get("BLOG_USER")?localStorage.get("BLOG_USER").picUid:''
+const picUid = localStorage.get("BLOG_USER") ? localStorage.get("BLOG_USER").picUid : ''
 
 let blogId = ref('')
 let count = ref(0)
 let page = ref(1)
 let data = ref([])
+let loading = ref(false)
 
 const load = () => {
     page.value++
@@ -115,9 +118,14 @@ const open = (id) => {
 }
 
 const getData = () => {
+    loading.value = true
     request.get('/web/preview/comment/' + blogId.value + '/' + page.value).then(result => {
         count.value = result.data.count
         data.value.push(...result.data.data)
+        loading.value = false
+        if (result.data.data.length === 0) {
+            page.value--
+        }
     })
 }
 
