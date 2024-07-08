@@ -73,6 +73,22 @@ CREATE TABLE `t_category`
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '分类表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for t_collect
+-- ----------------------------
+DROP TABLE IF EXISTS `t_collect`;
+CREATE TABLE `t_collect`
+(
+  `uid`          varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ID',
+  `blog_uid`     varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '博客uid',
+  `user_uid`     varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户uid',
+  `favorite_uid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '收藏夹uid',
+  `status`       tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
+  `create_time`  timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time`  timestamp NULL DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`uid`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '收藏表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for t_comment
 -- ----------------------------
 DROP TABLE IF EXISTS `t_comment`;
@@ -105,6 +121,22 @@ CREATE TABLE `t_draft`
     `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
     PRIMARY KEY (`uid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '草稿表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_favorite
+-- ----------------------------
+DROP TABLE IF EXISTS `t_favorite`;
+CREATE TABLE `t_favorite`
+(
+  `uid`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ID',
+  `name`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '收藏夹名称',
+  `user_uid`    varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户uid',
+  `is_default`  tinyint(1) NULL DEFAULT NULL COMMENT '是否为默认收藏夹 不可删除',
+  `status`      tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
+  `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`uid`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '收藏夹表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_like
