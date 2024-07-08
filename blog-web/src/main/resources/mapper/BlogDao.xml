@@ -35,11 +35,13 @@
             u.uid authorId,
             u.nick_name authorName,
             b.create_time createTime,
-            CASE WHEN l.uid IS NOT NULL THEN 1 ELSE 0 END liked
+            CASE WHEN l.uid IS NOT NULL THEN 1 ELSE 0 END liked,
+            CASE WHEN c.uid IS NOT NULL THEN 1 ELSE 0 END collected
         FROM
             t_blog b
                 LEFT JOIN t_user u ON b.author = u.uid
                 LEFT JOIN t_like l ON l.type = 1 AND b.uid = l.obj_uid AND l.user_uid = #{userUid}
+                LEFT JOIN t_collect c ON c.blog_uid = b.uid AND c.user_uid = #{userUid}
         WHERE
             b.status = 1 AND b.uid = #{uid}
     </select>

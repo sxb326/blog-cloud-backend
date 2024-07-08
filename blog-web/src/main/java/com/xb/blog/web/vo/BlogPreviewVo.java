@@ -58,4 +58,8 @@ public class BlogPreviewVo implements Serializable {
      * 是否已点赞
      */
     private Boolean liked;
+    /**
+     * 是否已收藏
+     */
+    private Boolean collected;
 }

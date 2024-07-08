@@ -82,9 +82,7 @@ CREATE TABLE `t_collect`
   `blog_uid`     varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '博客uid',
   `user_uid`     varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户uid',
   `favorite_uid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '收藏夹uid',
-  `status`       tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
   `create_time`  timestamp NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time`  timestamp NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`uid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '收藏表' ROW_FORMAT = Dynamic;
 

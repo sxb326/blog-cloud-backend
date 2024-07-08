@@ -17,7 +17,8 @@
                 </div>
             </el-badge>
             <el-badge :value="blog.collectCount" :max="999">
-                <div class="leftBtn">
+                <div class="leftBtn" @click="debounceCollect"
+                     :style="{background: blog.collected ? '#409eff' : 'white',color: blog.collected ? 'white' : 'black'}">
                     <el-icon size="20">
                         <Star/>
                     </el-icon>
@@ -54,6 +55,7 @@
             </div>
         </el-aside>
         <CommentList ref="commentRef" @refresh-comment-count="refreshCommentCount"></CommentList>
+        <FavoriteForm ref="favoriteRef"></FavoriteForm>
     </el-container>
 </template>
 <script setup>
@@ -63,6 +65,7 @@ import {useRoute, useRouter} from 'vue-router';
 import {ElMessage} from "element-plus";
 import {debounce} from "@/utils/debounce.js";
 import CommentList from '@/components/comment/CommentList.vue'
+import FavoriteForm from "@/components/favorite/FavoriteForm.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -195,6 +198,16 @@ const openComment = (blogId) => {
 const refreshCommentCount = (count) => {
     blog.commentCount = count
 }
+
+const favoriteRef = ref()
+
+//打开收藏夹
+const collect = () => {
+    favoriteRef.value.open()
+}
+
+const debounceCollect = debounce(collect, 200)
+
 </script>
 
 <style>
