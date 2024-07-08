@@ -17,9 +17,13 @@ public class CommentEntity implements Serializable {
     @TableId(type = IdType.ASSIGN_UUID)
     private String uid;
     /**
-     * 博客id
+     * 评论类型 1文章 2待定
      */
-    private String blogUid;
+    private int type;
+    /**
+     * 评论目标id 评论文章时为文章id 其它待定
+     */
+    private String objUid;
     /**
      * 用户id
      */

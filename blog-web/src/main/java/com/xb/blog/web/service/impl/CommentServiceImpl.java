@@ -89,7 +89,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
     public void save(CommentSaveVo vo) {
         //保存评论表
         CommentEntity entity = new CommentEntity();
-        entity.setBlogUid(vo.getBlogUid());
+        entity.setType(1);
+        entity.setObjUid(vo.getBlogUid());
         entity.setUserUid(UserUtil.getUserId());
         entity.setParentUid(vo.getParentUid());
         entity.setReplyToUid(StrUtil.isNotBlank(vo.getReplyToUid()) ? vo.getReplyToUid() : null);
