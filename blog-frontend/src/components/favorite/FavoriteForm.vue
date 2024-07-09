@@ -13,13 +13,13 @@
             </el-table-column>
             <el-table-column width="50">
                 <template #default="scope">
-                    <el-checkbox v-model="scope.row.collected" size="large"/>
+                    <el-checkbox v-model="scope.row.collected" size="large" @change="change(scope.row)"/>
                 </template>
             </el-table-column>
         </el-table>
         <template #footer>
             <el-button text>新增收藏夹</el-button>
-            <el-button type="primary">确定</el-button>
+            <el-button type="primary" @click="save">确定</el-button>
         </template>
     </el-dialog>
 </template>
@@ -27,13 +27,46 @@
 <script setup>
 import {ref} from "vue";
 import request from '@/utils/request.js'
+import {ElMessage} from "element-plus";
 
 const dialogVisible = ref(false)
+let blogId = ref('')
 let list = ref([])
 
-const open = (blogId) => {
+//多选框切换事件
+const change = (data) => {
+    //todo 未完成
+    list.value.forEach(i => i.collected = false)
+    console.log(list.value.find(i => i.uid === data.uid).collected)
+    list.value.find(i => i.uid === data.uid).collected = !list.value.find(i => i.uid === data.uid).collected
+}
+
+//保存收藏信息
+const save = () => {
+    let collected = list.value.find(i => i.collected)
+    let favoriteId = ''
+    if (collected) {
+        favoriteId = collected.uid
+    }
+    const param = {
+        blogId: blogId.value,
+        favoriteId: favoriteId
+    }
+    request.post('/web/collect/save', param).then(result => {
+        if (!result) {
+            return;
+        }
+        ElMessage({
+            message: result.message,
+            type: 'success',
+        });
+    })
+}
+
+const open = (id) => {
+    blogId.value = id
     //调用接口 查询用户的收藏夹数据
-    request.get('/web/favorite/list/' + blogId).then(result => {
+    request.get('/web/favorite/list/' + id).then(result => {
         list.value = result.data
     })
     dialogVisible.value = true

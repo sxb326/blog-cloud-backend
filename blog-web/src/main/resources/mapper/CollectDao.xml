@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xb.blog.web.dao.CollectDao">
+    <select id="exist" resultType="java.lang.Boolean">
+        SELECT EXISTS(SELECT 1 FROM t_collect WHERE blog_uid = #{blogId} AND favorite_uid = #{favoriteId})
+    </select>
+    <delete id="delete">
+        DELETE FROM t_collect WHERE blog_uid = #{blogId} AND user_uid = #{userId}
+        <if test="favoriteId != null">
+            AND favorite_uid = #{favoriteId}
+        </if>
+    </delete>
+</mapper>

@@ -15,6 +15,10 @@ public class Result implements Serializable {
     private String message;
     private Object data;
 
+    public static Result success() {
+        return success("操作成功");
+    }
+
     public static Result success(String message) {
         return success(message, null);
     }

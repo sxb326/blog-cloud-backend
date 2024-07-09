@@ -60,4 +60,12 @@
     <update id="updateClickCount">
         update t_blog set click_count = COALESCE(click_count, 0) + #{count} where uid = #{blogId}
     </update>
+    <update id="updateCollectCount">
+        update t_blog set collect_count = COALESCE(collect_count, 0) + #{count} where uid = #{blogId}
+    </update>
+    <select id="getCollectCountByBlogId" parameterType="String" resultType="Long">
+        select collect_count
+        from t_blog
+        where uid = #{blogId}
+    </select>
 </mapper>

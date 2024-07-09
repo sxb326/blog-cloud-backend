@@ -32,11 +32,6 @@ public class CollectEntity implements Serializable {
      */
     private String favoriteUid;
     /**
-     * 逻辑删除 1：不删除，0：删除
-     */
-    @TableLogic(value = "1", delval = "0")
-    private int status;
-    /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)

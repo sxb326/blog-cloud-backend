@@ -194,4 +194,17 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
     public void updateClickCount(String blogId, Long count) {
         baseMapper.updateClickCount(blogId, count);
     }
+
+    /**
+     * 修改博客收藏数 并返回最新收藏数
+     *
+     * @param blogId
+     * @param count
+     * @return
+     */
+    @Override
+    public Long updateCollectCount(String blogId, Long count) {
+        baseMapper.updateCollectCount(blogId, count);
+        return baseMapper.getCollectCountByBlogId(blogId);
+    }
 }

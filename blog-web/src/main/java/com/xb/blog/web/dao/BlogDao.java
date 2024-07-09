@@ -73,4 +73,20 @@ public interface BlogDao extends BaseMapper<BlogEntity> {
      * @param count
      */
     void updateClickCount(@Param("blogId") String blogId, @Param("count") Long count);
+
+    /**
+     * 修改博客收藏数
+     *
+     * @param blogId
+     * @param count
+     */
+    void updateCollectCount(@Param("blogId") String blogId, @Param("count") Long count);
+
+    /**
+     * 查询博客收藏数
+     *
+     * @param blogId
+     * @return
+     */
+    Long getCollectCountByBlogId(@Param("blogId") String blogId);
 }
