@@ -13,8 +13,9 @@ public interface FavoriteDao extends BaseMapper<FavoriteEntity> {
     /**
      * 查询用户的收藏夹列表
      *
-     * @param userId
+     * @param userId 用户id
+     * @param blogId 博客id 当收藏文章时打开 需要判断哪个收藏夹收藏了该文章
      * @return
      */
-    List<FavoriteVo> listFavorite(@Param("userId") String userId);
+    List<FavoriteVo> listFavorite(@Param("userId") String userId, @Param("blogId") String blogId);
 }

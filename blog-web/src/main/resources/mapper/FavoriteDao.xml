@@ -2,10 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xb.blog.web.dao.FavoriteDao">
     <select id="listFavorite" resultType="com.xb.blog.web.vo.FavoriteVo">
-        select uid, name, is_default isDefault
-        from t_favorite
-        where status = 1
-          and user_uid = #{userId}
-        order by create_time desc
+        SELECT f.uid,
+               f.NAME,
+               f.is_default                                  isDefault,
+               CASE WHEN c.uid IS NOT NULL THEN 1 ELSE 0 END collected
+        FROM t_favorite f
+                 LEFT JOIN t_collect c ON f.uid = c.favorite_uid
+            AND f.user_uid = c.user_uid
+            AND c.blog_uid = #{blogId}
+        WHERE f.STATUS = 1
+          AND f.user_uid = #{userId}
+        ORDER BY f.create_time DESC
     </select>
 </mapper>

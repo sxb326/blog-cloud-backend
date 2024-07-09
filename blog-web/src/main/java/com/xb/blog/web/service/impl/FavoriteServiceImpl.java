@@ -18,8 +18,21 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteDao, FavoriteEntity
      * @return
      */
     @Override
-    public List<FavoriteVo> listFavorite() {
+    public List<FavoriteVo> listFavorite(String blogId) {
         String userId = UserUtil.getUserId();
-        return baseMapper.listFavorite(userId);
+        return baseMapper.listFavorite(userId, blogId);
+    }
+
+    /**
+     * 创建默认收藏夹
+     */
+    @Override
+    public void createDefaultFavorite() {
+        FavoriteEntity entity = new FavoriteEntity();
+        entity.setName("我的收藏");
+        entity.setIsDefault(1);
+        entity.setStatus(1);
+        entity.setUserUid(UserUtil.getUserId());
+        save(entity);
     }
 }

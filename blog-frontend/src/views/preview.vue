@@ -17,7 +17,7 @@
                 </div>
             </el-badge>
             <el-badge :value="blog.collectCount" :max="999">
-                <div class="leftBtn" @click="debounceCollect"
+                <div class="leftBtn" @click="debounceCollect(blog.uid)"
                      :style="{background: blog.collected ? '#409eff' : 'white',color: blog.collected ? 'white' : 'black'}">
                     <el-icon size="20">
                         <Star/>
@@ -202,8 +202,8 @@ const refreshCommentCount = (count) => {
 const favoriteRef = ref()
 
 //打开收藏夹
-const collect = () => {
-    favoriteRef.value.open()
+const collect = (blogId) => {
+    favoriteRef.value.open(blogId)
 }
 
 const debounceCollect = debounce(collect, 200)

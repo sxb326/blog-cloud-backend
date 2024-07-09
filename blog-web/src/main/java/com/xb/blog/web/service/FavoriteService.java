@@ -12,5 +12,10 @@ public interface FavoriteService extends IService<FavoriteEntity> {
      *
      * @return
      */
-    List<FavoriteVo> listFavorite();
+    List<FavoriteVo> listFavorite(String blogId);
+
+    /**
+     * 创建默认收藏夹
+     */
+    void createDefaultFavorite();
 }
