@@ -24,7 +24,7 @@ public interface CommentService extends IService<CommentEntity> {
      * @param count
      * @return
      */
-    Long updateLikeCount(String commentId, Long count);
+    void updateLikeCount(String commentId, Long count);
 
     /**
      * 保存评论

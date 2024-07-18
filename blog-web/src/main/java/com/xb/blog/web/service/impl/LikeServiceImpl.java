@@ -2,7 +2,6 @@ package com.xb.blog.web.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.LikeDao;
@@ -32,7 +31,7 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
      */
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public Long save(LikeSaveVo vo) {
+    public void save(LikeSaveVo vo) {
         String userId = UserUtil.getUserId();
 
         //保存点赞表
@@ -53,11 +52,9 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
         //如果当前type=1 更新博客点赞数；如果type=2 更新评论点赞数
         int type = vo.getType();
         if (type == 1) {
-            return blogService.updateLikeCount(vo.getObjUid(), status ? 1L : -1L);
+            blogService.updateLikeCount(vo.getObjUid(), status ? 1L : -1L);
         } else if (type == 2) {
-            return commentService.updateLikeCount(vo.getObjUid(), status ? 1L : -1L);
+            commentService.updateLikeCount(vo.getObjUid(), status ? 1L : -1L);
         }
-
-        return 0L;
     }
 }

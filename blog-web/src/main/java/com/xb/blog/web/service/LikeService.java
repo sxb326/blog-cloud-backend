@@ -10,5 +10,5 @@ public interface LikeService extends IService<LikeEntity> {
      *
      * @param vo
      */
-    Long save(LikeSaveVo vo);
+    void save(LikeSaveVo vo);
 }

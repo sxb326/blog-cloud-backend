@@ -55,9 +55,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
      */
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public Long updateLikeCount(String commentId, Long count) {
+    public void updateLikeCount(String commentId, Long count) {
         baseMapper.updateLikeCount(commentId, count);
-        return baseMapper.getLikeCountByCommentId(commentId);
     }
 
     /**

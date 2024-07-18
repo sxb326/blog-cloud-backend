@@ -45,7 +45,15 @@ public interface BlogService extends IService<BlogEntity> {
      * @param count  点赞数 1/-1
      * @return
      */
-    Long updateLikeCount(String blogId, Long count);
+    void updateLikeCount(String blogId, Long count);
+
+    /**
+     * 根据博客id获取博客的点赞数
+     *
+     * @param blogId
+     * @return
+     */
+    Long getLikeCount(String blogId);
 
     /**
      * 修改评论数

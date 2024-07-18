@@ -82,4 +82,16 @@ public class BlogController {
         blogService.publish(vo);
         return Result.success("发布成功！");
     }
+
+    /**
+     * 根据博客id获取点赞数
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/likeCount/{id}")
+    public Result likeCount(@PathVariable("id") String id) {
+        Long count = blogService.getLikeCount(id);
+        return Result.success(count);
+    }
 }
