@@ -86,6 +86,14 @@ public interface BlogService extends IService<BlogEntity> {
      * @param count
      * @return
      */
-    Long updateCollectCount(String blogId, Long count);
+    void updateCollectCount(String blogId, Long count);
+
+    /**
+     * 根据博客id 查询博客的收藏数
+     *
+     * @param id
+     * @return
+     */
+    Long getCollectCount(String id);
 }
 

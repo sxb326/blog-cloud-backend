@@ -94,4 +94,10 @@ public class BlogController {
         Long count = blogService.getLikeCount(id);
         return Result.success(count);
     }
+
+    @GetMapping("/collectCount/{id}")
+    public Result collectCount(@PathVariable("id") String id) {
+        Long count = blogService.getCollectCount(id);
+        return Result.success(count);
+    }
 }

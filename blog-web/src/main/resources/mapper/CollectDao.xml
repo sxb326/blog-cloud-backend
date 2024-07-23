@@ -6,7 +6,7 @@
     </select>
     <delete id="delete">
         DELETE FROM t_collect WHERE blog_uid = #{blogId} AND user_uid = #{userId}
-        <if test="favoriteId != null">
+        <if test="favoriteId != null and favoriteId != ''">
             AND favorite_uid = #{favoriteId}
         </if>
     </delete>

@@ -202,9 +202,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
      * @return
      */
     @Override
-    public Long updateCollectCount(String blogId, Long count) {
+    public void updateCollectCount(String blogId, Long count) {
         baseMapper.updateCollectCount(blogId, count);
-        return baseMapper.getCollectCountByBlogId(blogId);
     }
 
     /**
@@ -216,5 +215,16 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
     @Override
     public Long getLikeCount(String blogId) {
         return baseMapper.getLikeCountByBlogId(blogId);
+    }
+
+    /**
+     * 根据博客id 查询博客的收藏数
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Long getCollectCount(String id) {
+        return baseMapper.getCollectCountByBlogId(id);
     }
 }

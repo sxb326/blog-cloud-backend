@@ -32,13 +32,16 @@ import {ElMessage} from "element-plus";
 const dialogVisible = ref(false)
 let blogId = ref('')
 let list = ref([])
+const emit = defineEmits(['refresh-collect'])
 
 //多选框切换事件
 const change = (data) => {
-    //todo 未完成
-    list.value.forEach(i => i.collected = false)
-    console.log(list.value.find(i => i.uid === data.uid).collected)
-    list.value.find(i => i.uid === data.uid).collected = !list.value.find(i => i.uid === data.uid).collected
+    list.value.forEach(i => {
+        if (i.uid !== data.uid) {
+            i.collected = false
+        }
+    })
+    list.value.find(i => i.uid === data.uid).collected = data.collected
 }
 
 //保存收藏信息
@@ -60,6 +63,8 @@ const save = () => {
             message: result.message,
             type: 'success',
         });
+        emit('refresh-collect')
+        dialogVisible.value = false
     })
 }
 

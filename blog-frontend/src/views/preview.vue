@@ -55,7 +55,7 @@
             </div>
         </el-aside>
         <CommentList ref="commentRef" @refresh-comment-count="refreshCommentCount"></CommentList>
-        <FavoriteForm ref="favoriteRef"></FavoriteForm>
+        <FavoriteForm ref="favoriteRef" @refresh-collect="refreshCollect"></FavoriteForm>
     </el-container>
 </template>
 <script setup>
@@ -210,6 +210,14 @@ const collect = (blogId) => {
 
 const debounceCollect = debounce(collect, 200)
 
+//刷新文章收藏数
+const refreshCollect = () => {
+    request.get('/web/blog/collectCount/' + blog.uid).then(result => {
+        const collectCount = result.data;
+        blog.collected = collectCount >= blog.collectCount;
+        blog.collectCount = collectCount;
+    })
+}
 </script>
 
 <style>
