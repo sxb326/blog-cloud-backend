@@ -108,4 +108,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
         //更新博客评论数
         blogService.updateCommentCount(vo.getBlogUid(), 1L);
     }
+
+    /**
+     * 根据id获取评论的点赞数
+     *
+     * @param objUid
+     * @return
+     */
+    @Override
+    public Long getLikeCount(String objUid) {
+        return baseMapper.getLikeCountByCommentId(objUid);
+    }
 }

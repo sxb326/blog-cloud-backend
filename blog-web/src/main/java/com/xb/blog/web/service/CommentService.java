@@ -33,4 +33,12 @@ public interface CommentService extends IService<CommentEntity> {
      * @return
      */
     void save(CommentSaveVo vo);
+
+    /**
+     * 根据id获取评论的点赞数
+     *
+     * @param objUid
+     * @return
+     */
+    Long getLikeCount(String objUid);
 }

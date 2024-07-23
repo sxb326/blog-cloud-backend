@@ -24,7 +24,7 @@ public class LikeController {
      */
     @PostMapping("/save")
     public Result save(@RequestBody LikeSaveVo vo) {
-        likeService.save(vo);
-        return Result.success("操作成功");
+        Long count = likeService.save(vo);
+        return Result.success("操作成功",count);
     }
 }

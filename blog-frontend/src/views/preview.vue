@@ -181,10 +181,8 @@ const like = (liked) => {
             message: result.message,
             type: 'success',
         });
-        request.get('/web/blog/likeCount/' + blog.uid).then(result => {
-            blog.likeCount = result.data;
-            blog.liked = !liked
-        })
+        blog.likeCount = result.data;
+        blog.liked = !liked
     })
 }
 

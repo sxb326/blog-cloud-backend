@@ -31,7 +31,7 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
      */
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
-    public void save(LikeSaveVo vo) {
+    public Long save(LikeSaveVo vo) {
         String userId = UserUtil.getUserId();
 
         //保存点赞表
@@ -53,8 +53,11 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
         int type = vo.getType();
         if (type == 1) {
             blogService.updateLikeCount(vo.getObjUid(), status ? 1L : -1L);
+            return blogService.getLikeCount(vo.getObjUid());
         } else if (type == 2) {
             commentService.updateLikeCount(vo.getObjUid(), status ? 1L : -1L);
+            return commentService.getLikeCount(vo.getObjUid());
         }
+        return null;
     }
 }
