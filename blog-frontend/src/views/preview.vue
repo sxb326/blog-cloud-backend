@@ -37,6 +37,7 @@
                         <span><el-icon class="stat-icon"><View/></el-icon></span>
                         <span>{{ blog.clickCount }}</span>
                     </div>
+                    <el-button v-if="blog.isAuthor" type="primary" text @click="edit">编辑</el-button>
                 </div>
             </div>
             <v-md-preview ref="previewRef" :text="blog.content"></v-md-preview>
@@ -226,6 +227,11 @@ const refreshCollect = () => {
         blog.collected = collectCount >= blog.collectCount;
         blog.collectCount = collectCount;
     })
+}
+
+//编辑文章
+const edit = () => {
+    router.push('/editor/' + blog.uid)
 }
 </script>
 

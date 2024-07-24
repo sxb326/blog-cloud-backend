@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.xb.blog.common.constants.Result;
 import com.xb.blog.web.common.utils.IpUtil;
+import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.CommentService;
 import com.xb.blog.web.vo.BlogPreviewVo;
@@ -49,6 +50,7 @@ public class PreviewController {
                 //更新文章的点击数
                 blogService.updateClickCount(id, 1L);
             }
+            vo.setIsAuthor(vo.getAuthorId().equals(UserUtil.getUserId()));
             return Result.success(vo);
         }
         return Result.redirect("文章不存在");

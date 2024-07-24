@@ -62,6 +62,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         //删除草稿表
         draftService.removeById(vo.getUid());
 
+        //清除首页缓存
+        redisTemplate.delete(redisTemplate.keys("HOME_BLOG_LIST_DATA_*"));
     }
 
     /**

@@ -62,4 +62,8 @@ public class BlogPreviewVo implements Serializable {
      * 是否已收藏
      */
     private Boolean collected;
+    /**
+     * 当前登录用户是否为该文章作者
+     */
+    private Boolean isAuthor;
 }
