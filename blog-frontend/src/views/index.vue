@@ -56,16 +56,14 @@
             </el-main>
         </el-container>
     </div>
-    <loginForm ref="loginFormRef" @check-login-status="getAuthUser"></loginForm>
+    <loginForm ref="loginFormRef" @refresh-page="refreshPage()"></loginForm>
 </template>
 
 <script setup>
 import {ElMessage} from 'element-plus'
-import {Search, Edit} from '@element-plus/icons-vue';
-import {onMounted, reactive, ref} from 'vue';
-import {getCurrentInstance} from 'vue';
+import {Edit, Search} from '@element-plus/icons-vue';
+import {getCurrentInstance, onMounted, reactive, ref} from 'vue';
 import {localStorage} from "@/utils/storage";
-import loginForm from '@/components/login/LoginForm.vue'
 import request from "@/utils/request.js";
 
 const {proxy} = getCurrentInstance();
@@ -114,11 +112,11 @@ function doSearch() {
 //注销
 const logout = () => {
     localStorage.remove('BLOG_TOKEN')
-    getAuthUser()
     ElMessage({
         message: '注销成功',
         type: 'success',
     })
+    refreshPage()
 }
 
 const openEditor = () => {
@@ -127,6 +125,9 @@ const openEditor = () => {
     })
 }
 
+const refreshPage = () => {
+    window.location.reload()
+}
 </script>
 
 <style scoped>

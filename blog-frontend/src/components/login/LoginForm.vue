@@ -30,7 +30,7 @@ defineExpose({
 
 let form = reactive({})
 
-const emit = defineEmits(['check-login-status'])
+const emit = defineEmits(['refresh-page'])
 const rules = reactive({
     username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
     password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
@@ -50,7 +50,7 @@ const login = () => {
                     message: message,
                     type: 'success',
                 })
-                emit('check-login-status')
+                emit('refresh-page')
                 close();
                 return;
             }
