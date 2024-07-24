@@ -42,7 +42,12 @@
             <v-md-preview ref="previewRef" :text="blog.content"></v-md-preview>
         </el-main>
         <el-aside width="300px" class="aside-container right">
-            <div class="authorDiv">作者信息</div>
+            <div class="authorDiv">
+                <div class="authorInfo">
+                    <el-avatar :size="45" :src="pictureUrl + author.picUid" class="centered-item avatar"/>
+                    <div class="authorNickName">{{ author.nickName }}</div>
+                </div>
+            </div>
             <div class="directoryDiv" ref="directoryRef">
                 <div v-for="anchor in titles" :key="anchor"
                      @click="directoryClick(anchor)" :id="anchor.id" class="directory-div"
@@ -69,8 +74,10 @@ import FavoriteForm from "@/components/favorite/FavoriteForm.vue";
 
 const route = useRoute();
 const router = useRouter();
+const pictureUrl = ref(import.meta.env.VITE_APP_SERVICE_API + "/picture/");
 
 let blog = reactive({})
+let author = reactive({})
 let loading = ref(false)
 let titles = ref([])
 
@@ -91,6 +98,10 @@ const getBlog = () => {
             }
             Object.assign(blog, result.data);
             nextTick(() => {
+                //成功获取到文章内容，调用接口查询作者信息
+                request.get('/auth/getUserInfo/' + blog.authorId).then(result => {
+                    Object.assign(author, result.data)
+                })
                 directoryInit()
                 loading.value = false
             })
@@ -281,14 +292,27 @@ body {
     background-color: #FFF;
     border-radius: 5px;
     margin-bottom: 20px;
-    height: calc(100vh - 80vh);
+    height: calc(100vh - 85vh);
+    display: flex;
+    align-items: center;
+}
+
+.authorInfo {
+    align-items: center;
+    display: flex;
+    margin-left: 30px;
+    cursor: pointer;
+}
+
+.authorNickName {
+    margin-left: 10px;
 }
 
 .directoryDiv {
     width: 100%;
     background-color: #FFF;
     border-radius: 5px;
-    height: calc(100vh - 50vh);
+    height: calc(100vh - 45vh);
     text-align: left;
     overflow-y: auto;
     overflow-x: hidden;
