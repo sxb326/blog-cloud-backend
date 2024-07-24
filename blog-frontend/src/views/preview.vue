@@ -215,7 +215,16 @@ const favoriteRef = ref()
 
 //打开收藏夹
 const collect = (blogId) => {
-    favoriteRef.value.open(blogId)
+    request.get("/auth/checkLoginStatus").then(result => {
+        if (!result.data) {
+            ElMessage({
+                message: '请先登录',
+                type: 'warning',
+            });
+            return;
+        }
+        favoriteRef.value.open(blogId)
+    })
 }
 
 const debounceCollect = debounce(collect, 200)
