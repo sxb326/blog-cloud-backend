@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.xb.blog</groupId>
-        <artifactId>blog-cloud</artifactId>
+        <artifactId>blog-cloud-backend</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
