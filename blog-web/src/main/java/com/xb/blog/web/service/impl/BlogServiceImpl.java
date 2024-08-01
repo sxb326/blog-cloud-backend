@@ -5,9 +5,11 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xb.blog.common.pojo.BlogDocument;
 import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.BlogDao;
 import com.xb.blog.web.entity.BlogEntity;
+import com.xb.blog.web.feign.SearchFeignService;
 import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.BlogTagService;
 import com.xb.blog.web.service.DraftService;
@@ -39,6 +41,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
     private BlogTagService blogTagService;
 
     @Autowired
+    private SearchFeignService searchFeignService;
+
+    @Autowired
     private StringRedisTemplate redisTemplate;
 
     /**
@@ -61,6 +66,12 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
 
         //删除草稿表
         draftService.removeById(vo.getUid());
+
+        //调用检索服务，将博客检索信息上传到es
+        BlogDocument dto = new BlogDocument();
+        dto.setUid(vo.getUid());
+        dto.setTitle(vo.getTitle());
+        searchFeignService.publish(dto);
 
         //清除首页缓存
         redisTemplate.delete(redisTemplate.keys("HOME_BLOG_LIST_DATA_*"));
