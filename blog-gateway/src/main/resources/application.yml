@@ -32,13 +32,22 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
-        # 文件服务
+        # 图片服务
         - id: picture_route
           uri: lb://blog-picture
           predicates:
             - Path=/api/picture/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
+
+        # 检索服务
+        - id: search_route
+          uri: lb://blog-search
+          predicates:
+            - Path=/api/search/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
   config:
     import: application.yml
 
