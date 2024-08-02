@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface SearchFeignService {
 
     @PostMapping("/search/blog/publish")
-    Result publish(@RequestBody BlogDocument dto);
+    Result publish(@RequestBody BlogDocument doc);
 }

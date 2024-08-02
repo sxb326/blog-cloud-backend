@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xb.blog.web.dao.BlogDao">
-    <select id="listBlog" resultType="com.xb.blog.web.vo.BlogListVo">
+    <select id="listBlog" resultType="com.xb.blog.common.pojo.BlogDocument">
         SELECT
             b.uid,
             b.title,
@@ -67,5 +67,19 @@
         select collect_count
         from t_blog
         where uid = #{blogId}
+    </select>
+    <select id="getBlogDocumentByBlogId" resultType="com.xb.blog.common.pojo.BlogDocument">
+        SELECT b.uid,
+               b.title,
+               b.summary,
+               b.pic_uid                  picUid,
+               IFNULL(b.click_count, 0)   clickCount,
+               IFNULL(b.like_count, 0)    likeCount,
+               IFNULL(b.collect_count, 0) collectCount,
+               u.uid                      authorId,
+               u.nick_name                authorName
+        FROM t_blog b
+                 LEFT JOIN t_user u ON b.author = u.uid
+        WHERE b.status = 1 AND b.uid = #{blogId}
     </select>
 </mapper>

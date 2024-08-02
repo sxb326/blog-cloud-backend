@@ -14,7 +14,6 @@ import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.BlogTagService;
 import com.xb.blog.web.service.DraftService;
 import com.xb.blog.web.vo.BlogEditorVo;
-import com.xb.blog.web.vo.BlogListVo;
 import com.xb.blog.web.vo.BlogPreviewVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -68,10 +67,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         draftService.removeById(vo.getUid());
 
         //调用检索服务，将博客检索信息上传到es
-        BlogDocument dto = new BlogDocument();
-        dto.setUid(vo.getUid());
-        dto.setTitle(vo.getTitle());
-        searchFeignService.publish(dto);
+        BlogDocument doc = baseMapper.getBlogDocumentByBlogId(blog.getUid());
+        searchFeignService.publish(doc);
 
         //清除首页缓存
         redisTemplate.delete(redisTemplate.keys("HOME_BLOG_LIST_DATA_*"));
@@ -83,7 +80,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
      * @return
      */
     @Override
-    public List<BlogListVo> listBlog(Long page) {
+    public List<BlogDocument> listBlog(Long page) {
         //处理特殊情况
         if (page == null) page = 1L;
 
@@ -98,7 +95,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         String cache = redisTemplate.opsForValue().get(dataKey);
         if (StrUtil.isNotBlank(cache)) {
             //缓存中有数据 直接返回
-            return JSONUtil.toList(cache, BlogListVo.class);
+            return JSONUtil.toList(cache, BlogDocument.class);
         }
 
         //获取分布式锁
@@ -108,7 +105,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         if (lock) {
             //拿到分布式锁，查询数据库
             try {
-                List<BlogListVo> list = baseMapper.listBlog(page);
+                List<BlogDocument> list = baseMapper.listBlog(page);
                 if (CollUtil.isEmpty(list)) {
                     //设置空值 避免缓存穿透
                     redisTemplate.opsForValue().set(dataKey, JSONUtil.toJsonStr(list), 10, TimeUnit.SECONDS);
@@ -134,7 +131,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
                 cache = redisTemplate.opsForValue().get(dataKey);
                 if (StrUtil.isNotBlank(cache)) {
                     //缓存中有数据 直接返回
-                    return JSONUtil.toList(cache, BlogListVo.class);
+                    return JSONUtil.toList(cache, BlogDocument.class);
                 }
 
             } catch (InterruptedException exception) {

@@ -1,9 +1,9 @@
 package com.xb.blog.web.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xb.blog.common.pojo.BlogDocument;
 import com.xb.blog.web.entity.BlogEntity;
 import com.xb.blog.web.vo.BlogEditorVo;
-import com.xb.blog.web.vo.BlogListVo;
 import com.xb.blog.web.vo.BlogPreviewVo;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public interface BlogService extends IService<BlogEntity> {
      *
      * @return
      */
-    List<BlogListVo> listBlog(Long page);
+    List<BlogDocument> listBlog(Long page);
 
     /**
      * 根据id获取博客预览数据
