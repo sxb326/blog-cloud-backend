@@ -2,6 +2,7 @@ package com.xb.blog.web.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xb.blog.common.pojo.BlogDocument;
+import com.xb.blog.common.vo.SearchVo;
 import com.xb.blog.web.entity.BlogEntity;
 import com.xb.blog.web.vo.BlogEditorVo;
 import com.xb.blog.web.vo.BlogPreviewVo;
@@ -95,5 +96,14 @@ public interface BlogService extends IService<BlogEntity> {
      * @return
      */
     Long getCollectCount(String id);
+
+    /**
+     * 根据传入的搜索关键字以及分页参数 返回查询数据
+     *
+     * @param keyword
+     * @param page
+     * @return
+     */
+    SearchVo search(String keyword, Long page);
 }
 

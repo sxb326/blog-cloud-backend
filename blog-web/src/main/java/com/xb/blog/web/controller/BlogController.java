@@ -3,6 +3,7 @@ package com.xb.blog.web.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xb.blog.common.constants.Result;
+import com.xb.blog.common.vo.SearchVo;
 import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.entity.BlogEntity;
 import com.xb.blog.web.entity.BlogTagEntity;
@@ -99,5 +100,18 @@ public class BlogController {
     public Result collectCount(@PathVariable("id") String id) {
         Long count = blogService.getCollectCount(id);
         return Result.success(count);
+    }
+
+    /**
+     * 根据传入的搜索关键字以及分页参数 返回查询数据
+     *
+     * @param keyword
+     * @param page
+     * @return
+     */
+    @GetMapping("/search")
+    public Result search(String keyword, Long page) {
+        SearchVo vo = blogService.search(keyword, page);
+        return Result.success(vo);
     }
 }

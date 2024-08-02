@@ -4,8 +4,10 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xb.blog.common.pojo.BlogDocument;
+import com.xb.blog.common.vo.SearchVo;
 import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.BlogDao;
 import com.xb.blog.web.entity.BlogEntity;
@@ -236,5 +238,27 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
     @Override
     public Long getCollectCount(String id) {
         return baseMapper.getCollectCountByBlogId(id);
+    }
+
+    /**
+     * 根据传入的搜索关键字以及分页参数 返回查询数据
+     *
+     * @param keyword
+     * @param page
+     * @return
+     */
+    @Override
+    public SearchVo search(String keyword, Long page) {
+        if (page == null) page = 1L;
+        page = (page - 1L) * 10L;
+
+        Integer total = baseMapper.selectCount(new QueryWrapper<BlogEntity>().eq("status", 1).like("title", keyword));
+        List<BlogDocument> list = baseMapper.search(keyword, page);
+
+        SearchVo vo = new SearchVo();
+        vo.setKeyword(keyword);
+        vo.setTotal(total.longValue());
+        vo.setList(list);
+        return vo;
     }
 }

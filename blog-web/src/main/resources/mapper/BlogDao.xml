@@ -79,4 +79,19 @@
                  LEFT JOIN t_user u ON b.author = u.uid
         WHERE b.status = 1 AND b.uid = #{blogId}
     </select>
+    <select id="search" resultType="com.xb.blog.common.pojo.BlogDocument">
+        SELECT b.uid,
+               b.title,
+               b.summary,
+               b.pic_uid                  picUid,
+               u.uid                      authorId,
+               u.nick_name                authorName
+        FROM t_blog b
+                 LEFT JOIN t_user u ON b.author = u.uid
+        WHERE b.status = 1 AND b.title like CONCAT('%', #{keyword}, '%')
+        ORDER BY b.create_time DESC
+        <if test="page != null">
+            limit 10 OFFSET #{page}
+        </if>
+    </select>
 </mapper>

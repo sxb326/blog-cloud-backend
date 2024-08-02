@@ -97,4 +97,13 @@ public interface BlogDao extends BaseMapper<BlogEntity> {
      * @return
      */
     BlogDocument getBlogDocumentByBlogId(@Param("blogId") String blogId);
+
+    /**
+     * 根据传入的搜索关键字以及分页参数 返回查询数据
+     *
+     * @param keyword
+     * @param page
+     * @return
+     */
+    List<BlogDocument> search(@Param("keyword") String keyword, @Param("page") Long page);
 }
