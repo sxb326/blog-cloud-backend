@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient("blog-search")
 public interface SearchFeignService {
 
-    @PostMapping("/search/blog/publish")
+    @PostMapping("/publish")
     Result publish(@RequestBody BlogDocument doc);
 }
