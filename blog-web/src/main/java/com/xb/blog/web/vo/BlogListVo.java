@@ -1,14 +1,14 @@
-package com.xb.blog.common.pojo;
+package com.xb.blog.web.vo;
 
 import lombok.Data;
 
 import java.io.Serializable;
 
 /**
- * 博客发布时，上传到es的数据对象
+ * 首页博客列表数据Vo
  */
 @Data
-public class BlogDocument implements Serializable {
+public class BlogListVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -28,6 +28,18 @@ public class BlogDocument implements Serializable {
      */
     private String picUid;
     /**
+     * 点击数
+     */
+    private Long clickCount;
+    /**
+     * 点赞数
+     */
+    private Long likeCount;
+    /**
+     * 收藏数
+     */
+    private Long collectCount;
+    /**
      * 作者ID
      */
     private String authorId;
@@ -35,4 +47,12 @@ public class BlogDocument implements Serializable {
      * 作者名称
      */
     private String authorName;
+    /**
+     * 标签名称
+     */
+    private String tagNameStr;
+    /**
+     * 标签名称
+     */
+    private String[] tagNameList;
 }

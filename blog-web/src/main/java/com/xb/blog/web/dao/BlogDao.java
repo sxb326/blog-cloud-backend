@@ -3,6 +3,7 @@ package com.xb.blog.web.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xb.blog.common.pojo.BlogDocument;
 import com.xb.blog.web.entity.BlogEntity;
+import com.xb.blog.web.vo.BlogListVo;
 import com.xb.blog.web.vo.BlogPreviewVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,7 +24,7 @@ public interface BlogDao extends BaseMapper<BlogEntity> {
      *
      * @return
      */
-    List<BlogDocument> listBlog(@Param("page") Long page);
+    List<BlogListVo> listBlog(@Param("page") Long page);
 
     /**
      * 博客预览时 查询出预览数据

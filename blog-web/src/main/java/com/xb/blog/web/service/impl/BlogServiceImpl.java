@@ -16,6 +16,7 @@ import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.BlogTagService;
 import com.xb.blog.web.service.DraftService;
 import com.xb.blog.web.vo.BlogEditorVo;
+import com.xb.blog.web.vo.BlogListVo;
 import com.xb.blog.web.vo.BlogPreviewVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -82,7 +83,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
      * @return
      */
     @Override
-    public List<BlogDocument> listBlog(Long page) {
+    public List<BlogListVo> listBlog(Long page) {
         //处理特殊情况
         if (page == null) page = 1L;
 
@@ -97,7 +98,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         String cache = redisTemplate.opsForValue().get(dataKey);
         if (StrUtil.isNotBlank(cache)) {
             //缓存中有数据 直接返回
-            return JSONUtil.toList(cache, BlogDocument.class);
+            return JSONUtil.toList(cache, BlogListVo.class);
         }
 
         //获取分布式锁
@@ -107,11 +108,13 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         if (lock) {
             //拿到分布式锁，查询数据库
             try {
-                List<BlogDocument> list = baseMapper.listBlog(page);
+                List<BlogListVo> list = baseMapper.listBlog(page);
                 if (CollUtil.isEmpty(list)) {
                     //设置空值 避免缓存穿透
                     redisTemplate.opsForValue().set(dataKey, JSONUtil.toJsonStr(list), 10, TimeUnit.SECONDS);
                 } else {
+                    //处理标签数据
+                    list.forEach(vo -> vo.setTagNameList(vo.getTagNameStr().split(",")));
                     redisTemplate.opsForValue().set(dataKey, JSONUtil.toJsonStr(list), 10, TimeUnit.MINUTES);
                 }
                 return list;
@@ -133,7 +136,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
                 cache = redisTemplate.opsForValue().get(dataKey);
                 if (StrUtil.isNotBlank(cache)) {
                     //缓存中有数据 直接返回
-                    return JSONUtil.toList(cache, BlogDocument.class);
+                    return JSONUtil.toList(cache, BlogListVo.class);
                 }
 
             } catch (InterruptedException exception) {
