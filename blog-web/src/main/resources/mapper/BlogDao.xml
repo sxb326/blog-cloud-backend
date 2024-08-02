@@ -73,9 +73,6 @@
                b.title,
                b.summary,
                b.pic_uid                  picUid,
-               IFNULL(b.click_count, 0)   clickCount,
-               IFNULL(b.like_count, 0)    likeCount,
-               IFNULL(b.collect_count, 0) collectCount,
                u.uid                      authorId,
                u.nick_name                authorName
         FROM t_blog b
