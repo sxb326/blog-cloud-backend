@@ -3,6 +3,7 @@ package com.xb.blog.web.vo;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 首页博客列表数据Vo
@@ -50,9 +51,5 @@ public class BlogListVo implements Serializable {
     /**
      * 标签名称
      */
-    private String tagNameStr;
-    /**
-     * 标签名称
-     */
-    private String[] tagNameList;
+    private List<String> tagNameList;
 }

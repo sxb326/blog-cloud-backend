@@ -113,8 +113,6 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
                     //设置空值 避免缓存穿透
                     redisTemplate.opsForValue().set(dataKey, JSONUtil.toJsonStr(list), 10, TimeUnit.SECONDS);
                 } else {
-                    //处理标签数据
-                    list.forEach(vo -> vo.setTagNameList(vo.getTagNameStr().split(",")));
                     redisTemplate.opsForValue().set(dataKey, JSONUtil.toJsonStr(list), 10, TimeUnit.MINUTES);
                 }
                 return list;

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xb.blog.web.dao.BlogDao">
-    <select id="listBlog" resultType="com.xb.blog.web.vo.BlogListVo">
+    <resultMap id="BlogListVo" type="com.xb.blog.web.vo.BlogListVo">
+        <result column="tagNameList" property="tagNameList" typeHandler="com.xb.blog.web.config.mybatis.typeHandler.ConvertCommaSeparatedStrToListTypeHandler"/>
+    </resultMap>
+    <select id="listBlog" resultMap="BlogListVo">
         SELECT
             b.uid,
             b.title,
@@ -12,7 +15,7 @@
             IFNULL(b.collect_count, 0) collectCount,
             u.uid authorId,
             u.nick_name authorName,
-            GROUP_CONCAT(t.name) tagNameStr
+            GROUP_CONCAT(t.name) tagNameList
         FROM
             t_blog b
                 LEFT JOIN t_user u ON b.author = u.uid

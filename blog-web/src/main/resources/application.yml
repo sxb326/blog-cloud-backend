@@ -28,3 +28,6 @@ spring:
   redis:
     host: localhost
     port: 6379
+# 定义类型处理器的路径
+mybatis-plus:
+  type-handlers-package: com.xb.blog.web.config.mybatis.typeHandler
