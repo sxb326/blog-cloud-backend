@@ -24,7 +24,7 @@ public interface BlogDao extends BaseMapper<BlogEntity> {
      *
      * @return
      */
-    List<BlogListVo> listBlog(@Param("page") Long page);
+    List<BlogListVo> listBlog(@Param("page") Long page, @Param("orderType") String orderType);
 
     /**
      * 博客预览时 查询出预览数据

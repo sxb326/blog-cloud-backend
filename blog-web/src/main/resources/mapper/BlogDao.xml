@@ -10,9 +10,9 @@
             b.title,
             b.summary,
             b.pic_uid picUid,
-            IFNULL(b.click_count, 0) clickCount,
-            IFNULL(b.like_count, 0) likeCount,
-            IFNULL(b.collect_count, 0) collectCount,
+            COALESCE(b.click_count, 0) clickCount,
+            COALESCE(b.like_count, 0) likeCount,
+            COALESCE(b.collect_count, 0) collectCount,
             u.uid authorId,
             u.nick_name authorName,
             GROUP_CONCAT(t.name) tagNameList
@@ -24,11 +24,18 @@
         WHERE
             b.status = 1
         GROUP BY b.uid, b.title, b.summary, b.pic_uid, b.click_count, b.like_count, b.collect_count, u.uid, u.nick_name
-        ORDER BY
-            b.create_time DESC
-        <if test="page != null">
-            limit 10 OFFSET #{page}
-        </if>
+        <choose>
+            <when test="orderType == 'recommend'">
+                ORDER BY COALESCE(b.click_count,0) * 0.1 + COALESCE(b.like_count,0) * 0.3 + COALESCE(b.comment_count,0) * 0.2 + COALESCE(b.collect_count,0) * 0.4 DESC
+            </when>
+            <when test="orderType == 'newest'">
+                ORDER BY b.create_time DESC
+            </when>
+            <otherwise>
+                ORDER BY b.create_time DESC
+            </otherwise>
+        </choose>
+        limit 10 OFFSET #{page}
     </select>
     <select id="getBlogPreviewById" parameterType="String" resultType="com.xb.blog.web.vo.BlogPreviewVo">
         SELECT

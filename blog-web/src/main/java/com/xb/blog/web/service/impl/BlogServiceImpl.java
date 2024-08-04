@@ -83,13 +83,16 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
      * @return
      */
     @Override
-    public List<BlogListVo> listBlog(Long page) {
+    public List<BlogListVo> listBlog(Long page, String orderType) {
         //处理特殊情况
         if (page == null) page = 1L;
 
+        //处理排序方式
+        String orderTypeUpper = StrUtil.isNotBlank(orderType) ? orderType.toUpperCase() : "";
+
         //定义缓存Keu格式（每页数据单独缓存，且固定每页条数为10条）
-        String lockKey = "HOME_BLOG_LIST_LOCK_SIZE_10_PAGE_" + page;
-        String dataKey = "HOME_BLOG_LIST_DATA_SIZE_10_PAGE_" + page;
+        String lockKey = "HOME_BLOG_LIST_LOCK_SIZE_10_ORDER_BY_" + orderTypeUpper + "_PAGE_" + page;
+        String dataKey = "HOME_BLOG_LIST_DATA_SIZE_10_ORDER_BY_" + orderTypeUpper + "_PAGE_" + page;
 
         //换算分页参数（使用OFFSET关键字进行分页，故此处起始页码应为0）
         page = (page - 1L) * 10L;
@@ -108,7 +111,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         if (lock) {
             //拿到分布式锁，查询数据库
             try {
-                List<BlogListVo> list = baseMapper.listBlog(page);
+                List<BlogListVo> list = baseMapper.listBlog(page, orderType);
                 if (CollUtil.isEmpty(list)) {
                     //设置空值 避免缓存穿透
                     redisTemplate.opsForValue().set(dataKey, JSONUtil.toJsonStr(list), 10, TimeUnit.SECONDS);
