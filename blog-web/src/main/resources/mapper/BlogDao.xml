@@ -23,6 +23,9 @@
                 LEFT JOIN t_tag t ON bt.tag_uid = t.uid AND t.status = 1
         WHERE
             b.status = 1
+        <if test="categoryUid != ''">
+            AND b.category_uid = #{categoryUid}
+        </if>
         GROUP BY b.uid, b.title, b.summary, b.pic_uid, b.click_count, b.like_count, b.collect_count, u.uid, u.nick_name
         <choose>
             <when test="orderType == 'recommend'">

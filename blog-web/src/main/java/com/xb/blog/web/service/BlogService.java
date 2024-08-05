@@ -30,7 +30,7 @@ public interface BlogService extends IService<BlogEntity> {
      *
      * @return
      */
-    List<BlogListVo> listBlog(Long page, String orderType);
+    List<BlogListVo> listBlog(Long page, String categoryUid, String orderType);
 
     /**
      * 根据id获取博客预览数据
