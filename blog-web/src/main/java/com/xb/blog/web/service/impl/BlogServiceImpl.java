@@ -71,8 +71,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         draftService.removeById(vo.getUid());
 
         //调用检索服务，将博客检索信息上传到es
-        BlogDocument doc = baseMapper.getBlogDocumentByBlogId(blog.getUid());
-        searchFeignService.publish(doc);
+        updateBlogDocument(blog.getUid());
     }
 
     /**

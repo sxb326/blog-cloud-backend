@@ -63,4 +63,8 @@ public class CommentListVo implements Serializable {
      * 当前评论用户是否为作者
      */
     private Boolean isAuthor;
+    /**
+     * 当前回复对象是否为作者
+     */
+    private Boolean isReplyToAuthor;
 }
