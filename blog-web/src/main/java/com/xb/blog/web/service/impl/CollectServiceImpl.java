@@ -36,21 +36,23 @@ public class CollectServiceImpl extends ServiceImpl<CollectDao, CollectEntity> i
             if (deleteCount > 0) {
                 blogService.updateCollectCount(blogId, -1L);
             }
-            return;
-        }
-        //新增收藏场景
-        Boolean exist = baseMapper.exist(blogId, userId, favoriteId);
-        if (!exist) {
-            int deleteCount = baseMapper.delete(blogId, userId, null);
-            if (deleteCount == 0) {
-                blogService.updateCollectCount(blogId, 1L);
+        } else {
+            //新增收藏场景
+            Boolean exist = baseMapper.exist(blogId, userId, favoriteId);
+            if (!exist) {
+                int deleteCount = baseMapper.delete(blogId, userId, null);
+                if (deleteCount == 0) {
+                    blogService.updateCollectCount(blogId, 1L);
+                }
+                //保存收藏数据
+                CollectEntity entity = new CollectEntity();
+                entity.setBlogUid(blogId);
+                entity.setFavoriteUid(favoriteId);
+                entity.setUserUid(userId);
+                save(entity);
             }
-            //保存收藏数据
-            CollectEntity entity = new CollectEntity();
-            entity.setBlogUid(blogId);
-            entity.setFavoriteUid(favoriteId);
-            entity.setUserUid(userId);
-            save(entity);
         }
+        //更新es中的数据
+        blogService.updateBlogDocument(blogId);
     }
 }

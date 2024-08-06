@@ -7,6 +7,7 @@ import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.CommentDao;
 import com.xb.blog.web.dto.CommentDto;
 import com.xb.blog.web.entity.CommentEntity;
+import com.xb.blog.web.feign.SearchFeignService;
 import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.CommentService;
 import com.xb.blog.web.vo.CommentListVo;
@@ -27,6 +28,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
 
     @Autowired
     private BlogService blogService;
+
+    @Autowired
+    private SearchFeignService searchFeignService;
 
     /**
      * 根据博客id获取评论数据
@@ -107,6 +111,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
 
         //更新博客评论数
         blogService.updateCommentCount(vo.getBlogUid(), 1L);
+
+        //更新es中的数据
+        blogService.updateBlogDocument(vo.getBlogUid());
     }
 
     /**

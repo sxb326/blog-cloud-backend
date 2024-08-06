@@ -18,6 +18,7 @@ import com.xb.blog.web.service.DraftService;
 import com.xb.blog.web.vo.BlogEditorVo;
 import com.xb.blog.web.vo.BlogListVo;
 import com.xb.blog.web.vo.BlogPreviewVo;
+import com.xb.blog.web.vo.BlogTopVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -72,9 +73,6 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         //调用检索服务，将博客检索信息上传到es
         BlogDocument doc = baseMapper.getBlogDocumentByBlogId(blog.getUid());
         searchFeignService.publish(doc);
-
-        //清除首页缓存
-        redisTemplate.delete(redisTemplate.keys("HOME_BLOG_LIST_DATA_*"));
     }
 
     /**
@@ -88,15 +86,15 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         if (page == null) page = 1L;
 
         //处理文章分类
-        String category = StrUtil.isNotBlank(categoryUid) ? "_" + categoryUid : "ALL";
+        String category = StrUtil.isNotBlank(categoryUid) ? "_" + categoryUid : "_ALL";
 
         //处理排序方式
         String orderTypeUpper = StrUtil.isNotBlank(orderType) ? orderType.toUpperCase() : "";
 
 
         //定义缓存Keu格式（每页数据单独缓存，且固定每页条数为10条）
-        String lockKey = "HOME_BLOG_LIST_LOCK_SIZE_10_CATEGORY" + category + "_ORDER_BY_" + orderTypeUpper + "_PAGE_" + page;
-        String dataKey = "HOME_BLOG_LIST_DATA_SIZE_10_CATEGORY" + category + "_ORDER_BY_" + orderTypeUpper + "_PAGE_" + page;
+        String lockKey = "HOME_BLOG_LIST_LOCK_CATEGORY" + category + "_ORDER_BY_" + orderTypeUpper + "_SIZE_10_PAGE_" + page;
+        String dataKey = "HOME_BLOG_LIST_DATA_CATEGORY" + category + "_ORDER_BY_" + orderTypeUpper + "_SIZE_10_PAGE_" + page;
 
         //换算分页参数（使用OFFSET关键字进行分页，故此处起始页码应为0）
         page = (page - 1L) * 10L;
@@ -120,7 +118,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
                     //设置空值 避免缓存穿透
                     redisTemplate.opsForValue().set(dataKey, JSONUtil.toJsonStr(list), 10, TimeUnit.SECONDS);
                 } else {
-                    redisTemplate.opsForValue().set(dataKey, JSONUtil.toJsonStr(list), 10, TimeUnit.MINUTES);
+                    redisTemplate.opsForValue().set(dataKey, JSONUtil.toJsonStr(list), 1, TimeUnit.MINUTES);
                 }
                 return list;
             } finally {
@@ -268,5 +266,27 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         vo.setTotal(total.longValue());
         vo.setList(list);
         return vo;
+    }
+
+    /**
+     * 根据博客id 封装BlogDocument 用于 发送给es保存数据 以及 检索页面返回
+     *
+     * @param blogId
+     * @return
+     */
+    @Override
+    public void updateBlogDocument(String blogId) {
+        BlogDocument doc = baseMapper.getBlogDocumentByBlogId(blogId);
+        searchFeignService.publish(doc);
+    }
+
+    /**
+     * 获取文章推荐排行前10的文章
+     *
+     * @return
+     */
+    @Override
+    public List<BlogTopVo> getTop10List() {
+        return baseMapper.getTop10List();
     }
 }

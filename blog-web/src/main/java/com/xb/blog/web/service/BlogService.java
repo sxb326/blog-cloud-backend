@@ -1,12 +1,12 @@
 package com.xb.blog.web.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xb.blog.common.pojo.BlogDocument;
 import com.xb.blog.common.vo.SearchVo;
 import com.xb.blog.web.entity.BlogEntity;
 import com.xb.blog.web.vo.BlogEditorVo;
 import com.xb.blog.web.vo.BlogListVo;
 import com.xb.blog.web.vo.BlogPreviewVo;
+import com.xb.blog.web.vo.BlogTopVo;
 
 import java.util.List;
 
@@ -106,5 +106,20 @@ public interface BlogService extends IService<BlogEntity> {
      * @return
      */
     SearchVo search(String keyword, Long page);
+
+    /**
+     * 根据博客id 获取到最新数据 更新es中的数据
+     *
+     * @param blogId
+     * @return
+     */
+    void updateBlogDocument(String blogId);
+
+    /**
+     * 获取文章推荐排行前10的文章
+     *
+     * @return
+     */
+    List<BlogTopVo> getTop10List();
 }
 

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.LikeDao;
 import com.xb.blog.web.entity.LikeEntity;
+import com.xb.blog.web.feign.SearchFeignService;
 import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.CommentService;
 import com.xb.blog.web.service.LikeService;
@@ -23,6 +24,9 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private SearchFeignService searchFeignService;
 
     /**
      * 保存点赞行为
@@ -52,7 +56,11 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
         //如果当前type=1 更新博客点赞数；如果type=2 更新评论点赞数
         int type = vo.getType();
         if (type == 1) {
+            //更新数据库
             blogService.updateLikeCount(vo.getObjUid(), status ? 1L : -1L);
+            //更新es
+            blogService.updateBlogDocument(vo.getObjUid());
+            //返回最新点赞数
             return blogService.getLikeCount(vo.getObjUid());
         } else if (type == 2) {
             commentService.updateLikeCount(vo.getObjUid(), status ? 1L : -1L);

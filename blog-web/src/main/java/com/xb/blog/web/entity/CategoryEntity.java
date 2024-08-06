@@ -21,6 +21,10 @@ public class CategoryEntity implements Serializable {
      */
     private String name;
     /**
+     * 图标
+     */
+    private String icon;
+    /**
      * 逻辑删除 1：不删除，0：删除
      */
     @TableLogic(value = "1", delval = "0")

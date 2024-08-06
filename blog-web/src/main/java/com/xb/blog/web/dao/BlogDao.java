@@ -5,6 +5,7 @@ import com.xb.blog.common.pojo.BlogDocument;
 import com.xb.blog.web.entity.BlogEntity;
 import com.xb.blog.web.vo.BlogListVo;
 import com.xb.blog.web.vo.BlogPreviewVo;
+import com.xb.blog.web.vo.BlogTopVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -107,4 +108,11 @@ public interface BlogDao extends BaseMapper<BlogEntity> {
      * @return
      */
     List<BlogDocument> search(@Param("keyword") String keyword, @Param("page") Long page);
+
+    /**
+     * 获取文章推荐排行前10的文章
+     *
+     * @return
+     */
+    List<BlogTopVo> getTop10List();
 }
