@@ -59,4 +59,8 @@ public class CommentListVo implements Serializable {
      * 下级评论集合
      */
     private List<CommentListVo> subComments;
+    /**
+     * 当前评论用户是否为作者
+     */
+    private Boolean isAuthor;
 }
