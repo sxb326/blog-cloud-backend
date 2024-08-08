@@ -57,7 +57,7 @@ public class PictureController {
     @PostMapping("/upload")
     public Result upload(MultipartFile file) {
         //todo 判断当前图片保存方式，这里测试方便 先默认为本地存储
-        String path = "D:/blog-cloud-img/" + LocalDate.now() + "/" + file.getOriginalFilename();
+        String path = "C:/blog-cloud-img/" + LocalDate.now() + "/" + file.getOriginalFilename();
         File f = new File(path);
         try {
             if (!f.exists()) {

@@ -1,0 +1,4 @@
+message:
+  exchange-name: message.exchange
+  routing-key-name: message.routing.key
+  queue-name: message.queue
