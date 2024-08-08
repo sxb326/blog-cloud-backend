@@ -1,7 +1,7 @@
 package com.xb.blog.web.common.interceptor;
 
 import cn.hutool.core.util.StrUtil;
-import com.xb.blog.common.utils.AuthUtil;
+import com.xb.blog.common.core.utils.AuthUtil;
 import com.xb.blog.web.common.utils.UserUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;

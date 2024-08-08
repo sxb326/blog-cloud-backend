@@ -1,7 +1,8 @@
 package com.xb.blog.web.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xb.blog.common.vo.SearchVo;
+import com.xb.blog.common.core.pojo.BlogDocument;
+import com.xb.blog.common.core.vo.SearchVo;
 import com.xb.blog.web.entity.BlogEntity;
 import com.xb.blog.web.vo.BlogEditorVo;
 import com.xb.blog.web.vo.BlogListVo;
@@ -113,7 +114,7 @@ public interface BlogService extends IService<BlogEntity> {
      * @param blogId
      * @return
      */
-    void updateBlogDocument(String blogId);
+    BlogDocument getBlogDocumentByBlogId(String blogId);
 
     /**
      * 获取文章推荐排行前10的文章

@@ -2,8 +2,8 @@ package com.xb.blog.search.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.xb.blog.common.pojo.BlogDocument;
-import com.xb.blog.common.vo.SearchVo;
+import com.xb.blog.common.core.pojo.BlogDocument;
+import com.xb.blog.common.core.vo.SearchVo;
 import com.xb.blog.search.service.SearchService;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;

@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>com.xb.blog</groupId>
-            <artifactId>blog-common</artifactId>
+            <artifactId>blog-common-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -34,6 +34,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <dependencyManagement>
         <dependencies>
             <dependency>

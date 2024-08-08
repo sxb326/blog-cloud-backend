@@ -1,6 +1,6 @@
 package com.xb.blog.picture.controller;
 
-import com.xb.blog.common.constants.Result;
+import com.xb.blog.common.core.constants.Result;
 import com.xb.blog.picture.entity.PictureEntity;
 import com.xb.blog.picture.service.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;

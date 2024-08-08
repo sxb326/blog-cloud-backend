@@ -1,9 +1,9 @@
 package com.xb.blog.search.service.impl;
 
 import cn.hutool.json.JSONUtil;
-import com.xb.blog.common.constants.Result;
-import com.xb.blog.common.pojo.BlogDocument;
-import com.xb.blog.common.vo.SearchVo;
+import com.xb.blog.common.core.constants.Result;
+import com.xb.blog.common.core.pojo.BlogDocument;
+import com.xb.blog.common.core.vo.SearchVo;
 import com.xb.blog.search.feign.BlogFeignService;
 import com.xb.blog.search.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;

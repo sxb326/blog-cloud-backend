@@ -1,7 +1,7 @@
 package com.xb.blog.search.service;
 
 
-import com.xb.blog.common.vo.SearchVo;
+import com.xb.blog.common.core.vo.SearchVo;
 
 /**
  * 检索

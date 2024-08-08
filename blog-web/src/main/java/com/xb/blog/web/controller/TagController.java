@@ -1,8 +1,7 @@
 package com.xb.blog.web.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.xb.blog.common.constants.Result;
-import com.xb.blog.web.entity.CategoryEntity;
+import com.xb.blog.common.core.constants.Result;
 import com.xb.blog.web.entity.TagEntity;
 import com.xb.blog.web.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;

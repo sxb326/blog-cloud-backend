@@ -1,0 +1,33 @@
+# Tomcat
+server:
+  port: 9000
+  servlet:
+    context-path: /message
+# 注册中心 配置中心
+spring:
+  application:
+    name: blog-message
+  cloud:
+    nacos:
+      discovery:
+        # 注册中心地址
+        server-addr: 127.0.0.1:8848
+      config:
+        import-check:
+          enabled: false
+  config:
+    import: application.yml
+  rabbitmq:
+    host: 192.168.56.20
+    port: 5672
+    username: guest
+    password: 123456
+    virtual-host: /
+#      config:
+#        # 配置中心地址
+#        server-addr: 127.0.0.1:8848
+
+message:
+  exchange-name: message.exchange
+  queue-name: message.queue
+  routing-key-name: message.routing.key

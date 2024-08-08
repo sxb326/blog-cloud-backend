@@ -1,7 +1,7 @@
 package com.xb.blog.search.controller;
 
-import com.xb.blog.common.constants.Result;
-import com.xb.blog.common.vo.SearchVo;
+import com.xb.blog.common.core.constants.Result;
+import com.xb.blog.common.core.vo.SearchVo;
 import com.xb.blog.search.service.SearchService;
 import com.xb.blog.search.strategy.SearchServiceStrategy;
 import org.springframework.beans.factory.annotation.Autowired;

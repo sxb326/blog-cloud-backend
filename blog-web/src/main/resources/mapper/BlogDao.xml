@@ -85,7 +85,7 @@
         from t_blog
         where uid = #{blogId}
     </select>
-    <resultMap id="BlogDocument" type="com.xb.blog.common.pojo.BlogDocument">
+    <resultMap id="BlogDocument" type="com.xb.blog.common.core.pojo.BlogDocument">
         <result column="tagNameList" property="tagNameList" typeHandler="com.xb.blog.web.config.mybatis.typeHandler.ConvertCommaSeparatedStrToListTypeHandler"/>
     </resultMap>
     <select id="getBlogDocumentByBlogId" resultMap="BlogDocument">
@@ -105,7 +105,7 @@
                  LEFT JOIN t_tag t ON bt.tag_uid = t.uid AND t.status = 1
         WHERE b.status = 1 AND b.uid = #{blogId}
     </select>
-    <select id="search" resultType="com.xb.blog.common.pojo.BlogDocument">
+    <select id="search" resultType="com.xb.blog.common.core.pojo.BlogDocument">
         SELECT b.uid,
                b.title,
                b.summary,

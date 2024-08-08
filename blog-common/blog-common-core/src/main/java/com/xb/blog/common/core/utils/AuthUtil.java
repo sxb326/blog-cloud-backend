@@ -1,4 +1,4 @@
-package com.xb.blog.common.utils;
+package com.xb.blog.common.core.utils;
 
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;

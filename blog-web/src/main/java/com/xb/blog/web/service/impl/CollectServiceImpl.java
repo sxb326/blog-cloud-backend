@@ -2,9 +2,11 @@ package com.xb.blog.web.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xb.blog.common.core.pojo.BlogDocument;
 import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.CollectDao;
 import com.xb.blog.web.entity.CollectEntity;
+import com.xb.blog.web.feign.SearchFeignService;
 import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.CollectService;
 import com.xb.blog.web.vo.CollectSaveVo;
@@ -18,6 +20,9 @@ public class CollectServiceImpl extends ServiceImpl<CollectDao, CollectEntity> i
 
     @Autowired
     private BlogService blogService;
+
+    @Autowired
+    private SearchFeignService searchFeignService;
 
     /**
      * 收藏文章
@@ -53,6 +58,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectDao, CollectEntity> i
             }
         }
         //更新es中的数据
-        blogService.updateBlogDocument(blogId);
+        BlogDocument doc = blogService.getBlogDocumentByBlogId(blogId);
+        searchFeignService.publish(doc);
     }
 }

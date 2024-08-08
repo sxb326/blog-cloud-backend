@@ -3,10 +3,12 @@ package com.xb.blog.web.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xb.blog.common.core.pojo.BlogDocument;
 import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.LikeDao;
 import com.xb.blog.web.entity.LikeEntity;
 import com.xb.blog.web.feign.SearchFeignService;
+import com.xb.blog.web.publisher.MessagePublisher;
 import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.CommentService;
 import com.xb.blog.web.service.LikeService;
@@ -27,6 +29,9 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
 
     @Autowired
     private SearchFeignService searchFeignService;
+
+    @Autowired
+    private MessagePublisher messagePublisher;
 
     /**
      * 保存点赞行为
@@ -58,8 +63,14 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
         if (type == 1) {
             //更新数据库
             blogService.updateLikeCount(vo.getObjUid(), status ? 1L : -1L);
+
             //更新es
-            blogService.updateBlogDocument(vo.getObjUid());
+            BlogDocument doc = blogService.getBlogDocumentByBlogId(vo.getObjUid());
+            searchFeignService.publish(doc);
+
+            //发送消息
+            messagePublisher.sendMessage("like", "有人点赞了您的文章", userId, doc.getAuthorId());
+
             //返回最新点赞数
             return blogService.getLikeCount(vo.getObjUid());
         } else if (type == 2) {

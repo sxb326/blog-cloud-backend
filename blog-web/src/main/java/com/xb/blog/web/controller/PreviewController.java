@@ -2,9 +2,11 @@ package com.xb.blog.web.controller;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
-import com.xb.blog.common.constants.Result;
+import com.xb.blog.common.core.constants.Result;
+import com.xb.blog.common.core.pojo.BlogDocument;
 import com.xb.blog.web.common.utils.IpUtil;
 import com.xb.blog.web.common.utils.UserUtil;
+import com.xb.blog.web.feign.SearchFeignService;
 import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.CommentService;
 import com.xb.blog.web.vo.BlogPreviewVo;
@@ -33,6 +35,9 @@ public class PreviewController {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    @Autowired
+    private SearchFeignService searchFeignService;
+
     @GetMapping("/{id}")
     public Result getBlogById(HttpServletRequest request, @PathVariable("id") String id) {
         BlogPreviewVo vo = blogService.getBlogPreviewById(id);
@@ -49,6 +54,9 @@ public class PreviewController {
                 vo.setClickCount(vo.getClickCount() + 1);
                 //更新文章的点击数
                 blogService.updateClickCount(id, 1L);
+                //更新es
+                BlogDocument doc = blogService.getBlogDocumentByBlogId(id);
+                searchFeignService.publish(doc);
             }
             vo.setIsAuthor(vo.getAuthorId().equals(UserUtil.getUserId()));
             return Result.success(vo);

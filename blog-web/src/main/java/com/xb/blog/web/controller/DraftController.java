@@ -1,6 +1,6 @@
 package com.xb.blog.web.controller;
 
-import com.xb.blog.common.constants.Result;
+import com.xb.blog.common.core.constants.Result;
 import com.xb.blog.web.service.DraftService;
 import com.xb.blog.web.vo.BlogEditorVo;
 import org.springframework.beans.factory.annotation.Autowired;

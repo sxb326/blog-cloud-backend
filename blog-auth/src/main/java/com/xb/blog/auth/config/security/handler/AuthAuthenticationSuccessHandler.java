@@ -1,15 +1,13 @@
 package com.xb.blog.auth.config.security.handler;
 
-import cn.hutool.jwt.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xb.blog.auth.config.security.model.AuthUser;
-import com.xb.blog.common.constants.Result;
-import com.xb.blog.common.utils.AuthUtil;
+import com.xb.blog.common.core.constants.Result;
+import com.xb.blog.common.core.utils.AuthUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package com.xb.blog.web.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xb.blog.common.pojo.BlogDocument;
+import com.xb.blog.common.core.pojo.BlogDocument;
 import com.xb.blog.web.entity.BlogEntity;
 import com.xb.blog.web.vo.BlogListVo;
 import com.xb.blog.web.vo.BlogPreviewVo;

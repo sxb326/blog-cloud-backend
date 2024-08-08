@@ -1,4 +1,4 @@
-package com.xb.blog.common.constants;
+package com.xb.blog.common.core.constants;
 
 import lombok.Data;
 

@@ -1,8 +1,8 @@
 package com.xb.blog.search.controller;
 
 import cn.hutool.json.JSONUtil;
-import com.xb.blog.common.constants.Result;
-import com.xb.blog.common.pojo.BlogDocument;
+import com.xb.blog.common.core.constants.Result;
+import com.xb.blog.common.core.pojo.BlogDocument;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RequestOptions;

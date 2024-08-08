@@ -6,8 +6,8 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xb.blog.common.pojo.BlogDocument;
-import com.xb.blog.common.vo.SearchVo;
+import com.xb.blog.common.core.pojo.BlogDocument;
+import com.xb.blog.common.core.vo.SearchVo;
 import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.BlogDao;
 import com.xb.blog.web.entity.BlogEntity;
@@ -44,10 +44,10 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
     private BlogTagService blogTagService;
 
     @Autowired
-    private SearchFeignService searchFeignService;
+    private StringRedisTemplate redisTemplate;
 
     @Autowired
-    private StringRedisTemplate redisTemplate;
+    private SearchFeignService searchFeignService;
 
     /**
      * 发布博客
@@ -71,7 +71,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         draftService.removeById(vo.getUid());
 
         //调用检索服务，将博客检索信息上传到es
-        updateBlogDocument(blog.getUid());
+        BlogDocument doc = getBlogDocumentByBlogId(blog.getUid());
+        searchFeignService.publish(doc);
     }
 
     /**
@@ -274,9 +275,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
      * @return
      */
     @Override
-    public void updateBlogDocument(String blogId) {
-        BlogDocument doc = baseMapper.getBlogDocumentByBlogId(blogId);
-        searchFeignService.publish(doc);
+    public BlogDocument getBlogDocumentByBlogId(String blogId) {
+        return baseMapper.getBlogDocumentByBlogId(blogId);
     }
 
     /**

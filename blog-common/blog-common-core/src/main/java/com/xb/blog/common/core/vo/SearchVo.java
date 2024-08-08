@@ -1,6 +1,6 @@
-package com.xb.blog.common.vo;
+package com.xb.blog.common.core.vo;
 
-import com.xb.blog.common.pojo.BlogDocument;
+import com.xb.blog.common.core.pojo.BlogDocument;
 import lombok.Data;
 
 import java.util.List;

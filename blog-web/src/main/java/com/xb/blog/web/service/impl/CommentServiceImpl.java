@@ -3,6 +3,7 @@ package com.xb.blog.web.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xb.blog.common.core.pojo.BlogDocument;
 import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.CommentDao;
 import com.xb.blog.web.dto.CommentDto;
@@ -113,7 +114,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
         blogService.updateCommentCount(vo.getBlogUid(), 1L);
 
         //更新es中的数据
-        blogService.updateBlogDocument(vo.getBlogUid());
+        BlogDocument doc = blogService.getBlogDocumentByBlogId(vo.getBlogUid());
+        searchFeignService.publish(doc);
     }
 
     /**

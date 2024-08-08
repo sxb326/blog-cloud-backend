@@ -3,27 +3,23 @@ package com.xb.blog.gateway.filter;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xb.blog.common.constants.Result;
-import com.xb.blog.common.utils.AuthUtil;
+import com.xb.blog.common.core.constants.Result;
+import com.xb.blog.common.core.utils.AuthUtil;
 import com.xb.blog.gateway.constants.AuthProperties;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
-import org.springframework.http.HttpCookie;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 认证过滤器：

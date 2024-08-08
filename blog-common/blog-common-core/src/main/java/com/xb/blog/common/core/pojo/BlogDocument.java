@@ -1,4 +1,4 @@
-package com.xb.blog.common.pojo;
+package com.xb.blog.common.core.pojo;
 
 import lombok.Data;
 

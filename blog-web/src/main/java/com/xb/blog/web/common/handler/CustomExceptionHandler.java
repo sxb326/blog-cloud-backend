@@ -1,6 +1,6 @@
 package com.xb.blog.web.common.handler;
 
-import com.xb.blog.common.constants.Result;
+import com.xb.blog.common.core.constants.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

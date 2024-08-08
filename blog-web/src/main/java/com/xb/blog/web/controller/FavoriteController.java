@@ -1,7 +1,7 @@
 package com.xb.blog.web.controller;
 
 import cn.hutool.core.collection.CollUtil;
-import com.xb.blog.common.constants.Result;
+import com.xb.blog.common.core.constants.Result;
 import com.xb.blog.web.service.FavoriteService;
 import com.xb.blog.web.vo.FavoriteVo;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.xb.blog.auth.config.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xb.blog.common.constants.Result;
+import com.xb.blog.common.core.constants.Result;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,5 @@
 package com.xb.blog.web.vo;
 
-import com.xb.blog.common.utils.AuthUtil;
 import lombok.Data;
 
 import java.io.Serializable;
