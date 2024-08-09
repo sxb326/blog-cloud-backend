@@ -152,6 +152,25 @@ CREATE TABLE `t_like`
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '点赞表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for t_message
+-- ----------------------------
+DROP TABLE IF EXISTS `t_message`;
+CREATE TABLE `t_message`
+(
+    `uid`              varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
+    `send_time`        timestamp NULL DEFAULT NULL COMMENT '消息创建时间',
+    `send_user_uid`    varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发送消息用户id',
+    `receive_user_uid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接收消息用户id',
+    `type`             varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '消息类型',
+    `content`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '消息内容',
+    `is_receive`       tinyint NULL DEFAULT NULL COMMENT '是否已接收 1：是 0：否',
+    `status`           tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
+    `create_time`      timestamp NULL DEFAULT NULL COMMENT '创建时间',
+    `update_time`      timestamp NULL DEFAULT NULL COMMENT '修改时间',
+    PRIMARY KEY (`uid`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for t_picture
 -- ----------------------------
 DROP TABLE IF EXISTS `t_picture`;
