@@ -48,6 +48,14 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
+        # 消息服务
+        - id: message_route
+          uri: lb://blog-message
+          predicates:
+            - Path=/api/message/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
   config:
     import: application.yml
 

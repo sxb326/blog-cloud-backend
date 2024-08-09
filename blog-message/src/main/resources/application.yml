@@ -28,11 +28,9 @@ spring:
     url: jdbc:mysql://localhost:3306/blog
     username: root
     password: root
+  redis:
+    host: localhost
+    port: 6379
 #      config:
 #        # 配置中心地址
 #        server-addr: 127.0.0.1:8848
-# 系统消息配置
-message:
-  exchange-name: message.exchange
-  queue-name: message.queue
-  routing-key-name: message.routing.key

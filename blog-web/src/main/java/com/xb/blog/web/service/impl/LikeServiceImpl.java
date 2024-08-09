@@ -69,7 +69,9 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
             searchFeignService.publish(doc);
 
             //发送消息
-            messagePublisher.sendMessage("like", "有人点赞了您的文章", userId, doc.getAuthorId());
+            if (status) {
+                messagePublisher.sendMessage("like", "有人点赞了您的文章", userId, doc.getAuthorId());
+            }
 
             //返回最新点赞数
             return blogService.getLikeCount(vo.getObjUid());

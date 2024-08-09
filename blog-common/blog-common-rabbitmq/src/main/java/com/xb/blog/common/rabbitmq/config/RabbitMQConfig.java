@@ -1,7 +1,7 @@
 package com.xb.blog.common.rabbitmq.config;
 
+import com.xb.blog.common.rabbitmq.constants.RabbitMQConstants;
 import org.springframework.amqp.core.*;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,27 +11,18 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("${message.exchange-name}")
-    private String exchangeName;
-
-    @Value("${message.routing-key-name}")
-    private String routingKeyName;
-
-    @Value("${message.queue-name}")
-    private String queueName;
-
     @Bean
     public Queue messageQueue() {
-        return QueueBuilder.durable(queueName).build();
+        return QueueBuilder.durable(RabbitMQConstants.QUEUE_NAME).build();
     }
 
     @Bean
     public Exchange messageExchange() {
-        return new TopicExchange(exchangeName);
+        return new TopicExchange(RabbitMQConstants.EXCHANGE_NAME);
     }
 
     @Bean
     public Binding messageBinding() {
-        return BindingBuilder.bind(messageQueue()).to(messageExchange()).with(routingKeyName).noargs();
+        return BindingBuilder.bind(messageQueue()).to(messageExchange()).with(RabbitMQConstants.ROUTING_KEY_NAME).noargs();
     }
 }

@@ -36,6 +36,10 @@ public class AuthFilter implements GlobalFilter, Ordered {
     @SneakyThrows(IOException.class)
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        //判断如果是websocket请求，不需要判断 直接放行
+        if ("websocket".equals(exchange.getRequest().getHeaders().getUpgrade())) {
+            return chain.filter(exchange);
+        }
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
         //判断是否需要登录

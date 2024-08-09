@@ -1,6 +1,7 @@
 package com.xb.blog.message.listener;
 
 import com.rabbitmq.client.Channel;
+import com.xb.blog.common.rabbitmq.constants.RabbitMQConstants;
 import com.xb.blog.common.rabbitmq.pojo.MessageDto;
 import com.xb.blog.message.service.MessageService;
 import org.springframework.amqp.core.Message;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-@RabbitListener(queues = "${message.queue-name}")
+@RabbitListener(queues = RabbitMQConstants.QUEUE_NAME)
 public class MessageListener {
 
     @Autowired

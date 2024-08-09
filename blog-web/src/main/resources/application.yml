@@ -26,7 +26,7 @@ spring:
     username: root
     password: root
   redis:
-    host: 192.168.56.20
+    host: localhost
     port: 6379
   rabbitmq:
     host: 192.168.56.20
@@ -37,8 +37,3 @@ spring:
 # 定义类型处理器的路径
 mybatis-plus:
   type-handlers-package: com.xb.blog.web.config.mybatis.typeHandler
-# 系统消息配置
-message:
-  exchange-name: message.exchange
-  routing-key-name: message.routing.key
-  queue-name: message.queue
