@@ -17,6 +17,7 @@
     <modules>
         <module>blog-common-core</module>
         <module>blog-common-rabbitmq</module>
+        <module>blog-common-datasource</module>
     </modules>
 
     <dependencies>

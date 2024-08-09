@@ -20,10 +20,17 @@
     </properties>
 
     <dependencies>
-        <!--引入公共依赖模块-->
+        <!--公共依赖模块-->
         <dependency>
             <groupId>com.xb.blog</groupId>
             <artifactId>blog-common-core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!--数据源公共服务-->
+        <dependency>
+            <groupId>com.xb.blog</groupId>
+            <artifactId>blog-common-datasource</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 

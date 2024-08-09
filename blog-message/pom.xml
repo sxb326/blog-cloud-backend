@@ -14,20 +14,21 @@
     <description>博客系统消息服务</description>
 
     <dependencies>
-        <!--公共依赖-->
+        <!--公共依赖模块-->
         <dependency>
             <groupId>com.xb.blog</groupId>
             <artifactId>blog-common-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.baomidou</groupId>
-                    <artifactId>mybatis-plus-boot-starter</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
-        <!--Rabbitmq公共依赖-->
+        <!--数据源公共服务-->
+        <dependency>
+            <groupId>com.xb.blog</groupId>
+            <artifactId>blog-common-datasource</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!--rabbitmq公共服务-->
         <dependency>
             <groupId>com.xb.blog</groupId>
             <artifactId>blog-common-rabbitmq</artifactId>

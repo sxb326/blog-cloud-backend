@@ -5,21 +5,28 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * 系统消息
+ */
 @Data
-public class Message implements Serializable {
+public class MessageDto implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 消息唯一id
      */
-    private String id;
+    private String uid;
+    /**
+     * 消息创建时间
+     */
+    private LocalDateTime sendTime;
     /**
      * 发送消息用户id
      */
-    private String sendUserId;
+    private String sendUserUid;
     /**
      * 接收消息用户id
      */
-    private String receiveUserId;
+    private String receiveUserUid;
     /**
      * 消息类型
      */
@@ -28,8 +35,4 @@ public class Message implements Serializable {
      * 消息内容
      */
     private String content;
-    /**
-     * 消息创建时间
-     */
-    private LocalDateTime createTime;
 }

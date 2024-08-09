@@ -26,6 +26,8 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!--gateway-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
