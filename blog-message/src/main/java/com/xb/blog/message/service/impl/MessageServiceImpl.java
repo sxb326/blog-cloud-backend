@@ -7,8 +7,11 @@ import com.xb.blog.message.config.websocket.server.WebSocketServer;
 import com.xb.blog.message.dao.MessageDao;
 import com.xb.blog.message.entity.MessageEntity;
 import com.xb.blog.message.service.MessageService;
+import com.xb.blog.message.vo.MessageCountVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MessageServiceImpl extends ServiceImpl<MessageDao, MessageEntity> implements MessageService {
@@ -35,5 +38,25 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, MessageEntity> i
             //推送未读消息条数给用户
             webSocketServer.send(dto.getReceiveUserUid());
         }
+    }
+
+    /**
+     * 根据用户id获取未读消息数量
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public MessageCountVo getMessageCount(String id) {
+        List<Long> counts = baseMapper.getMessageCount(id);
+        MessageCountVo vo = new MessageCountVo();
+        vo.setTotalCount(counts.stream().mapToLong(Long::longValue).sum());
+        vo.setLikeCount(counts.get(0));
+        vo.setCommentCount(counts.get(1));
+        vo.setCollectCount(counts.get(2));
+        vo.setFollowCount(counts.get(3));
+        vo.setChatCount(counts.get(4));
+        vo.setNoticeCount(counts.get(5));
+        return vo;
     }
 }

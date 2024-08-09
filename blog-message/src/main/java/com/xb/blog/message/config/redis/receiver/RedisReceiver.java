@@ -5,6 +5,7 @@ import com.xb.blog.message.common.constants.RedisConstants;
 import com.xb.blog.message.config.websocket.server.WebSocketServer;
 import com.xb.blog.message.entity.MessageEntity;
 import com.xb.blog.message.service.MessageService;
+import com.xb.blog.message.vo.MessageCountVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
@@ -26,8 +27,8 @@ public class RedisReceiver implements MessageListener {
             String id = new String(message.getBody(), RedisConstants.UTF8);
             if (RedisConstants.REDIS_CHANNEL.endsWith(channel)) {
                 //获取用户未接收的消息条数
-                int count = messageService.count(new QueryWrapper<MessageEntity>().eq("receive_user_uid", id).eq("is_receive", 0));
-                webSocketServer.sendMessageCount(id, count);
+                MessageCountVo vo = messageService.getMessageCount(id);
+                webSocketServer.sendMessageCount(id, vo);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -28,9 +28,9 @@ public class MessageEntity implements Serializable {
      */
     private String receiveUserUid;
     /**
-     * 消息类型
+     * 消息类型 1点赞 2评论 3收藏 4关注 5私信 6通知
      */
-    private String type;
+    private int type;
     /**
      * 消息内容
      */

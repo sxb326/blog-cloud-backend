@@ -5,6 +5,8 @@ import com.xb.blog.message.entity.MessageEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface MessageDao extends BaseMapper<MessageEntity> {
     /**
@@ -14,4 +16,12 @@ public interface MessageDao extends BaseMapper<MessageEntity> {
      * @return
      */
     Boolean exist(@Param("uid") String uid);
+
+    /**
+     * 根据用户id获取未读消息数量
+     *
+     * @param uid
+     * @return
+     */
+    List<Long> getMessageCount(@Param("uid") String uid);
 }

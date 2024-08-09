@@ -70,7 +70,7 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
 
             //发送消息
             if (status) {
-                messagePublisher.sendMessage("like", "有人点赞了您的文章", userId, doc.getAuthorId());
+                messagePublisher.sendMessage(1, "有人点赞了您的文章", userId, doc.getAuthorId());
             }
 
             //返回最新点赞数

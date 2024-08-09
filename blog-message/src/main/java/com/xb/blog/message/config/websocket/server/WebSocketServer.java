@@ -1,5 +1,6 @@
 package com.xb.blog.message.config.websocket.server;
 
+import cn.hutool.json.JSONUtil;
 import com.xb.blog.message.common.constants.RedisConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -88,13 +89,13 @@ public class WebSocketServer {
      * 发送用户未接收的消息条数
      *
      * @param uid
-     * @param count
+     * @param message
      */
-    public void sendMessageCount(String uid, int count) {
+    public void sendMessageCount(String uid, Object message) {
         if (clientMap.containsKey(uid)) {
             List<Session> sessions = clientMap.get(uid);
             for (Session session : sessions) {
-                session.getAsyncRemote().sendObject(count);
+                session.getAsyncRemote().sendText(JSONUtil.toJsonStr(message));
             }
         }
     }
