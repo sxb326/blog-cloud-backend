@@ -2,7 +2,7 @@ package com.xb.blog.web.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xb.blog.web.common.utils.UserUtil;
+import com.xb.blog.common.core.utils.UserUtil;
 import com.xb.blog.web.dao.DraftDao;
 import com.xb.blog.web.entity.DraftEntity;
 import com.xb.blog.web.service.BlogTagService;

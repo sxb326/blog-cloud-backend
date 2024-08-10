@@ -1,9 +1,8 @@
-package com.xb.blog.web.common.interceptor;
+package com.xb.blog.common.core.interceptor;
 
 import cn.hutool.core.util.StrUtil;
 import com.xb.blog.common.core.utils.AuthUtil;
-import com.xb.blog.web.common.utils.UserUtil;
-import org.springframework.stereotype.Component;
+import com.xb.blog.common.core.utils.UserUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 拦截器：用于将请求头中的用户信息解析 封装userId到UserContext中
  */
-@Component
 public class UserInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

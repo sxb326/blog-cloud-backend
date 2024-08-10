@@ -1,19 +1,16 @@
-package com.xb.blog.web.config;
+package com.xb.blog.common.core.config;
 
-import com.xb.blog.web.common.interceptor.UserInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.xb.blog.common.core.interceptor.UserInterceptor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@ConditionalOnClass(name = "org.springframework.web.servlet.DispatcherServlet")
 public class WebMvcConfig implements WebMvcConfigurer {
-
-    @Autowired
-    private UserInterceptor userInterceptor;
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(userInterceptor);
+        registry.addInterceptor(new UserInterceptor());
     }
 }

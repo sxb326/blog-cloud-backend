@@ -13,6 +13,11 @@
     <description>公共依赖core模块</description>
     <!--公共依赖-->
     <dependencies>
+        <!--web-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
         <!--引入nacos作为注册中心-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

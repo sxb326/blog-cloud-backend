@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xb.blog.common.core.pojo.BlogDocument;
-import com.xb.blog.web.common.utils.UserUtil;
+import com.xb.blog.common.core.utils.UserUtil;
 import com.xb.blog.web.dao.CommentDao;
 import com.xb.blog.web.dto.CommentDto;
 import com.xb.blog.web.entity.CommentEntity;
@@ -20,9 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

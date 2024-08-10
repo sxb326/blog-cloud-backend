@@ -3,7 +3,7 @@ package com.xb.blog.web.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xb.blog.common.core.pojo.BlogDocument;
-import com.xb.blog.web.common.utils.UserUtil;
+import com.xb.blog.common.core.utils.UserUtil;
 import com.xb.blog.web.dao.CollectDao;
 import com.xb.blog.web.entity.CollectEntity;
 import com.xb.blog.web.feign.SearchFeignService;

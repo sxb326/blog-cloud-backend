@@ -1,4 +1,4 @@
-package com.xb.blog.web.common.utils;
+package com.xb.blog.common.core.utils;
 
 /**
  * 自定义的上下文类，使用ThreadLocal来保存每个线程访问时的userId
