@@ -9,6 +9,7 @@ import com.xb.blog.web.dao.CommentDao;
 import com.xb.blog.web.dto.CommentDto;
 import com.xb.blog.web.entity.CommentEntity;
 import com.xb.blog.web.feign.SearchFeignService;
+import com.xb.blog.web.publisher.MessagePublisher;
 import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.CommentService;
 import com.xb.blog.web.vo.CommentListVo;
@@ -32,6 +33,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
 
     @Autowired
     private SearchFeignService searchFeignService;
+
+    @Autowired
+    private MessagePublisher messagePublisher;
 
     /**
      * 根据博客id获取评论数据
@@ -102,8 +106,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
         entity.setStatus(1);
         save(entity);
 
-        Map<String, Long> map = new HashMap<>();
-
         //更新目标评论的评论数
         baseMapper.updateCommentCount(vo.getParentUid(), 1L);
         if (StrUtil.isNotBlank(vo.getReplyToUid())) {
@@ -116,6 +118,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
         //更新es中的数据
         BlogDocument doc = blogService.getBlogDocumentByBlogId(vo.getBlogUid());
         searchFeignService.publish(doc);
+
+        //推送消息
+        messagePublisher.sendMessage(2, "有人评论了您的文章", UserUtil.getUserId(), doc.getAuthorId());
     }
 
     /**

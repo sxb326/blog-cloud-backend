@@ -7,6 +7,7 @@ import com.xb.blog.web.common.utils.UserUtil;
 import com.xb.blog.web.dao.CollectDao;
 import com.xb.blog.web.entity.CollectEntity;
 import com.xb.blog.web.feign.SearchFeignService;
+import com.xb.blog.web.publisher.MessagePublisher;
 import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.CollectService;
 import com.xb.blog.web.vo.CollectSaveVo;
@@ -24,6 +25,9 @@ public class CollectServiceImpl extends ServiceImpl<CollectDao, CollectEntity> i
     @Autowired
     private SearchFeignService searchFeignService;
 
+    @Autowired
+    private MessagePublisher messagePublisher;
+
     /**
      * 收藏文章
      *
@@ -35,6 +39,9 @@ public class CollectServiceImpl extends ServiceImpl<CollectDao, CollectEntity> i
         String blogId = vo.getBlogId();
         String favoriteId = vo.getFavoriteId();
         String userId = UserUtil.getUserId();
+
+        Boolean isNewCollect = false;
+
         if (StrUtil.isBlank(favoriteId)) {
             //取消收藏场景
             int deleteCount = baseMapper.delete(blogId, userId, favoriteId);
@@ -45,6 +52,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectDao, CollectEntity> i
             //新增收藏场景
             Boolean exist = baseMapper.exist(blogId, userId, favoriteId);
             if (!exist) {
+                isNewCollect = true;
                 int deleteCount = baseMapper.delete(blogId, userId, null);
                 if (deleteCount == 0) {
                     blogService.updateCollectCount(blogId, 1L);
@@ -60,5 +68,10 @@ public class CollectServiceImpl extends ServiceImpl<CollectDao, CollectEntity> i
         //更新es中的数据
         BlogDocument doc = blogService.getBlogDocumentByBlogId(blogId);
         searchFeignService.publish(doc);
+
+        //推送消息
+        if (isNewCollect) {
+            messagePublisher.sendMessage(3, "有人收藏了您的文章", UserUtil.getUserId(), doc.getAuthorId());
+        }
     }
 }
