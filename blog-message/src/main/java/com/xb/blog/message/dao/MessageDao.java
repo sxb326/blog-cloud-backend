@@ -2,6 +2,7 @@ package com.xb.blog.message.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xb.blog.message.entity.MessageEntity;
+import com.xb.blog.message.vo.MessageVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -24,4 +25,13 @@ public interface MessageDao extends BaseMapper<MessageEntity> {
      * @return
      */
     List<Long> getMessageCount(@Param("uid") String uid);
+
+    /**
+     * 获取消息列表
+     *
+     * @param type
+     * @param page
+     * @return
+     */
+    List<MessageVo> list(@Param("type") int type, @Param("page") Long page, @Param("receiveUserUid") String receiveUserUid);
 }

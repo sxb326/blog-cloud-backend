@@ -4,6 +4,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xb.blog.common.rabbitmq.pojo.MessageDto;
 import com.xb.blog.message.entity.MessageEntity;
 import com.xb.blog.message.vo.MessageCountVo;
+import com.xb.blog.message.vo.MessageVo;
+
+import java.util.List;
+
 
 public interface MessageService extends IService<MessageEntity> {
     /**
@@ -20,4 +24,13 @@ public interface MessageService extends IService<MessageEntity> {
      * @return
      */
     MessageCountVo getMessageCount(String id);
+
+    /**
+     * 获取消息列表
+     *
+     * @param type
+     * @param page
+     * @return
+     */
+    List<MessageVo> list(int type, Long page);
 }

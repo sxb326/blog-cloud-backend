@@ -2,12 +2,14 @@ package com.xb.blog.message.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xb.blog.common.core.utils.UserUtil;
 import com.xb.blog.common.rabbitmq.pojo.MessageDto;
 import com.xb.blog.message.config.websocket.server.WebSocketServer;
 import com.xb.blog.message.dao.MessageDao;
 import com.xb.blog.message.entity.MessageEntity;
 import com.xb.blog.message.service.MessageService;
 import com.xb.blog.message.vo.MessageCountVo;
+import com.xb.blog.message.vo.MessageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,5 +60,20 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, MessageEntity> i
         vo.setChatCount(counts.get(4));
         vo.setNoticeCount(counts.get(5));
         return vo;
+    }
+
+    /**
+     * 获取消息列表
+     *
+     * @param type
+     * @param page
+     * @return
+     */
+    @Override
+    public List<MessageVo> list(int type, Long page) {
+        if (page == null) page = 1L;
+        page = (page - 1L)  * 10L;
+        List<MessageVo> list = baseMapper.list(type, page, UserUtil.getUserId());
+        return list;
     }
 }

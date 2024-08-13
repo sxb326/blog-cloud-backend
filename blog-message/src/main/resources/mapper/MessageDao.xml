@@ -11,4 +11,22 @@
             LEFT JOIN (SELECT type, count(uid) count FROM t_message WHERE STATUS = 1 AND is_receive = 0 AND receive_user_uid = #{uid} GROUP BY type) b
         ON a.type = b.type
     </select>
+    <select id="list" resultType="com.xb.blog.message.vo.MessageVo">
+        SELECT m.send_user_uid sendUserUid,
+               u.nick_name     sendUserNickName,
+               u.pic_uid       sendUserPicUid,
+               m.blog_uid      blogUid,
+               b.title         blogTitle,
+               c.content       commentContent,
+               m.content
+        FROM t_message m
+                 LEFT JOIN t_user u ON u.uid = m.send_user_uid AND u.STATUS = 1
+                 LEFT JOIN t_blog b ON m.blog_uid = b.uid AND b.STATUS = 1
+                 LEFT JOIN t_comment c ON m.comment_uid = c.uid AND c.STATUS = 1
+        WHERE m.STATUS = 1
+          AND m.type = #{type}
+          AND m.receive_user_uid = #{receiveUserUid}
+        ORDER BY m.send_time DESC LIMIT 10
+        OFFSET #{page}
+    </select>
 </mapper>

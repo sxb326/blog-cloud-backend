@@ -32,6 +32,14 @@ public class MessageEntity implements Serializable {
      */
     private int type;
     /**
+     * 博客id 点赞/评论/收藏 场景需要
+     */
+    private String blogUid;
+    /**
+     * 评论id 评论 场景需要
+     */
+    private String commentUid;
+    /**
      * 消息内容
      */
     private String content;
