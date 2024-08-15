@@ -72,8 +72,19 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, MessageEntity> i
     @Override
     public List<MessageVo> list(int type, Long page) {
         if (page == null) page = 1L;
-        page = (page - 1L)  * 10L;
+        page = (page - 1L) * 10L;
         List<MessageVo> list = baseMapper.list(type, page, UserUtil.getUserId());
+        baseMapper.updateMessageToReceived(type, UserUtil.getUserId());
         return list;
+    }
+
+    /**
+     * 获取所有消息未接收的条数
+     *
+     * @return
+     */
+    @Override
+    public List<Long> counts() {
+        return baseMapper.counts(UserUtil.getUserId());
     }
 }

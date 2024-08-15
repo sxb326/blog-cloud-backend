@@ -162,6 +162,8 @@ CREATE TABLE `t_message`
     `send_user_uid`    varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发送消息用户id',
     `receive_user_uid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接收消息用户id',
     `type`             int NULL DEFAULT NULL COMMENT '消息类型 1点赞 2评论 3收藏 4关注 5私信 6通知',
+    `blog_uid`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '博客id',
+    `comment_uid`      varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '评论id',
     `content`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '消息内容',
     `is_receive`       tinyint NULL DEFAULT NULL COMMENT '是否已接收 1：是 0：否',
     `status`           tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',

@@ -12,12 +12,14 @@
         ON a.type = b.type
     </select>
     <select id="list" resultType="com.xb.blog.message.vo.MessageVo">
-        SELECT m.send_user_uid sendUserUid,
-               u.nick_name     sendUserNickName,
-               u.pic_uid       sendUserPicUid,
-               m.blog_uid      blogUid,
-               b.title         blogTitle,
-               c.content       commentContent,
+        SELECT m.send_user_uid                                sendUserUid,
+               u.nick_name                                    sendUserNickName,
+               u.pic_uid                                      sendUserPicUid,
+               m.blog_uid                                     blogUid,
+               b.title                                        blogTitle,
+               c.uid                                          commentUid,
+               c.content                                      commentContent,
+               case when c.parent_uid = '0' then 0 else 1 end commentLevel,
                m.content
         FROM t_message m
                  LEFT JOIN t_user u ON u.uid = m.send_user_uid AND u.STATUS = 1
@@ -29,4 +31,12 @@
         ORDER BY m.send_time DESC LIMIT 10
         OFFSET #{page}
     </select>
+    <select id="counts" resultType="Long">
+        SELECT COALESCE(m.count, 0)
+        FROM (SELECT 1 type UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 ) t
+                LEFT JOIN ( SELECT type, count( uid ) count FROM t_message WHERE is_receive = 0 AND receive_user_uid = #{userUid} GROUP BY type ) m ON t.type = m.type
+    </select>
+    <update id="updateMessageToReceived">
+        UPDATE t_message set is_receive = 1 WHERE type = #{type} AND receive_user_uid = #{userUid} AND is_receive = 0
+    </update>
 </mapper>

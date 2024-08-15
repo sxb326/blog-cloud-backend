@@ -28,9 +28,17 @@ public class MessageVo {
      */
     private String blogTitle;
     /**
+     * 评论id
+     */
+    private String commentUid;
+    /**
      * 评论内容
      */
     private String commentContent;
+    /**
+     * 评论的层级 0为评论文章 1为评论评论
+     */
+    private Integer commentLevel;
     /**
      * 消息内容
      */

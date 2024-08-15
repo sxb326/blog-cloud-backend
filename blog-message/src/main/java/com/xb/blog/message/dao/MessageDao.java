@@ -34,4 +34,20 @@ public interface MessageDao extends BaseMapper<MessageEntity> {
      * @return
      */
     List<MessageVo> list(@Param("type") int type, @Param("page") Long page, @Param("receiveUserUid") String receiveUserUid);
+
+    /**
+     * 获取所有消息未接收的条数
+     *
+     * @param userId
+     * @return
+     */
+    List<Long> counts(@Param("userUid") String userId);
+
+    /**
+     * 将某用户的某一类未读消息变为已读
+     *
+     * @param type
+     * @param userId
+     */
+    void updateMessageToReceived(@Param("type") int type, @Param("userUid") String userId);
 }

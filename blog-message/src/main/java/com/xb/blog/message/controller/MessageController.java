@@ -27,4 +27,15 @@ public class MessageController {
         List<MessageVo> list = messageService.list(type, page);
         return Result.success(list);
     }
+
+    /**
+     * 获取所有消息未接收的条数
+     *
+     * @return
+     */
+    @GetMapping("/counts")
+    public Result counts() {
+        List<Long> counts = messageService.counts();
+        return Result.success(counts);
+    }
 }

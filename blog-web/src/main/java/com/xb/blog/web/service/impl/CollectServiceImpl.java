@@ -71,7 +71,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectDao, CollectEntity> i
 
         //推送消息
         if (isNewCollect) {
-            messagePublisher.sendMessage(3, "有人收藏了您的文章", UserUtil.getUserId(), doc.getAuthorId());
+            messagePublisher.sendMessage(3, null, UserUtil.getUserId(), doc.getAuthorId(),blogId,null);
         }
     }
 }

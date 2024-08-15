@@ -33,4 +33,11 @@ public interface MessageService extends IService<MessageEntity> {
      * @return
      */
     List<MessageVo> list(int type, Long page);
+
+    /**
+     * 获取所有消息未接收的条数
+     *
+     * @return
+     */
+    List<Long> counts();
 }

@@ -32,6 +32,14 @@ public class MessageDto implements Serializable {
      */
     private int type;
     /**
+     * 博客id
+     */
+    private String blogUid;
+    /**
+     * 评论id
+     */
+    private String commentUid;
+    /**
      * 消息内容
      */
     private String content;

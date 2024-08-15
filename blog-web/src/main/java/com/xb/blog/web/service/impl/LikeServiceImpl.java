@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xb.blog.common.core.pojo.BlogDocument;
 import com.xb.blog.common.core.utils.UserUtil;
 import com.xb.blog.web.dao.LikeDao;
+import com.xb.blog.web.entity.CommentEntity;
 import com.xb.blog.web.entity.LikeEntity;
 import com.xb.blog.web.feign.SearchFeignService;
 import com.xb.blog.web.publisher.MessagePublisher;
@@ -70,14 +71,23 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
 
             //发送消息
             if (status) {
-                messagePublisher.sendMessage(1, "有人点赞了您的文章", userId, doc.getAuthorId());
+                messagePublisher.sendMessage(1, null, userId, doc.getAuthorId(), vo.getObjUid(), null);
             }
 
             //返回最新点赞数
             return blogService.getLikeCount(vo.getObjUid());
         } else if (type == 2) {
+            //更新数据库
             commentService.updateLikeCount(vo.getObjUid(), status ? 1L : -1L);
-            return commentService.getLikeCount(vo.getObjUid());
+
+            //发送消息
+            CommentEntity commentEntity = commentService.getById(vo.getObjUid());
+            if (status) {
+                messagePublisher.sendMessage(1, null, userId, commentEntity.getUserUid(), commentEntity.getObjUid(), vo.getObjUid());
+            }
+
+            //返回最新点赞数
+            return commentEntity.getLikeCount();
         }
         return null;
     }

@@ -118,7 +118,16 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
         searchFeignService.publish(doc);
 
         //推送消息
-        messagePublisher.sendMessage(2, "有人评论了您的文章", UserUtil.getUserId(), doc.getAuthorId());
+        String receiveUserUid = doc.getAuthorId();
+        //如果当前为回复评论 则应发消息到发评论的人 而非文章作者
+        if (!"0".equals(vo.getParentUid())) {
+            if (StrUtil.isNotBlank(vo.getReplyToUid())) {
+                receiveUserUid = getById(vo.getReplyToUid()).getUserUid();
+            } else {
+                receiveUserUid = getById(vo.getParentUid()).getUserUid();
+            }
+        }
+        messagePublisher.sendMessage(2, null, UserUtil.getUserId(), receiveUserUid, vo.getBlogUid(), entity.getUid());
     }
 
     /**
