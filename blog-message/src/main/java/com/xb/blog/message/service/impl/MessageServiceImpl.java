@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class MessageServiceImpl extends ServiceImpl<MessageDao, MessageEntity> implements MessageService {
@@ -73,8 +74,27 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, MessageEntity> i
     public List<MessageVo> list(int type, Long page) {
         if (page == null) page = 1L;
         page = (page - 1L) * 10L;
-        List<MessageVo> list = baseMapper.list(type, page, UserUtil.getUserId());
-        baseMapper.updateMessageToReceived(type, UserUtil.getUserId());
+
+        String userId = UserUtil.getUserId();
+        List<MessageVo> list = baseMapper.list(type, page, userId);
+        baseMapper.updateMessageToReceived(type, userId);
+
+        //异步刷新用户的未读消息数
+        CompletableFuture.runAsync(() -> webSocketServer.send(userId));
+
+        for (MessageVo vo : list) {
+            String sendTimeBefore = vo.getSendTimeBefore();
+            Long minute = Long.parseLong(sendTimeBefore);
+            long hour = minute / 60;
+            minute %= 3600;
+            StringBuilder sb = new StringBuilder();
+            if (hour > 0) {
+                vo.setSendTimeBefore(hour + "小时前");
+            } else if (minute > 0) {
+                vo.setSendTimeBefore(minute + "分钟前");
+            }
+        }
+
         return list;
     }
 

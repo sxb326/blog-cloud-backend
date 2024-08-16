@@ -20,7 +20,8 @@
                c.uid                                          commentUid,
                c.content                                      commentContent,
                case when c.parent_uid = '0' then 0 else 1 end commentLevel,
-               m.content
+               m.content,
+               TIMESTAMPDIFF(MINUTE, m.send_time, now())      sendTimeBefore
         FROM t_message m
                  LEFT JOIN t_user u ON u.uid = m.send_user_uid AND u.STATUS = 1
                  LEFT JOIN t_blog b ON m.blog_uid = b.uid AND b.STATUS = 1

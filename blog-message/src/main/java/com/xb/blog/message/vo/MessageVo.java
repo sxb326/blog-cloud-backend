@@ -43,4 +43,8 @@ public class MessageVo {
      * 消息内容
      */
     private String content;
+    /**
+     * 发起时间
+     */
+    private String sendTimeBefore;
 }
