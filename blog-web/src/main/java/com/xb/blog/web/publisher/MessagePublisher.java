@@ -26,17 +26,19 @@ public class MessagePublisher {
      * @param commentUid
      */
     public void sendMessage(int type, String content, String sendUserId, String receiveUserId, String blogUid, String commentUid) {
-        MessageDto dto = new MessageDto();
+        if (sendUserId != null && !sendUserId.equals(receiveUserId)) {
+            MessageDto dto = new MessageDto();
 
-        dto.setUid(UUID.randomUUID().toString().replace("-", "").toLowerCase());
-        dto.setSendUserUid(sendUserId);
-        dto.setReceiveUserUid(receiveUserId);
-        dto.setType(type);
-        dto.setBlogUid(blogUid);
-        dto.setCommentUid(commentUid);
-        dto.setContent(content);
-        dto.setSendTime(LocalDateTime.now());
+            dto.setUid(UUID.randomUUID().toString().replace("-", "").toLowerCase());
+            dto.setSendUserUid(sendUserId);
+            dto.setReceiveUserUid(receiveUserId);
+            dto.setType(type);
+            dto.setBlogUid(blogUid);
+            dto.setCommentUid(commentUid);
+            dto.setContent(content);
+            dto.setSendTime(LocalDateTime.now());
 
-        rabbitTemplate.convertAndSend(RabbitMQConstants.EXCHANGE_NAME, RabbitMQConstants.ROUTING_KEY_NAME, dto);
+            rabbitTemplate.convertAndSend(RabbitMQConstants.EXCHANGE_NAME, RabbitMQConstants.ROUTING_KEY_NAME, dto);
+        }
     }
 }

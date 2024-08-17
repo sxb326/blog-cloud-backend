@@ -84,14 +84,19 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, MessageEntity> i
 
         for (MessageVo vo : list) {
             String sendTimeBefore = vo.getSendTimeBefore();
-            Long minute = Long.parseLong(sendTimeBefore);
+            long minute = Long.parseLong(sendTimeBefore);
+            long day = minute / 1440;
+            minute %= 1440;
             long hour = minute / 60;
-            minute %= 3600;
-            StringBuilder sb = new StringBuilder();
-            if (hour > 0) {
+            minute %= 60;
+            if (day > 0) {
+                vo.setSendTimeBefore(day + "天前");
+            } else if (hour > 0) {
                 vo.setSendTimeBefore(hour + "小时前");
             } else if (minute > 0) {
                 vo.setSendTimeBefore(minute + "分钟前");
+            } else {
+                vo.setSendTimeBefore("刚刚");
             }
         }
 
