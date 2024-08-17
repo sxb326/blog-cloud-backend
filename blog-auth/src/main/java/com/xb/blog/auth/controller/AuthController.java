@@ -64,21 +64,4 @@ public class AuthController {
         }
         return Result.success(null);
     }
-
-    /**
-     * 根据id获取用户信息
-     *
-     * @param id
-     * @return
-     */
-    @GetMapping("/getUserInfo/{id}")
-    public Result getUserInfo(@PathVariable("id") String id) {
-        UserEntity user = userService.getById(id);
-        if (user != null) {
-            AuthUserVo vo = new AuthUserVo();
-            BeanUtils.copyProperties(user, vo);
-            return Result.success(vo);
-        }
-        return Result.success(null);
-    }
 }

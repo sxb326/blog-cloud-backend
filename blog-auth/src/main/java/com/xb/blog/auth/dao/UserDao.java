@@ -2,7 +2,9 @@ package com.xb.blog.auth.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xb.blog.auth.entitiy.UserEntity;
+import com.xb.blog.auth.vo.UserInfoVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 用户表
@@ -13,5 +15,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserDao extends BaseMapper<UserEntity> {
-
+    UserInfoVo getUserInfo(@Param("userUid") String userUid);
 }

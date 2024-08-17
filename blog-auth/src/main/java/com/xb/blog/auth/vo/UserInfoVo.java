@@ -1,0 +1,31 @@
+package com.xb.blog.auth.vo;
+
+import lombok.Data;
+
+@Data
+public class UserInfoVo {
+    /**
+     * 唯一ID
+     */
+    private String uid;
+    /**
+     * 用户昵称
+     */
+    private String nickName;
+    /**
+     * 用户头像图片id
+     */
+    private String picUid;
+    /**
+     * 总博客数
+     */
+    private Long blogCount;
+    /**
+     * 总点击数
+     */
+    private Long clickCount;
+    /**
+     * 总点赞数
+     */
+    private Long likeCount;
+}
