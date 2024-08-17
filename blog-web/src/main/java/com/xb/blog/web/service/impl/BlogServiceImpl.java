@@ -113,7 +113,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         if (lock) {
             //拿到分布式锁，查询数据库
             try {
-                List<BlogListVo> list = baseMapper.listBlog(page, categoryUid, orderType);
+                List<BlogListVo> list = baseMapper.listBlog(page, categoryUid, orderType, null);
                 if (CollUtil.isEmpty(list)) {
                     //设置空值 避免缓存穿透
                     redisTemplate.opsForValue().set(dataKey, JSONUtil.toJsonStr(list), 10, TimeUnit.SECONDS);
@@ -287,5 +287,23 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
     @Override
     public List<BlogTopVo> getTop10List() {
         return baseMapper.getTop10List();
+    }
+
+    /**
+     * 列出用户所有文章
+     *
+     * @param page
+     * @param userUid
+     * @param orderType
+     * @return
+     */
+    @Override
+    public List<BlogListVo> listBlogByUser(Long page, String userUid, String orderType) {
+        //处理特殊情况
+        if (page == null) page = 1L;
+        //换算分页参数（使用OFFSET关键字进行分页，故此处起始页码应为0）
+        page = (page - 1L) * 10L;
+        List<BlogListVo> list = baseMapper.listBlog(page, null, orderType, userUid);
+        return list;
     }
 }

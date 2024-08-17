@@ -9,17 +9,16 @@ import com.xb.blog.web.common.utils.IpUtil;
 import com.xb.blog.web.feign.SearchFeignService;
 import com.xb.blog.web.service.BlogService;
 import com.xb.blog.web.service.CommentService;
+import com.xb.blog.web.vo.BlogListVo;
 import com.xb.blog.web.vo.BlogPreviewVo;
 import com.xb.blog.web.vo.CommentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -68,5 +67,19 @@ public class PreviewController {
     public Result getById(@PathVariable("id") String id, @PathVariable("page") Long page) {
         CommentVo vo = commentService.getTreeDataById(id, null, page);
         return Result.success(vo);
+    }
+
+    /**
+     * 列出用户所有文章
+     *
+     * @param page
+     * @param userUid
+     * @param orderType
+     * @return
+     */
+    @GetMapping("/listBlogByUser")
+    public Result listBlogByUser(@RequestParam("page") Long page, @RequestParam("userUid") String userUid, @RequestParam("orderType") String orderType) {
+        List<BlogListVo> list = blogService.listBlogByUser(page, userUid, orderType);
+        return Result.success(list);
     }
 }

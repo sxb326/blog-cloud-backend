@@ -122,5 +122,15 @@ public interface BlogService extends IService<BlogEntity> {
      * @return
      */
     List<BlogTopVo> getTop10List();
+
+    /**
+     * 列出用户所有文章
+     *
+     * @param page
+     * @param userUid
+     * @param orderType
+     * @return
+     */
+    List<BlogListVo> listBlogByUser(Long page, String userUid, String orderType);
 }
 
