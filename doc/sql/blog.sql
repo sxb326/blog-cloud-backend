@@ -82,6 +82,7 @@ CREATE TABLE `t_chat`
     `send_user_uid`    varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发送消息用户id',
     `receive_user_uid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接收消息用户id',
     `content`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '消息内容',
+    `is_receive`       tinyint NULL DEFAULT NULL COMMENT '是否已接收 1：是 0：否',
     `status`           tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
     `create_time`      timestamp NULL DEFAULT NULL COMMENT '创建时间',
     `update_time`      timestamp NULL DEFAULT NULL COMMENT '修改时间',
