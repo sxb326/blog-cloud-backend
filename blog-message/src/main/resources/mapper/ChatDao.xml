@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xb.blog.message.dao.ChatDao">
+    <select id="listContact" resultType="com.xb.blog.message.vo.ContactVo">
+        SELECT
+           c.uid,
+           c.contact_uid  contactUid,
+           u.nick_name    contactNickName,
+           c.chat_content chatContent,
+           c.last_time    lastTime
+        FROM (SELECT uid,
+                     CASE WHEN send_user_uid = #{userUid} THEN receive_user_uid ELSE send_user_uid END contact_uid,
+                     content     AS                                                                chat_content,
+                     create_time AS                                                                last_time,
+                     ROW_NUMBER() OVER (
+                        PARTITION BY CASE WHEN send_user_uid = #{userUid} THEN receive_user_uid  ELSE send_user_uid  END
+                        ORDER BY create_time DESC
+                    ) AS rn
+                  FROM t_chat
+                  WHERE #{userUid} IN (send_user_uid, receive_user_uid) AND status = 1
+              ) c
+        INNER JOIN t_user u ON c.contact_uid = u.uid
+        WHERE c.rn = 1
+          <if test="keyword != null and keyword != ''">
+              AND u.nick_name like CONCAT('%', #{keyword}, '%')
+          </if>
+        ORDER BY c.last_time DESC LIMIT 10 OFFSET #{page}
+    </select>
+</mapper>
