@@ -7,9 +7,11 @@
                u.pic_uid          picUid,
                COUNT(b.uid)       blogCount,
                SUM(b.click_count) clickCount,
-               SUM(b.like_count)  likeCount
+               SUM(b.like_count)  likeCount,
+               CASE WHEN COALESCE(SUM(f.uid),0) > 0 THEN 1 ELSE 0 END isFollow
         FROM t_user u
                  LEFT JOIN t_blog b ON u.uid = b.author AND b.STATUS = 1
+                 LEFT JOIN t_follow f ON u.uid = f.target_user_uid AND f.user_uid = #{loginUserUid} AND f.STATUS = 1
         WHERE u.STATUS = 1 AND u.uid = #{userUid}
     </select>
 </mapper>

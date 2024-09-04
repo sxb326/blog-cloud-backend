@@ -40,4 +40,11 @@ public interface MessageService extends IService<MessageEntity> {
      * @return
      */
     List<Long> counts();
+
+    /**
+     * 修改某用户的未读消息状态
+     *
+     * @param type
+     */
+    void updateMessageToReceived(int type);
 }

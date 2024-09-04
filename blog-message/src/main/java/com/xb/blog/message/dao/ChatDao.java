@@ -3,6 +3,7 @@ package com.xb.blog.message.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xb.blog.message.entity.ChatEntity;
 import com.xb.blog.message.vo.ContactVo;
+import com.xb.blog.message.vo.ContentVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,8 +16,9 @@ public interface ChatDao extends BaseMapper<ChatEntity> {
      *
      * @param userUid 当前登录用户
      * @param keyword 关键字
-     * @param page    分页
      * @return
      */
-    List<ContactVo> listContact(@Param("userUid") String userUid, @Param("keyword") String keyword, @Param("page") Long page);
+    List<ContactVo> listContact(@Param("userUid") String userUid, @Param("keyword") String keyword);
+
+    List<ContentVo> listContent(@Param("userUid") String userUid, @Param("contactUid") String contactUid);
 }

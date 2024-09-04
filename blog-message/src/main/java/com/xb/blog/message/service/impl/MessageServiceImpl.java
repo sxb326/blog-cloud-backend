@@ -77,7 +77,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, MessageEntity> i
 
         String userId = UserUtil.getUserId();
         List<MessageVo> list = baseMapper.list(type, page, userId);
-        baseMapper.updateMessageToReceived(type, userId);
+        updateMessageToReceived(type);
 
         //异步刷新用户的未读消息数
         CompletableFuture.runAsync(() -> webSocketServer.send(userId));
@@ -111,5 +111,10 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, MessageEntity> i
     @Override
     public List<Long> counts() {
         return baseMapper.counts(UserUtil.getUserId());
+    }
+
+    @Override
+    public void updateMessageToReceived(int type) {
+        baseMapper.updateMessageToReceived(type, UserUtil.getUserId());
     }
 }

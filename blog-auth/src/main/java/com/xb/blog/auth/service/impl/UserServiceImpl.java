@@ -5,6 +5,7 @@ import com.xb.blog.auth.dao.UserDao;
 import com.xb.blog.auth.entitiy.UserEntity;
 import com.xb.blog.auth.service.UserService;
 import com.xb.blog.auth.vo.UserInfoVo;
+import com.xb.blog.common.core.utils.UserUtil;
 import org.springframework.stereotype.Service;
 
 
@@ -19,6 +20,6 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
      */
     @Override
     public UserInfoVo getUserInfo(String userUid) {
-        return baseMapper.getUserInfo(userUid);
+        return baseMapper.getUserInfo(userUid, UserUtil.getUserId());
     }
 }

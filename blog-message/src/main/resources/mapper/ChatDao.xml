@@ -6,6 +6,7 @@
            c.uid,
            c.contact_uid  contactUid,
            u.nick_name    contactNickName,
+           u.pic_uid      picUid,
            c.chat_content chatContent,
            c.last_time    lastTime
         FROM (SELECT uid,
@@ -24,6 +25,15 @@
           <if test="keyword != null and keyword != ''">
               AND u.nick_name like CONCAT('%', #{keyword}, '%')
           </if>
-        ORDER BY c.last_time DESC LIMIT 10 OFFSET #{page}
+        ORDER BY c.last_time DESC
+    </select>
+    <select id="listContent" resultType="com.xb.blog.message.vo.ContentVo">
+        SELECT c.create_time createTime,
+               c.content,
+               CASE WHEN c.send_user_uid = #{userUid} THEN 1 ELSE 0 END isSend
+        FROM t_chat c
+        WHERE c.STATUS = 1
+          AND ((c.send_user_uid = #{userUid} AND c.receive_user_uid = #{contactUid}) OR (c.send_user_uid = #{contactUid} AND c.receive_user_uid = #{userUid}))
+        ORDER BY c.create_time DESC
     </select>
 </mapper>

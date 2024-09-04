@@ -28,4 +28,8 @@ public class UserInfoVo {
      * 总点赞数
      */
     private Long likeCount;
+    /**
+     * 是否已关注当前用户
+     */
+    private Boolean isFollow;
 }

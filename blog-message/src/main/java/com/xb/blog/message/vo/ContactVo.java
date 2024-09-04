@@ -25,6 +25,10 @@ public class ContactVo implements Serializable {
      */
     private String contactNickName;
     /**
+     * 用户头像id
+     */
+    private String picUid;
+    /**
      * 最新一条消息内容
      */
     private String chatContent;
@@ -32,8 +36,4 @@ public class ContactVo implements Serializable {
      * 最新一条消息时间
      */
     private LocalDateTime lastTime;
-    /**
-     * 游标分页标记
-     */
-    private Long cur;
 }
