@@ -155,6 +155,21 @@ CREATE TABLE `t_favorite`
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '收藏夹表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for t_follow
+-- ----------------------------
+DROP TABLE IF EXISTS `t_follow`;
+CREATE TABLE `t_follow`
+(
+    `uid`             varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
+    `user_uid`        varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户id',
+    `target_user_uid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '关注的用户id',
+    `status`          tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
+    `create_time`     timestamp NULL DEFAULT NULL COMMENT '创建时间',
+    `update_time`     timestamp NULL DEFAULT NULL COMMENT '修改时间',
+    PRIMARY KEY (`uid`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '关注表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for t_like
 -- ----------------------------
 DROP TABLE IF EXISTS `t_like`;
