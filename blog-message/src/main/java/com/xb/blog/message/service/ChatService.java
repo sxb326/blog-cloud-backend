@@ -9,9 +9,7 @@ import com.xb.blog.message.vo.SendVo;
 import java.util.List;
 
 public interface ChatService extends IService<ChatEntity> {
-    List<ContactVo> listContact(String keyword);
-
-    List<ContentVo> listContent(String contactUid);
+    List<ContentVo> list(String contactUid, Long cursor);
 
     void send(SendVo vo);
 }

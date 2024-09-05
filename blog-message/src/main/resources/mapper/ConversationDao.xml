@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xb.blog.message.dao.ConversationDao">
+    <select id="list" resultType="com.xb.blog.message.vo.ConversationVo">
+        SELECT c.uid,
+               temp.contactUid,
+               u.nick_name contactNickName,
+               u.pic_uid   picUid,
+               temp.chatContent
+        FROM t_conversation c
+                 INNER JOIN t_user u ON c.receive_user_uid = u.uid
+                 LEFT JOIN (SELECT CASE
+                                        WHEN send_user_uid = #{userUid} THEN receive_user_uid
+                                        ELSE send_user_uid END contactUid,
+                                        content chatContent,
+                                        ROW_NUMBER() OVER ( PARTITION BY CASE WHEN send_user_uid = #{userUid}
+                                            THEN receive_user_uid ELSE send_user_uid END ORDER BY create_time DESC ) rn
+                             FROM t_chat
+                             WHERE #{userUid} IN (send_user_uid, receive_user_uid)
+                               AND STATUS = 1) temp ON temp.contactUid = u.uid AND temp.rn = 1
+        <if test="keyword != null and keyword != ''">
+            AND u.nick_name LIKE CONCAT('%',#{keyword},'%')
+        </if>
+        ORDER BY case when c.update_time is not null then c.update_time else c.create_time end DESC
+    </select>
+</mapper>

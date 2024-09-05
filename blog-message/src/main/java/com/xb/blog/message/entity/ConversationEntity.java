@@ -7,14 +7,14 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-@TableName("t_chat")
-public class ChatEntity implements Serializable {
+@TableName("t_conversation")
+public class ConversationEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
-    private Long uid;
+    @TableId(type = IdType.ASSIGN_UUID)
+    private String uid;
     /**
      * 发送消息用户id
      */
@@ -23,10 +23,6 @@ public class ChatEntity implements Serializable {
      * 接收消息用户id
      */
     private String receiveUserUid;
-    /**
-     * 消息内容
-     */
-    private String content;
     /**
      * 是否已接收
      */

@@ -11,6 +11,10 @@ import java.time.LocalDateTime;
 @Data
 public class ContentVo {
     /**
+     * 消息唯一id
+     */
+    private Long uid;
+    /**
      * 发送时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

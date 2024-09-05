@@ -8,7 +8,6 @@ import com.xb.blog.message.dao.ChatDao;
 import com.xb.blog.message.entity.ChatEntity;
 import com.xb.blog.message.publisher.MessagePublisher;
 import com.xb.blog.message.service.ChatService;
-import com.xb.blog.message.vo.ContactVo;
 import com.xb.blog.message.vo.ContentVo;
 import com.xb.blog.message.vo.SendVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +22,8 @@ public class ChatServiceImpl extends ServiceImpl<ChatDao, ChatEntity> implements
     private MessagePublisher messagePublisher;
 
     @Override
-    public List<ContactVo> listContact(String keyword) {
-        return baseMapper.listContact(UserUtil.getUserId(), keyword);
-    }
-
-    @Override
-    public List<ContentVo> listContent(String contactUid) {
-        List<ContentVo> list = baseMapper.listContent(UserUtil.getUserId(), contactUid);
+    public List<ContentVo> list(String contactUid, Long cursor) {
+        List<ContentVo> list = baseMapper.list(UserUtil.getUserId(), contactUid, cursor);
         CollUtil.reverse(list);
         return list;
     }
