@@ -52,4 +52,8 @@ public class BlogListVo implements Serializable {
      * 标签名称
      */
     private List<String> tagNameList;
+    /**
+     * 是否为文章作者
+     */
+    private Boolean isAuthor;
 }

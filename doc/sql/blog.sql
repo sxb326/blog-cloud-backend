@@ -78,7 +78,7 @@ CREATE TABLE `t_category`
 DROP TABLE IF EXISTS `t_chat`;
 CREATE TABLE `t_chat`
 (
-    `uid`              varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
+    `uid`              bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
     `send_user_uid`    varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发送消息用户id',
     `receive_user_uid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接收消息用户id',
     `content`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '消息内容',
@@ -87,7 +87,7 @@ CREATE TABLE `t_chat`
     `create_time`      timestamp NULL DEFAULT NULL COMMENT '创建时间',
     `update_time`      timestamp NULL DEFAULT NULL COMMENT '修改时间',
     PRIMARY KEY (`uid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '聊天表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '私信-消息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_collect
@@ -122,6 +122,22 @@ CREATE TABLE `t_comment`
     `create_time`   timestamp NULL DEFAULT NULL COMMENT '创建时间',
     PRIMARY KEY (`uid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '评论表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for t_conversation
+-- ----------------------------
+DROP TABLE IF EXISTS `t_conversation`;
+CREATE TABLE `t_conversation`
+(
+    `uid`               varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
+    `send_user_uid`     varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发送消息用户id',
+    `receive_user_uid`  varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接收消息用户id',
+    `not_receive_count` int NULL DEFAULT NULL COMMENT '未查收数据条数',
+    `status`            tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
+    `create_time`       timestamp NULL DEFAULT NULL COMMENT '创建时间',
+    `update_time`       timestamp NULL DEFAULT NULL COMMENT '修改时间',
+    PRIMARY KEY (`uid`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '私信-会话表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_draft

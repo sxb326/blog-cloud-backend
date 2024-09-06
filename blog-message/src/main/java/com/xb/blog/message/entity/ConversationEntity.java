@@ -24,9 +24,9 @@ public class ConversationEntity implements Serializable {
      */
     private String receiveUserUid;
     /**
-     * 是否已接收
+     * 未查收数据条数
      */
-    private Boolean isReceive;
+    private Integer notReceiveCount;
     /**
      * 逻辑删除 1：不删除，0：删除
      */

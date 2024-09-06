@@ -17,6 +17,10 @@ public class ConversationVo implements Serializable {
      */
     private String contactUid;
     /**
+     * 未查收的消息条数
+     */
+    private Integer notReceiveCount;
+    /**
      * 联系人昵称
      */
     private String contactNickName;

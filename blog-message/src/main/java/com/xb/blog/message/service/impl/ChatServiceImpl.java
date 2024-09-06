@@ -8,6 +8,7 @@ import com.xb.blog.message.dao.ChatDao;
 import com.xb.blog.message.entity.ChatEntity;
 import com.xb.blog.message.publisher.MessagePublisher;
 import com.xb.blog.message.service.ChatService;
+import com.xb.blog.message.service.ConversationService;
 import com.xb.blog.message.vo.ContentVo;
 import com.xb.blog.message.vo.SendVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class ChatServiceImpl extends ServiceImpl<ChatDao, ChatEntity> implements
     @Autowired
     private MessagePublisher messagePublisher;
 
+    @Autowired
+    private ConversationService conversationService;
+
     @Override
     public List<ContentVo> list(String contactUid, Long cursor) {
         List<ContentVo> list = baseMapper.list(UserUtil.getUserId(), contactUid, cursor);
@@ -30,6 +34,7 @@ public class ChatServiceImpl extends ServiceImpl<ChatDao, ChatEntity> implements
 
     @Override
     public void send(SendVo vo) {
+        //保存消息
         ChatEntity entity = new ChatEntity();
         entity.setSendUserUid(UserUtil.getUserId());
         entity.setReceiveUserUid(vo.getContactUid());
@@ -37,9 +42,20 @@ public class ChatServiceImpl extends ServiceImpl<ChatDao, ChatEntity> implements
         entity.setContent(vo.getContent());
         save(entity);
 
+        //检查对方是否有对应会话 如果没有则创建
+        String conversationUid = conversationService.checkAndCreate(vo.getContactUid(), UserUtil.getUserId());
+
+        //更新对方会话的未读数
+        conversationService.updateNotReceiveCount(conversationUid,1);
+
         //发送消息
         if (StrUtil.isNotBlank(vo.getContent())) {
             messagePublisher.sendMessage(5, "", UserUtil.getUserId(), vo.getContactUid(), "", "");
         }
+    }
+
+    @Override
+    public List<ContentVo> newest(String contactUid, Long cursor) {
+        return baseMapper.newest(UserUtil.getUserId(), contactUid, cursor);
     }
 }

@@ -3,7 +3,8 @@
 <mapper namespace="com.xb.blog.message.dao.ConversationDao">
     <select id="list" resultType="com.xb.blog.message.vo.ConversationVo">
         SELECT c.uid,
-               temp.contactUid,
+               c.receive_user_uid contactUid,
+               COALESCE(c.not_receive_count, 0) notReceiveCount,
                u.nick_name contactNickName,
                u.pic_uid   picUid,
                temp.chatContent
@@ -18,9 +19,19 @@
                              FROM t_chat
                              WHERE #{userUid} IN (send_user_uid, receive_user_uid)
                                AND STATUS = 1) temp ON temp.contactUid = u.uid AND temp.rn = 1
+        WHERE c.receive_user_uid != #{userUid}
         <if test="keyword != null and keyword != ''">
             AND u.nick_name LIKE CONCAT('%',#{keyword},'%')
         </if>
         ORDER BY case when c.update_time is not null then c.update_time else c.create_time end DESC
     </select>
+    <select id="exists" resultType="Boolean">
+        SELECT EXISTS(SELECT 1 FROM t_conversation WHERE status = 1 AND send_user_uid = #{sendUserUid} AND receive_user_uid = #{receiveUserUid})
+    </select>
+    <update id="updateNotReceiveCount">
+        update t_conversation set not_receive_count = COALESCE(not_receive_count, 0) + #{count} where uid = #{id}
+    </update>
+    <update id="clearNotReceiveCount">
+        update t_conversation set not_receive_count = 0 where uid = #{id}
+    </update>
 </mapper>

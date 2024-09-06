@@ -32,4 +32,12 @@ public class UserInfoVo {
      * 是否已关注当前用户
      */
     private Boolean isFollow;
+    /**
+     * 粉丝数
+     */
+    private Long followerCount;
+    /**
+     * 关注数
+     */
+    private Long followingCount;
 }

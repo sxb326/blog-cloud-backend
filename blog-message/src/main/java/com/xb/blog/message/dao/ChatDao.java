@@ -11,4 +11,6 @@ import java.util.List;
 @Mapper
 public interface ChatDao extends BaseMapper<ChatEntity> {
     List<ContentVo> list(@Param("userUid") String userUid, @Param("contactUid") String contactUid, @Param("cursor") Long cursor);
+
+    List<ContentVo> newest(@Param("userUid") String userUid, @Param("contactUid") String contactUid, @Param("cursor") Long cursor);
 }

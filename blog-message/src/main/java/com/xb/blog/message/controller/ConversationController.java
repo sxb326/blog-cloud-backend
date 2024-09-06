@@ -2,12 +2,11 @@ package com.xb.blog.message.controller;
 
 import com.xb.blog.common.core.constants.Result;
 import com.xb.blog.message.service.ConversationService;
-import com.xb.blog.message.vo.ContactVo;
+import com.xb.blog.message.service.MessageService;
 import com.xb.blog.message.vo.ConversationVo;
+import com.xb.blog.message.vo.SaveConversationVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,6 +17,9 @@ public class ConversationController {
     @Autowired
     private ConversationService conversationService;
 
+    @Autowired
+    private MessageService messageService;
+
     /**
      * 查询出用户当前所有会话
      *
@@ -27,7 +29,14 @@ public class ConversationController {
     @GetMapping("/list")
     public Result list(String keyword) {
         List<ConversationVo> list = conversationService.list(keyword);
+        messageService.updateMessageToReceived(5);
         return Result.success(list);
+    }
+
+    @PostMapping("/save")
+    public Result save(@RequestBody SaveConversationVo vo) {
+        String conversationUid = conversationService.save(vo);
+        return Result.success("", conversationUid);
     }
 
 }

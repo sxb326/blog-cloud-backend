@@ -11,4 +11,10 @@ import java.util.List;
 @Mapper
 public interface ConversationDao extends BaseMapper<ConversationEntity> {
     List<ConversationVo> list(@Param("userUid") String userUid, @Param("keyword") String keyword);
+
+    Boolean exists(@Param("sendUserUid") String sendUserUid, @Param("receiveUserUid") String receiveUserUid);
+
+    void updateNotReceiveCount(@Param("id") String conversationUid, @Param("count") int count);
+
+    void clearNotReceiveCount(@Param("id") String conversationUid);
 }

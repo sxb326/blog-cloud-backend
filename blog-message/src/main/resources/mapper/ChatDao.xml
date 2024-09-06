@@ -14,4 +14,17 @@
             </if>
         ORDER BY c.create_time DESC LIMIT 10
     </select>
+    <select id="newest" resultType="com.xb.blog.message.vo.ContentVo">
+        SELECT c.uid,
+        c.create_time createTime,
+        c.content,
+        CASE WHEN c.send_user_uid = #{userUid} THEN 1 ELSE 0 END isSend
+        FROM t_chat c
+        WHERE c.STATUS = 1
+        AND ((c.send_user_uid = #{userUid} AND c.receive_user_uid = #{contactUid}) OR (c.send_user_uid = #{contactUid} AND c.receive_user_uid = #{userUid}))
+        <if test="cursor > 0">
+            AND c.uid <![CDATA[>]]> #{cursor}
+        </if>
+        ORDER BY c.create_time
+    </select>
 </mapper>

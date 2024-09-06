@@ -12,4 +12,6 @@ public interface ChatService extends IService<ChatEntity> {
     List<ContentVo> list(String contactUid, Long cursor);
 
     void send(SendVo vo);
+
+    List<ContentVo> newest(String contactUid, Long cursor);
 }

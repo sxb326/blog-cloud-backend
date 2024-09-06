@@ -15,7 +15,8 @@
             COALESCE(b.collect_count, 0) collectCount,
             u.uid authorId,
             u.nick_name authorName,
-            GROUP_CONCAT(t.name) tagNameList
+            GROUP_CONCAT(t.name) tagNameList,
+            CASE WHEN #{loginUserUid} = b.author THEN 1 ELSE 0 END isAuthor
         FROM
             t_blog b
                 LEFT JOIN t_user u ON b.author = u.uid
