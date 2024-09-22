@@ -6,8 +6,8 @@
                u.nick_name                                             nickName,
                u.pic_uid                                               picUid,
                COUNT(b.uid)                                            blogCount,
-               SUM(b.click_count)                                      clickCount,
-               SUM(b.like_count)                                       likeCount,
+               COALESCE(SUM(b.click_count), 0)                         clickCount,
+               COALESCE(SUM(b.like_count), 0)                          likeCount,
                CASE WHEN COALESCE(SUM(f.uid), 0) > 0 THEN 1 ELSE 0 END isFollow,
                count(distinct f1.uid)                                  followerCount,
                count(distinct f2.uid)                                  followingCount
