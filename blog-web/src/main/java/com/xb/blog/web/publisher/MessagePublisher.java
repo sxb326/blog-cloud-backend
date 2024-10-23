@@ -4,6 +4,7 @@ import com.xb.blog.common.rabbitmq.constants.RabbitMQConstants;
 import com.xb.blog.common.rabbitmq.pojo.MessageDto;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -25,6 +26,7 @@ public class MessagePublisher {
      * @param blogId
      * @param commentId
      */
+    @Async
     public void sendMessage(int type, String content, String sendUserId, String receiveUserId, String blogId, String commentId) {
         if (sendUserId != null && !sendUserId.equals(receiveUserId)) {
             MessageDto dto = new MessageDto();
