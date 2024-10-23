@@ -8,12 +8,12 @@ import java.io.Serializable;
  * 全局返回对象
  */
 @Data
-public class Result implements Serializable {
+public class Result<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String code;
     private String message;
-    private Object data;
+    private T data;
 
     public static Result success() {
         return success("操作成功");

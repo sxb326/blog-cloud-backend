@@ -26,7 +26,7 @@ public class FollowServiceImpl extends ServiceImpl<FollowDao, FollowEntity> impl
             entity.setTargetUserUid(vo.getTargetUserUid());
             save(entity);
             //发送消息
-            messagePublisher.sendMessage(4, null, UserUtil.getUserId(), vo.getTargetUserUid(), null, null);
+//            messagePublisher.sendMessage(4, null, UserUtil.getUserId(), vo.getTargetUserUid(), null, null);
         } else {
             remove(new QueryWrapper<FollowEntity>().eq("user_uid", UserUtil.getUserId()).eq("target_user_uid", vo.getTargetUserUid()));
         }

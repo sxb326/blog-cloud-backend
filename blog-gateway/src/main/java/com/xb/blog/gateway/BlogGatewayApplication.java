@@ -5,7 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
+@EnableFeignClients
 @EnableConfigurationProperties({AuthProperties.class})//开启配置文件读取
 @EnableDiscoveryClient//开启服务的注册发现
 @SpringBootApplication
