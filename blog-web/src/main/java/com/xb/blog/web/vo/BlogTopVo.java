@@ -11,7 +11,7 @@ public class BlogTopVo implements Serializable {
     /**
      * 博客ID
      */
-    private String uid;
+    private String id;
     /**
      * 标题
      */

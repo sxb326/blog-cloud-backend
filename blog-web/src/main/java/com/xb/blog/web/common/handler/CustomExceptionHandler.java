@@ -14,7 +14,7 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public Result exception(Exception e) {
-        log.error("{}",e.getMessage());
+        log.error("{}",e.getMessage(),e);
         return Result.error("系统异常！请稍后再试！");
     }
 }

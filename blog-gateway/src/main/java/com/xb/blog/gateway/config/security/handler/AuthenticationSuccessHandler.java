@@ -29,7 +29,7 @@ public class AuthenticationSuccessHandler implements ServerAuthenticationSuccess
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
         AuthUser user = (AuthUser) authentication.getPrincipal();
-        String token = AuthUtil.createToken(user.getUid(), user.getUsername());
+        String token = AuthUtil.createToken(user.getId(), user.getUsername());
         response.getHeaders().add("Token", token);
         response.getHeaders().add("Access-Control-Expose-Headers", "Token");
 

@@ -30,8 +30,8 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, MessageEntity> i
     @Override
     public void saveAndSend(MessageDto dto) {
         //保存消息
-        String uid = dto.getUid();
-        Boolean exist = baseMapper.exist(uid);
+        String id = dto.getId();
+        Boolean exist = baseMapper.exist(id);
         if (!exist) {
             MessageEntity entity = new MessageEntity();
             BeanUtil.copyProperties(dto, entity);
@@ -39,7 +39,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageDao, MessageEntity> i
             save(entity);
 
             //推送未读消息条数给用户
-            webSocketServer.send(dto.getReceiveUserUid());
+            webSocketServer.send(dto.getReceiveUserId());
         }
     }
 

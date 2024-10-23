@@ -26,7 +26,7 @@ public class UserController {
         UserEntity user = userService.findByUsername(username);
         if (user != null) {
             AuthUserDto dto = new AuthUserDto();
-            dto.setUid(user.getUid());
+            dto.setId(user.getId());
             dto.setUsername(user.getUsername());
             dto.setPassword(user.getPassword());
             return Result.success("查询成功", dto);

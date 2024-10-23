@@ -13,7 +13,7 @@ public class CommentListVo implements Serializable {
     /**
      * 评论id
      */
-    private String uid;
+    private String id;
     /**
      * 评论内容
      */
@@ -54,7 +54,7 @@ public class CommentListVo implements Serializable {
     /**
      * 用户头像id
      */
-    private String userPicUid;
+    private String userPicId;
     /**
      * 下级评论集合
      */

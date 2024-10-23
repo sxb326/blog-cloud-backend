@@ -14,15 +14,15 @@ public class ConversationEntity implements Serializable {
      * 主键
      */
     @TableId(type = IdType.ASSIGN_UUID)
-    private String uid;
+    private String id;
     /**
      * 发送消息用户id
      */
-    private String sendUserUid;
+    private String sendUserId;
     /**
      * 接收消息用户id
      */
-    private String receiveUserUid;
+    private String receiveUserId;
     /**
      * 未查收数据条数
      */

@@ -21,9 +21,9 @@ public class ChatController {
     private ConversationService conversationService;
 
     @GetMapping("/list")
-    public Result list(String conversationUid, String contactUid, Long cursor) {
-        List<ContentVo> list = chatService.list(contactUid, cursor);
-        conversationService.clearNotReceiveCount(conversationUid);
+    public Result list(String conversationId, String contactId, Long cursor) {
+        List<ContentVo> list = chatService.list(contactId, cursor);
+        conversationService.clearNotReceiveCount(conversationId);
         return Result.success(list);
     }
 
@@ -34,8 +34,8 @@ public class ChatController {
     }
 
     @GetMapping("/newest")
-    public Result newest(String contactUid, Long cursor) {
-        List<ContentVo> list = chatService.newest(contactUid, cursor);
+    public Result newest(String contactId, Long cursor) {
+        List<ContentVo> list = chatService.newest(contactId, cursor);
         return Result.success(list);
     }
 

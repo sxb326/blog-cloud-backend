@@ -24,7 +24,7 @@ public class TagEntity implements Serializable {
      * 主键
      */
     @TableId(type = IdType.ASSIGN_UUID)
-    private String uid;
+    private String id;
     /**
      * 标签名称
      */

@@ -8,8 +8,9 @@ import java.util.List;
 public interface BlogTagService extends IService<BlogTagEntity> {
     /**
      * 根据传入的博客id 和 标签id集合，保存博客和标签的关联数据
-     * @param blogUid
-     * @param tagUids
+     *
+     * @param blogId
+     * @param tagIds
      */
-    void save(String blogUid, List<String> tagUids);
+    void save(String blogId, List<String> tagIds);
 }

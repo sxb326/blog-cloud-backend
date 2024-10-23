@@ -18,7 +18,7 @@ import java.util.Map;
  * WebSocket消息推送服务端
  */
 @Component
-@ServerEndpoint("/websocket/{uid}")
+@ServerEndpoint("/websocket/{id}")
 public class WebSocketServer {
 
     //所有在线的客户端连接
@@ -32,30 +32,30 @@ public class WebSocketServer {
     }
 
     @OnOpen
-    public void onOpen(@PathParam("uid") String uid, Session session) {
+    public void onOpen(@PathParam("id") String id, Session session) {
         //检查客户端集合中是否存在当前用户连接 并添加当前客户端连接
         synchronized (clientMap) {
             List<Session> list = new ArrayList<>();
             list.add(session);
-            if (clientMap.containsKey(uid)) {
-                list.addAll(clientMap.get(uid));
+            if (clientMap.containsKey(id)) {
+                list.addAll(clientMap.get(id));
             }
-            clientMap.put(uid, list);
+            clientMap.put(id, list);
         }
         //推送消息
-        send(uid);
+        send(id);
     }
 
     @OnClose
-    public void onClose(@PathParam("uid") String uid, Session session) {
+    public void onClose(@PathParam("id") String id, Session session) {
         //关闭连接时，将对应的客户端对象从Map集合中移除
         synchronized (clientMap) {
-            List<Session> sessions = clientMap.get(uid);
+            List<Session> sessions = clientMap.get(id);
             sessions.remove(session);
             if (sessions.size() == 0) {
-                clientMap.remove(uid);
+                clientMap.remove(id);
             } else {
-                clientMap.put(uid, sessions);
+                clientMap.put(id, sessions);
             }
         }
     }
@@ -73,13 +73,13 @@ public class WebSocketServer {
     /**
      * 利用redis的发布订阅，筛选具备对应WebSocket客户端的节点
      *
-     * @param uid
+     * @param id
      * @return
      */
-    public void send(String uid) {
+    public void send(String id) {
         //将用户id发布到redis的发布订阅，所有节点监听 检查自己是否有对应连接 再推送消息
         try {
-            redisTemplate.convertAndSend(RedisConstants.REDIS_CHANNEL, new String(uid.getBytes(RedisConstants.UTF8), RedisConstants.UTF8));
+            redisTemplate.convertAndSend(RedisConstants.REDIS_CHANNEL, new String(id.getBytes(RedisConstants.UTF8), RedisConstants.UTF8));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,12 +88,12 @@ public class WebSocketServer {
     /**
      * 发送用户未接收的消息条数
      *
-     * @param uid
+     * @param id
      * @param message
      */
-    public void sendMessageCount(String uid, Object message) {
-        if (clientMap.containsKey(uid)) {
-            List<Session> sessions = clientMap.get(uid);
+    public void sendMessageCount(String id, Object message) {
+        if (clientMap.containsKey(id)) {
+            List<Session> sessions = clientMap.get(id);
             for (Session session : sessions) {
                 session.getAsyncRemote().sendText(JSONUtil.toJsonStr(message));
             }

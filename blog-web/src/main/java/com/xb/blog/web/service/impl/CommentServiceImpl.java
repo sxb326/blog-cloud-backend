@@ -75,11 +75,11 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
      */
     private List<CommentListVo> getSubComments(List<CommentDto> list, String parentId) {
         return list.stream()
-                .filter(c -> parentId.equals(c.getParentUid()))
+                .filter(c -> parentId.equals(c.getParentId()))
                 .map(c -> {
                     CommentListVo vo = new CommentListVo();
                     BeanUtil.copyProperties(c, vo);
-                    vo.setSubComments(getSubComments(list, c.getUid()));
+                    vo.setSubComments(getSubComments(list, c.getId()));
                     return vo;
                 }).collect(Collectors.toList());
     }
@@ -96,48 +96,48 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
         //保存评论表
         CommentEntity entity = new CommentEntity();
         entity.setType(1);
-        entity.setObjUid(vo.getBlogUid());
-        entity.setUserUid(UserUtil.getUserId());
-        entity.setParentUid(vo.getParentUid());
-        entity.setReplyToUid(StrUtil.isNotBlank(vo.getReplyToUid()) ? vo.getReplyToUid() : null);
+        entity.setObjId(vo.getBlogId());
+        entity.setUserId(UserUtil.getUserId());
+        entity.setParentId(vo.getParentId());
+        entity.setReplyToId(StrUtil.isNotBlank(vo.getReplyToId()) ? vo.getReplyToId() : null);
         entity.setContent(vo.getContent());
         entity.setStatus(1);
         save(entity);
 
         //更新目标评论的评论数
-        baseMapper.updateCommentCount(vo.getParentUid(), 1L);
-        if (StrUtil.isNotBlank(vo.getReplyToUid())) {
-            baseMapper.updateCommentCount(vo.getReplyToUid(), 1L);
+        baseMapper.updateCommentCount(vo.getParentId(), 1L);
+        if (StrUtil.isNotBlank(vo.getReplyToId())) {
+            baseMapper.updateCommentCount(vo.getReplyToId(), 1L);
         }
 
         //更新博客评论数
-        blogService.updateCommentCount(vo.getBlogUid(), 1L);
+        blogService.updateCommentCount(vo.getBlogId(), 1L);
 
         //更新es中的数据
-        BlogDocument doc = blogService.getBlogDocumentByBlogId(vo.getBlogUid());
+        BlogDocument doc = blogService.getBlogDocumentByBlogId(vo.getBlogId());
         searchFeignService.publish(doc);
 
         //推送消息
-        String receiveUserUid = doc.getAuthorId();
+        String receiveUserId = doc.getAuthorId();
         //如果当前为回复评论 则应发消息到发评论的人 而非文章作者
-        if (!"0".equals(vo.getParentUid())) {
-            if (StrUtil.isNotBlank(vo.getReplyToUid())) {
-                receiveUserUid = getById(vo.getReplyToUid()).getUserUid();
+        if (!"0".equals(vo.getParentId())) {
+            if (StrUtil.isNotBlank(vo.getReplyToId())) {
+                receiveUserId = getById(vo.getReplyToId()).getUserId();
             } else {
-                receiveUserUid = getById(vo.getParentUid()).getUserUid();
+                receiveUserId = getById(vo.getParentId()).getUserId();
             }
         }
-        messagePublisher.sendMessage(2, null, UserUtil.getUserId(), receiveUserUid, vo.getBlogUid(), entity.getUid());
+        messagePublisher.sendMessage(2, null, UserUtil.getUserId(), receiveUserId, vo.getBlogId(), entity.getId());
     }
 
     /**
      * 根据id获取评论的点赞数
      *
-     * @param objUid
+     * @param objId
      * @return
      */
     @Override
-    public Long getLikeCount(String objUid) {
-        return baseMapper.getLikeCountByCommentId(objUid);
+    public Long getLikeCount(String objId) {
+        return baseMapper.getLikeCountByCommentId(objId);
     }
 }

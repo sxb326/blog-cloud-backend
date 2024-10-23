@@ -2,42 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xb.blog.message.dao.MessageDao">
     <select id="exist" resultType="java.lang.Boolean">
-        SELECT EXISTS(SELECT 1 FROM t_message WHERE uid = #{uid})
+        SELECT EXISTS(SELECT 1 FROM t_message WHERE id = #{id})
     </select>
     <select id="getMessageCount" parameterType="String" resultType="Long">
         SELECT COALESCE(b.count, 0) count
         FROM
             (SELECT 1 type UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) a
-            LEFT JOIN (SELECT type, count(uid) count FROM t_message WHERE STATUS = 1 AND is_receive = 0 AND receive_user_uid = #{uid} GROUP BY type) b
+            LEFT JOIN (SELECT type, count(id) count FROM t_message WHERE STATUS = 1 AND is_receive = 0 AND receive_user_id = #{id} GROUP BY type) b
         ON a.type = b.type
     </select>
     <select id="list" resultType="com.xb.blog.message.vo.MessageVo">
-        SELECT m.send_user_uid                                sendUserUid,
+        SELECT m.send_user_id                                sendUserId,
                u.nick_name                                    sendUserNickName,
-               u.pic_uid                                      sendUserPicUid,
-               m.blog_uid                                     blogUid,
+               u.pic_id                                      sendUserPicId,
+               m.blog_id                                     blogId,
                b.title                                        blogTitle,
-               c.uid                                          commentUid,
+               c.id                                          commentId,
                c.content                                      commentContent,
-               case when c.parent_uid = '0' then 0 else 1 end commentLevel,
+               case when c.parent_id = '0' then 0 else 1 end commentLevel,
                m.content,
                TIMESTAMPDIFF(MINUTE, m.send_time, now())      sendTimeBefore
         FROM t_message m
-                 LEFT JOIN t_user u ON u.uid = m.send_user_uid AND u.STATUS = 1
-                 LEFT JOIN t_blog b ON m.blog_uid = b.uid AND b.STATUS = 1
-                 LEFT JOIN t_comment c ON m.comment_uid = c.uid AND c.STATUS = 1
+                 LEFT JOIN t_user u ON u.id = m.send_user_id AND u.STATUS = 1
+                 LEFT JOIN t_blog b ON m.blog_id = b.id AND b.STATUS = 1
+                 LEFT JOIN t_comment c ON m.comment_id = c.id AND c.STATUS = 1
         WHERE m.STATUS = 1
           AND m.type = #{type}
-          AND m.receive_user_uid = #{receiveUserUid}
+          AND m.receive_user_id = #{receiveUserId}
         ORDER BY m.send_time DESC LIMIT 10
         OFFSET #{page}
     </select>
     <select id="counts" resultType="Long">
         SELECT COALESCE(m.count, 0)
         FROM (SELECT 1 type UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 ) t
-                LEFT JOIN ( SELECT type, count( uid ) count FROM t_message WHERE is_receive = 0 AND receive_user_uid = #{userUid} GROUP BY type ) m ON t.type = m.type
+                LEFT JOIN ( SELECT type, count( id ) count FROM t_message WHERE is_receive = 0 AND receive_user_id = #{userId} GROUP BY type ) m ON t.type = m.type
     </select>
     <update id="updateMessageToReceived">
-        UPDATE t_message set is_receive = 1 WHERE type = #{type} AND receive_user_uid = #{userUid} AND is_receive = 0
+        UPDATE t_message set is_receive = 1 WHERE type = #{type} AND receive_user_id = #{userId} AND is_receive = 0
     </update>
 </mapper>

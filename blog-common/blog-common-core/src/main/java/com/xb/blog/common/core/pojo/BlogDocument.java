@@ -15,7 +15,7 @@ public class BlogDocument implements Serializable {
     /**
      * 博客ID
      */
-    private String uid;
+    private String id;
     /**
      * 标题
      */
@@ -27,7 +27,7 @@ public class BlogDocument implements Serializable {
     /**
      * 封面图片id
      */
-    private String picUid;
+    private String picId;
     /**
      * 点击数
      */

@@ -22,13 +22,13 @@ public class FollowServiceImpl extends ServiceImpl<FollowDao, FollowEntity> impl
         Boolean isFollow = vo.getIsFollow();
         if (isFollow) {
             FollowEntity entity = new FollowEntity();
-            entity.setUserUid(UserUtil.getUserId());
-            entity.setTargetUserUid(vo.getTargetUserUid());
+            entity.setUserId(UserUtil.getUserId());
+            entity.setTargetUserId(vo.getTargetUserId());
             save(entity);
             //发送消息
-//            messagePublisher.sendMessage(4, null, UserUtil.getUserId(), vo.getTargetUserUid(), null, null);
+            messagePublisher.sendMessage(4, null, UserUtil.getUserId(), vo.getTargetUserId(), null, null);
         } else {
-            remove(new QueryWrapper<FollowEntity>().eq("user_uid", UserUtil.getUserId()).eq("target_user_uid", vo.getTargetUserUid()));
+            remove(new QueryWrapper<FollowEntity>().eq("user_id", UserUtil.getUserId()).eq("target_user_id", vo.getTargetUserId()));
         }
     }
 }

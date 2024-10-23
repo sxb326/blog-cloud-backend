@@ -16,7 +16,7 @@ public class BlogPreviewVo implements Serializable {
     /**
      * 唯一id
      */
-    private String uid;
+    private String id;
     /**
      * 博客标题
      */

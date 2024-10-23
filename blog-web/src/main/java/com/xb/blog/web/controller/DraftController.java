@@ -24,7 +24,7 @@ public class DraftController {
      */
     @PostMapping("/save")
     public Result saveDraft(@RequestBody BlogEditorVo vo) {
-        String draftUid = draftService.saveDraft(vo);
-        return Result.success("保存草稿成功！", draftUid);
+        String draftId = draftService.saveDraft(vo);
+        return Result.success("保存草稿成功！", draftId);
     }
 }

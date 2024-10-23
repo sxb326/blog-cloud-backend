@@ -7,7 +7,7 @@ public class AuthUserVo {
     /**
      * ID
      */
-    private String uid;
+    private String id;
     /**
      * 昵称
      */
@@ -15,5 +15,5 @@ public class AuthUserVo {
     /**
      * 头像图片id
      */
-    private String picUid;
+    private String picId;
 }

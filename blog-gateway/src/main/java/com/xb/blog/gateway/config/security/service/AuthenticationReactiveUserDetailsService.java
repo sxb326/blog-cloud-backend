@@ -30,7 +30,7 @@ public class AuthenticationReactiveUserDetailsService implements ReactiveUserDet
             if (data != null) {
                 AuthUserDto dto = (AuthUserDto) data;
                 AuthUser authUser = new AuthUser();
-                authUser.setUid(dto.getUid());
+                authUser.setId(dto.getId());
                 authUser.setUsername(dto.getUsername());
                 authUser.setPassword(dto.getPassword());
                 return Mono.just(authUser);

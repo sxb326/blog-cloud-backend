@@ -14,15 +14,15 @@ public class BlogTagEntity implements Serializable {
      * 主键
      */
     @TableId(type = IdType.ASSIGN_UUID)
-    private String uid;
+    private String id;
     /**
      * 博客id
      */
-    private String blogUid;
+    private String blogId;
     /**
      * 标签id
      */
-    private String tagUid;
+    private String tagId;
     /**
      * 逻辑删除 1：不删除，0：删除
      */

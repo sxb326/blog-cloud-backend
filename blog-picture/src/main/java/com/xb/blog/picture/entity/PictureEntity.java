@@ -17,7 +17,7 @@ public class PictureEntity implements Serializable {
      * ID
      */
     @TableId(type = IdType.ASSIGN_UUID)
-    private String uid;
+    private String id;
     /**
      * 文件名称
      */

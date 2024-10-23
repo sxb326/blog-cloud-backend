@@ -15,7 +15,7 @@ public class BlogEditorVo implements Serializable {
     /**
      * 唯一id
      */
-    private String uid;
+    private String id;
     /**
      * 博客标题
      */
@@ -31,13 +31,13 @@ public class BlogEditorVo implements Serializable {
     /**
      * 封面图片id
      */
-    private String picUid;
+    private String picId;
     /**
      * 标签集id
      */
-    private List<String> tagUids;
+    private List<String> tagIds;
     /**
      * 分类id
      */
-    private String categoryUid;
+    private String categoryId;
 }

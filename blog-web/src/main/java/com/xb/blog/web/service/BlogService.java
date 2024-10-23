@@ -31,7 +31,7 @@ public interface BlogService extends IService<BlogEntity> {
      *
      * @return
      */
-    List<BlogListVo> listBlog(Long page, String categoryUid, String orderType);
+    List<BlogListVo> listBlog(Long page, String categoryId, String orderType);
 
     /**
      * 根据id获取博客预览数据
@@ -127,10 +127,10 @@ public interface BlogService extends IService<BlogEntity> {
      * 列出用户所有文章
      *
      * @param page
-     * @param userUid
+     * @param userId
      * @param orderType
      * @return
      */
-    List<BlogListVo> listBlogByUser(Long page, String userUid, String orderType);
+    List<BlogListVo> listBlogByUser(Long page, String userId, String orderType);
 }
 

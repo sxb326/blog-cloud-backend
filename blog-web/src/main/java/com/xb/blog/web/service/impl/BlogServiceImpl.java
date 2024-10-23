@@ -65,13 +65,13 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         saveOrUpdate(blog);
 
         //保存标签绑定数据
-        blogTagService.save(vo.getUid(), vo.getTagUids());
+        blogTagService.save(vo.getId(), vo.getTagIds());
 
         //删除草稿表
-        draftService.removeById(vo.getUid());
+        draftService.removeById(vo.getId());
 
         //调用检索服务，将博客检索信息上传到es
-        BlogDocument doc = getBlogDocumentByBlogId(blog.getUid());
+        BlogDocument doc = getBlogDocumentByBlogId(blog.getId());
         searchFeignService.publish(doc);
     }
 
@@ -81,12 +81,12 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
      * @return
      */
     @Override
-    public List<BlogListVo> listBlog(Long page, String categoryUid, String orderType) {
+    public List<BlogListVo> listBlog(Long page, String categoryId, String orderType) {
         //处理特殊情况
         if (page == null) page = 1L;
 
         //处理文章分类
-        String category = StrUtil.isNotBlank(categoryUid) ? "_" + categoryUid : "_ALL";
+        String category = StrUtil.isNotBlank(categoryId) ? "_" + categoryId : "_ALL";
 
         //处理排序方式
         String orderTypeUpper = StrUtil.isNotBlank(orderType) ? orderType.toUpperCase() : "";
@@ -113,7 +113,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
         if (lock) {
             //拿到分布式锁，查询数据库
             try {
-                List<BlogListVo> list = baseMapper.listBlog(page, categoryUid, orderType, null, UserUtil.getUserId());
+                List<BlogListVo> list = baseMapper.listBlog(page, categoryId, orderType, null, UserUtil.getUserId());
                 if (CollUtil.isEmpty(list)) {
                     //设置空值 避免缓存穿透
                     redisTemplate.opsForValue().set(dataKey, JSONUtil.toJsonStr(list), 10, TimeUnit.SECONDS);
@@ -293,17 +293,17 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, BlogEntity> implements
      * 列出用户所有文章
      *
      * @param page
-     * @param userUid
+     * @param userId
      * @param orderType
      * @return
      */
     @Override
-    public List<BlogListVo> listBlogByUser(Long page, String userUid, String orderType) {
+    public List<BlogListVo> listBlogByUser(Long page, String userId, String orderType) {
         //处理特殊情况
         if (page == null) page = 1L;
         //换算分页参数（使用OFFSET关键字进行分页，故此处起始页码应为0）
         page = (page - 1L) * 10L;
-        List<BlogListVo> list = baseMapper.listBlog(page, null, orderType, userUid, UserUtil.getUserId());
+        List<BlogListVo> list = baseMapper.listBlog(page, null, orderType, userId, UserUtil.getUserId());
         return list;
     }
 }

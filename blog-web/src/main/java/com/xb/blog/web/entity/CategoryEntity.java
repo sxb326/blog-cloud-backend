@@ -15,7 +15,7 @@ public class CategoryEntity implements Serializable {
      * 主键
      */
     @TableId(type = IdType.ASSIGN_UUID)
-    private String uid;
+    private String id;
     /**
      * 分类名称
      */

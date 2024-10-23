@@ -13,18 +13,18 @@ public interface MessageDao extends BaseMapper<MessageEntity> {
     /**
      * 根据消息id判断消息是否已存在
      *
-     * @param uid
+     * @param id
      * @return
      */
-    Boolean exist(@Param("uid") String uid);
+    Boolean exist(@Param("id") String id);
 
     /**
      * 根据用户id获取未读消息数量
      *
-     * @param uid
+     * @param id
      * @return
      */
-    List<Long> getMessageCount(@Param("uid") String uid);
+    List<Long> getMessageCount(@Param("id") String id);
 
     /**
      * 获取消息列表
@@ -33,7 +33,7 @@ public interface MessageDao extends BaseMapper<MessageEntity> {
      * @param page
      * @return
      */
-    List<MessageVo> list(@Param("type") int type, @Param("page") Long page, @Param("receiveUserUid") String receiveUserUid);
+    List<MessageVo> list(@Param("type") int type, @Param("page") Long page, @Param("receiveUserId") String receiveUserId);
 
     /**
      * 获取所有消息未接收的条数
@@ -41,7 +41,7 @@ public interface MessageDao extends BaseMapper<MessageEntity> {
      * @param userId
      * @return
      */
-    List<Long> counts(@Param("userUid") String userId);
+    List<Long> counts(@Param("userId") String userId);
 
     /**
      * 将某用户的某一类未读消息变为已读
@@ -49,5 +49,5 @@ public interface MessageDao extends BaseMapper<MessageEntity> {
      * @param type
      * @param userId
      */
-    void updateMessageToReceived(@Param("type") int type, @Param("userUid") String userId);
+    void updateMessageToReceived(@Param("type") int type, @Param("userId") String userId);
 }

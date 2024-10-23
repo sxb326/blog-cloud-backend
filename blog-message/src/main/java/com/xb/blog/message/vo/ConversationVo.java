@@ -11,11 +11,11 @@ public class ConversationVo implements Serializable {
     /**
      * 私信表唯一id
      */
-    private String uid;
+    private String id;
     /**
      * 联系人唯一id
      */
-    private String contactUid;
+    private String contactId;
     /**
      * 未查收的消息条数
      */
@@ -27,7 +27,7 @@ public class ConversationVo implements Serializable {
     /**
      * 用户头像id
      */
-    private String picUid;
+    private String picId;
     /**
      * 最新一条消息内容
      */

@@ -2,28 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xb.blog.message.dao.ChatDao">
     <select id="list" resultType="com.xb.blog.message.vo.ContentVo">
-        SELECT c.uid,
+        SELECT c.id,
                c.create_time createTime,
                c.content,
-               CASE WHEN c.send_user_uid = #{userUid} THEN 1 ELSE 0 END isSend
+               CASE WHEN c.send_user_id = #{userId} THEN 1 ELSE 0 END isSend
         FROM t_chat c
         WHERE c.STATUS = 1
-          AND ((c.send_user_uid = #{userUid} AND c.receive_user_uid = #{contactUid}) OR (c.send_user_uid = #{contactUid} AND c.receive_user_uid = #{userUid}))
+          AND ((c.send_user_id = #{userId} AND c.receive_user_id = #{contactId}) OR (c.send_user_id = #{contactId} AND c.receive_user_id = #{userId}))
             <if test="cursor > 0">
-                AND c.uid <![CDATA[<]]> #{cursor}
+                AND c.id <![CDATA[<]]> #{cursor}
             </if>
         ORDER BY c.create_time DESC LIMIT 10
     </select>
     <select id="newest" resultType="com.xb.blog.message.vo.ContentVo">
-        SELECT c.uid,
+        SELECT c.id,
         c.create_time createTime,
         c.content,
-        CASE WHEN c.send_user_uid = #{userUid} THEN 1 ELSE 0 END isSend
+        CASE WHEN c.send_user_id = #{userId} THEN 1 ELSE 0 END isSend
         FROM t_chat c
         WHERE c.STATUS = 1
-        AND ((c.send_user_uid = #{userUid} AND c.receive_user_uid = #{contactUid}) OR (c.send_user_uid = #{contactUid} AND c.receive_user_uid = #{userUid}))
+        AND ((c.send_user_id = #{userId} AND c.receive_user_id = #{contactId}) OR (c.send_user_id = #{contactId} AND c.receive_user_id = #{userId}))
         <if test="cursor > 0">
-            AND c.uid <![CDATA[>]]> #{cursor}
+            AND c.id <![CDATA[>]]> #{cursor}
         </if>
         ORDER BY c.create_time
     </select>

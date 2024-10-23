@@ -26,9 +26,9 @@ public class PictureController {
     @Autowired
     private PictureService pictureService;
 
-    @GetMapping("/{uid}")
-    public void getPic(HttpServletResponse response, @PathVariable("uid") String uid) throws IOException {
-        PictureEntity entity = pictureService.getById(uid);
+    @GetMapping("/{id}")
+    public void getPic(HttpServletResponse response, @PathVariable("id") String id) throws IOException {
+        PictureEntity entity = pictureService.getById(id);
         if (entity != null) {
             String storageType = entity.getStorageType();
             if ("local".equals(storageType)) {
@@ -71,7 +71,7 @@ public class PictureController {
             entity.setStatus(1);
             entity.setCreateTime(new Date());
             pictureService.save(entity);
-            return Result.success(null, entity.getUid());
+            return Result.success(null, entity.getId());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

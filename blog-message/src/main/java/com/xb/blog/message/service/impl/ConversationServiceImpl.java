@@ -20,38 +20,38 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationDao, Conver
     }
 
     @Override
-    public String checkAndCreate(String sendUserUid, String receiveUserUid) {
-        ConversationEntity entity = baseMapper.selectOne(new QueryWrapper<ConversationEntity>().eq("send_user_uid", sendUserUid).eq("receive_user_uid", receiveUserUid));
+    public String checkAndCreate(String sendUserId, String receiveUserId) {
+        ConversationEntity entity = baseMapper.selectOne(new QueryWrapper<ConversationEntity>().eq("send_user_id", sendUserId).eq("receive_user_id", receiveUserId));
         if (entity != null) {
-            return entity.getUid();
+            return entity.getId();
         }
         entity = new ConversationEntity();
-        entity.setSendUserUid(sendUserUid);
-        entity.setReceiveUserUid(receiveUserUid);
+        entity.setSendUserId(sendUserId);
+        entity.setReceiveUserId(receiveUserId);
         save(entity);
-        return entity.getUid();
+        return entity.getId();
     }
 
     @Override
     public String save(SaveConversationVo vo) {
-        ConversationEntity entity = baseMapper.selectOne(new QueryWrapper<ConversationEntity>().eq("send_user_uid", UserUtil.getUserId()).eq("receive_user_uid", vo.getReceiveUserUid()));
+        ConversationEntity entity = baseMapper.selectOne(new QueryWrapper<ConversationEntity>().eq("send_user_id", UserUtil.getUserId()).eq("receive_user_id", vo.getReceiveUserId()));
         if (entity != null) {
-            return entity.getUid();
+            return entity.getId();
         }
         entity = new ConversationEntity();
-        entity.setSendUserUid(UserUtil.getUserId());
-        entity.setReceiveUserUid(vo.getReceiveUserUid());
+        entity.setSendUserId(UserUtil.getUserId());
+        entity.setReceiveUserId(vo.getReceiveUserId());
         save(entity);
-        return entity.getUid();
+        return entity.getId();
     }
 
     @Override
-    public void updateNotReceiveCount(String conversationUid, int count) {
-        baseMapper.updateNotReceiveCount(conversationUid, count);
+    public void updateNotReceiveCount(String conversationId, int count) {
+        baseMapper.updateNotReceiveCount(conversationId, count);
     }
 
     @Override
-    public void clearNotReceiveCount(String conversationUid) {
-        baseMapper.clearNotReceiveCount(conversationUid);
+    public void clearNotReceiveCount(String conversationId) {
+        baseMapper.clearNotReceiveCount(conversationId);
     }
 }

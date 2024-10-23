@@ -32,7 +32,7 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteDao, FavoriteEntity
         entity.setName("我的收藏");
         entity.setIsDefault(1);
         entity.setStatus(1);
-        entity.setUserUid(UserUtil.getUserId());
+        entity.setUserId(UserUtil.getUserId());
         save(entity);
     }
 }

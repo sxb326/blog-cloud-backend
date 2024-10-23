@@ -6,31 +6,31 @@
     </resultMap>
     <select id="listBlog" resultMap="BlogListVo">
         SELECT
-            b.uid,
+            b.id,
             b.title,
             b.summary,
-            b.pic_uid picUid,
+            b.pic_id picId,
             COALESCE(b.click_count, 0) clickCount,
             COALESCE(b.like_count, 0) likeCount,
             COALESCE(b.collect_count, 0) collectCount,
-            u.uid authorId,
+            u.id authorId,
             u.nick_name authorName,
             GROUP_CONCAT(t.name) tagNameList,
-            CASE WHEN #{loginUserUid} = b.author THEN 1 ELSE 0 END isAuthor
+            CASE WHEN #{loginUserId} = b.author THEN 1 ELSE 0 END isAuthor
         FROM
             t_blog b
-                LEFT JOIN t_user u ON b.author = u.uid
-                LEFT JOIN t_blog_tag bt ON b.uid = bt.blog_uid AND bt.status = 1
-                LEFT JOIN t_tag t ON bt.tag_uid = t.uid AND t.status = 1
+                LEFT JOIN t_user u ON b.author = u.id
+                LEFT JOIN t_blog_tag bt ON b.id = bt.blog_id AND bt.status = 1
+                LEFT JOIN t_tag t ON bt.tag_id = t.id AND t.status = 1
         WHERE
             b.status = 1
-        <if test="categoryUid != null and categoryUid != ''">
-            AND b.category_uid = #{categoryUid}
+        <if test="categoryId != null and categoryId != ''">
+            AND b.category_id = #{categoryId}
         </if>
-        <if test="userUid != null and userUid != ''">
-            AND b.author = #{userUid}
+        <if test="userId != null and userId != ''">
+            AND b.author = #{userId}
         </if>
-        GROUP BY b.uid, b.title, b.summary, b.pic_uid, b.click_count, b.like_count, b.collect_count, u.uid, u.nick_name
+        GROUP BY b.id, b.title, b.summary, b.pic_id, b.click_count, b.like_count, b.collect_count, u.id, u.nick_name
         <choose>
             <when test="orderType == 'recommend'">
                 ORDER BY COALESCE(b.click_count,0) * 0.1 + COALESCE(b.like_count,0) * 0.3 + COALESCE(b.comment_count,0) * 0.2 + COALESCE(b.collect_count,0) * 0.4 DESC
@@ -46,78 +46,78 @@
     </select>
     <select id="getBlogPreviewById" parameterType="String" resultType="com.xb.blog.web.vo.BlogPreviewVo">
         SELECT
-            b.uid,
+            b.id,
             b.title,
             b.content,
             IFNULL(b.click_count, 0) clickCount,
             IFNULL(b.like_count, 0) likeCount,
             IFNULL(b.comment_count, 0) commentCount,
             IFNULL(b.collect_count, 0) collectCount,
-            u.uid authorId,
+            u.id authorId,
             u.nick_name authorName,
             b.create_time createTime,
-            CASE WHEN l.uid IS NOT NULL THEN 1 ELSE 0 END liked,
-            CASE WHEN c.uid IS NOT NULL THEN 1 ELSE 0 END collected
+            CASE WHEN l.id IS NOT NULL THEN 1 ELSE 0 END liked,
+            CASE WHEN c.id IS NOT NULL THEN 1 ELSE 0 END collected
         FROM
             t_blog b
-                LEFT JOIN t_user u ON b.author = u.uid
-                LEFT JOIN t_like l ON l.type = 1 AND b.uid = l.obj_uid AND l.user_uid = #{userUid}
-                LEFT JOIN t_collect c ON c.blog_uid = b.uid AND c.user_uid = #{userUid}
+                LEFT JOIN t_user u ON b.author = u.id
+                LEFT JOIN t_like l ON l.type = 1 AND b.id = l.obj_id AND l.user_id = #{userId}
+                LEFT JOIN t_collect c ON c.blog_id = b.id AND c.user_id = #{userId}
         WHERE
-            b.status = 1 AND b.uid = #{uid}
+            b.status = 1 AND b.id = #{id}
     </select>
     <update id="updateLikeCount">
-        update t_blog set like_count = COALESCE(like_count, 0) + #{count} where uid = #{blogId}
+        update t_blog set like_count = COALESCE(like_count, 0) + #{count} where id = #{blogId}
     </update>
     <select id="getLikeCountByBlogId" parameterType="String" resultType="Long">
-        select like_count from t_blog where uid = #{blogId}
+        select like_count from t_blog where id = #{blogId}
     </select>
     <update id="updateCommentCount">
-        update t_blog set comment_count = COALESCE(comment_count, 0) + #{count} where uid = #{blogId}
+        update t_blog set comment_count = COALESCE(comment_count, 0) + #{count} where id = #{blogId}
     </update>
     <select id="getCommentCountByBlogId" parameterType="String" resultType="Long">
-        select COALESCE(comment_count, 0) from t_blog where uid = #{blogId}
+        select COALESCE(comment_count, 0) from t_blog where id = #{blogId}
     </select>
     <update id="updateClickCount">
-        update t_blog set click_count = COALESCE(click_count, 0) + #{count} where uid = #{blogId}
+        update t_blog set click_count = COALESCE(click_count, 0) + #{count} where id = #{blogId}
     </update>
     <update id="updateCollectCount">
-        update t_blog set collect_count = COALESCE(collect_count, 0) + #{count} where uid = #{blogId}
+        update t_blog set collect_count = COALESCE(collect_count, 0) + #{count} where id = #{blogId}
     </update>
     <select id="getCollectCountByBlogId" parameterType="String" resultType="Long">
         select collect_count
         from t_blog
-        where uid = #{blogId}
+        where id = #{blogId}
     </select>
     <resultMap id="BlogDocument" type="com.xb.blog.common.core.pojo.BlogDocument">
         <result column="tagNameList" property="tagNameList" typeHandler="com.xb.blog.web.config.mybatis.typeHandler.ConvertCommaSeparatedStrToListTypeHandler"/>
     </resultMap>
     <select id="getBlogDocumentByBlogId" resultMap="BlogDocument">
-        SELECT b.uid,
+        SELECT b.id,
                b.title,
                b.summary,
-               b.pic_uid                  picUid,
+               b.pic_id                  picId,
                COALESCE(b.click_count, 0) clickCount,
                COALESCE(b.like_count, 0) likeCount,
                COALESCE(b.collect_count, 0) collectCount,
-               u.uid                      authorId,
+               u.id                      authorId,
                u.nick_name                authorName,
                GROUP_CONCAT(t.name) tagNameList
         FROM t_blog b
-                 LEFT JOIN t_user u ON b.author = u.uid
-                 LEFT JOIN t_blog_tag bt ON b.uid = bt.blog_uid AND bt.status = 1
-                 LEFT JOIN t_tag t ON bt.tag_uid = t.uid AND t.status = 1
-        WHERE b.status = 1 AND b.uid = #{blogId}
+                 LEFT JOIN t_user u ON b.author = u.id
+                 LEFT JOIN t_blog_tag bt ON b.id = bt.blog_id AND bt.status = 1
+                 LEFT JOIN t_tag t ON bt.tag_id = t.id AND t.status = 1
+        WHERE b.status = 1 AND b.id = #{blogId}
     </select>
     <select id="search" resultType="com.xb.blog.common.core.pojo.BlogDocument">
-        SELECT b.uid,
+        SELECT b.id,
                b.title,
                b.summary,
-               b.pic_uid                  picUid,
-               u.uid                      authorId,
+               b.pic_id                  picId,
+               u.id                      authorId,
                u.nick_name                authorName
         FROM t_blog b
-                 LEFT JOIN t_user u ON b.author = u.uid
+                 LEFT JOIN t_user u ON b.author = u.id
         WHERE b.status = 1 AND b.title like CONCAT('%', #{keyword}, '%')
         ORDER BY b.create_time DESC
         <if test="page != null">
@@ -125,7 +125,7 @@
         </if>
     </select>
     <select id="getTop10List" resultType="com.xb.blog.web.vo.BlogTopVo">
-        SELECT uid, title
+        SELECT id, title
         FROM t_blog b
         WHERE b.STATUS = 1
         ORDER BY COALESCE ( b.click_count, 0 ) * 0.1 + COALESCE ( b.like_count, 0 ) * 0.3 + COALESCE ( b.comment_count, 0 ) * 0.2 + COALESCE ( b.collect_count, 0 ) * 0.4 DESC

@@ -34,8 +34,8 @@ public class DraftServiceImpl extends ServiceImpl<DraftDao, DraftEntity> impleme
         saveOrUpdate(entity);
 
         //保存标签绑定数据
-        blogTagService.save(vo.getUid(), vo.getTagUids());
+        blogTagService.save(vo.getId(), vo.getTagIds());
 
-        return entity.getUid();
+        return entity.getId();
     }
 }

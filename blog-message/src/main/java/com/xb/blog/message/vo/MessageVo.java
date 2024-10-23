@@ -10,7 +10,7 @@ public class MessageVo {
     /**
      * 发送者id
      */
-    private String sendUserUid;
+    private String sendUserId;
     /**
      * 发送者昵称
      */
@@ -18,11 +18,11 @@ public class MessageVo {
     /**
      * 发送者头像id
      */
-    private String sendUserPicUid;
+    private String sendUserPicId;
     /**
      * 博客id
      */
-    private String blogUid;
+    private String blogId;
     /**
      * 博客标题
      */
@@ -30,7 +30,7 @@ public class MessageVo {
     /**
      * 评论id
      */
-    private String commentUid;
+    private String commentId;
     /**
      * 评论内容
      */

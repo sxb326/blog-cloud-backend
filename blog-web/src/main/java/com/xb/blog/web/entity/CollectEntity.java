@@ -18,19 +18,19 @@ public class CollectEntity implements Serializable {
      * 主键
      */
     @TableId(type = IdType.ASSIGN_UUID)
-    private String uid;
+    private String id;
     /**
-     * 博客uid
+     * 博客id
      */
-    private String blogUid;
+    private String blogId;
     /**
-     * 用户uid
+     * 用户id
      */
-    private String userUid;
+    private String userId;
     /**
-     * 收藏夹uid
+     * 收藏夹id
      */
-    private String favoriteUid;
+    private String favoriteId;
     /**
      * 创建时间
      */

@@ -31,7 +31,7 @@ public class PublishController {
     public Result publish(@RequestBody BlogDocument doc) {
         IndexRequest indexRequest = new IndexRequest("blog_list");
 
-        indexRequest.id(doc.getUid());
+        indexRequest.id(doc.getId());
         indexRequest.source(JSONUtil.toJsonStr(doc), XContentType.JSON);
 
         try {

@@ -15,18 +15,18 @@ public class BlogTagServiceImpl extends ServiceImpl<BlogTagDao, BlogTagEntity> i
     /**
      * 根据传入的博客id 和 标签id集合，保存博客和标签的关联数据
      *
-     * @param blogUid
-     * @param tagUids
+     * @param blogId
+     * @param tagIds
      */
     @Override
-    public void save(String blogUid, List<String> tagUids) {
-        remove(new QueryWrapper<BlogTagEntity>().eq("blog_uid", blogUid));
-        if (tagUids != null) {
-            List<BlogTagEntity> entities = tagUids.stream()
-                    .map(tagUid -> {
+    public void save(String blogId, List<String> tagIds) {
+        remove(new QueryWrapper<BlogTagEntity>().eq("blog_id", blogId));
+        if (tagIds != null) {
+            List<BlogTagEntity> entities = tagIds.stream()
+                    .map(tagId -> {
                         BlogTagEntity blogTag = new BlogTagEntity();
-                        blogTag.setBlogUid(blogUid);
-                        blogTag.setTagUid(tagUid);
+                        blogTag.setBlogId(blogId);
+                        blogTag.setTagId(tagId);
                         blogTag.setStatus(1);
                         return blogTag;
                     }).collect(Collectors.toList());

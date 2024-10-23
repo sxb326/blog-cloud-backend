@@ -49,13 +49,13 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
         if (status) {
             LikeEntity entity = new LikeEntity();
             BeanUtil.copyProperties(vo, entity);
-            entity.setUserUid(userId);
+            entity.setUserId(userId);
             save(entity);
         } else {
             QueryWrapper<LikeEntity> wrapper = new QueryWrapper<LikeEntity>()
                     .eq("type", vo.getType())
-                    .eq("obj_uid", vo.getObjUid())
-                    .eq("user_uid", userId);
+                    .eq("obj_id", vo.getObjId())
+                    .eq("user_id", userId);
             remove(wrapper);
         }
 
@@ -63,27 +63,27 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
         int type = vo.getType();
         if (type == 1) {
             //更新数据库
-            blogService.updateLikeCount(vo.getObjUid(), status ? 1L : -1L);
+            blogService.updateLikeCount(vo.getObjId(), status ? 1L : -1L);
 
             //更新es
-            BlogDocument doc = blogService.getBlogDocumentByBlogId(vo.getObjUid());
+            BlogDocument doc = blogService.getBlogDocumentByBlogId(vo.getObjId());
             searchFeignService.publish(doc);
 
             //发送消息
             if (status) {
-                messagePublisher.sendMessage(1, null, userId, doc.getAuthorId(), vo.getObjUid(), null);
+                messagePublisher.sendMessage(1, null, userId, doc.getAuthorId(), vo.getObjId(), null);
             }
 
             //返回最新点赞数
-            return blogService.getLikeCount(vo.getObjUid());
+            return blogService.getLikeCount(vo.getObjId());
         } else if (type == 2) {
             //更新数据库
-            commentService.updateLikeCount(vo.getObjUid(), status ? 1L : -1L);
+            commentService.updateLikeCount(vo.getObjId(), status ? 1L : -1L);
 
             //发送消息
-            CommentEntity commentEntity = commentService.getById(vo.getObjUid());
+            CommentEntity commentEntity = commentService.getById(vo.getObjId());
             if (status) {
-                messagePublisher.sendMessage(1, null, userId, commentEntity.getUserUid(), commentEntity.getObjUid(), vo.getObjUid());
+                messagePublisher.sendMessage(1, null, userId, commentEntity.getUserId(), commentEntity.getObjId(), vo.getObjId());
             }
 
             //返回最新点赞数

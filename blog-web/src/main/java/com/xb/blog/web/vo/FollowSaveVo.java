@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class FollowSaveVo {
-    private String targetUserUid;
+    private String targetUserId;
     private Boolean isFollow;
 }

@@ -11,11 +11,11 @@ public class CommentDto implements Serializable {
     /**
      * 评论id
      */
-    private String uid;
+    private String id;
     /**
      * 评论父级id
      */
-    private String parentUid;
+    private String parentId;
     /**
      * 回复的用户id
      */
@@ -55,7 +55,7 @@ public class CommentDto implements Serializable {
     /**
      * 用户头像id
      */
-    private String userPicUid;
+    private String userPicId;
     /**
      * 当前评论用户是否为作者
      */

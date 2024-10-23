@@ -11,7 +11,7 @@ public class AuthUser implements UserDetails {
     /**
      * 唯一id
      */
-    private String uid;
+    private String id;
     /**
      * 用户名
      */

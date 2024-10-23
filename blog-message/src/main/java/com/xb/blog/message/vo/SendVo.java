@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class SendVo {
-    private String contactUid;
+    private String contactId;
     private String content;
 }

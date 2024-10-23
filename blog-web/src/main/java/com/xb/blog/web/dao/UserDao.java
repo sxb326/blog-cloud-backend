@@ -15,6 +15,6 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface UserDao extends BaseMapper<UserEntity> {
-    UserInfoVo getUserInfo(@Param("userUid") String userUid, @Param("loginUserUid") String loginUserUid);
+    UserInfoVo getUserInfo(@Param("userId") String userId, @Param("loginUserId") String loginUserId);
 
 }

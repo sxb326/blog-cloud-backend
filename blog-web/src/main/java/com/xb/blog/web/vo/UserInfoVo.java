@@ -7,7 +7,7 @@ public class UserInfoVo {
     /**
      * 唯一ID
      */
-    private String uid;
+    private String id;
     /**
      * 用户昵称
      */
@@ -15,7 +15,7 @@ public class UserInfoVo {
     /**
      * 用户头像图片id
      */
-    private String picUid;
+    private String picId;
     /**
      * 总博客数
      */

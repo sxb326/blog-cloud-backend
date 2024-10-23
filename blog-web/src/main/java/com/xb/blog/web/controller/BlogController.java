@@ -48,8 +48,8 @@ public class BlogController {
             }
             BlogEditorVo vo = new BlogEditorVo();
             BeanUtil.copyProperties(draft, vo);
-            vo.setTagUids(blogTagService.list(new QueryWrapper<BlogTagEntity>().eq("blog_uid", draft.getUid()))
-                    .stream().map(BlogTagEntity::getTagUid).collect(Collectors.toList()));
+            vo.setTagIds(blogTagService.list(new QueryWrapper<BlogTagEntity>().eq("blog_id", draft.getId()))
+                    .stream().map(BlogTagEntity::getTagId).collect(Collectors.toList()));
             return Result.success(vo);
         }
 
@@ -61,8 +61,8 @@ public class BlogController {
             }
             BlogEditorVo vo = new BlogEditorVo();
             BeanUtil.copyProperties(blog, vo);
-            vo.setTagUids(blogTagService.list(new QueryWrapper<BlogTagEntity>().eq("blog_uid", blog.getUid()))
-                    .stream().map(BlogTagEntity::getTagUid).collect(Collectors.toList()));
+            vo.setTagIds(blogTagService.list(new QueryWrapper<BlogTagEntity>().eq("blog_id", blog.getId()))
+                    .stream().map(BlogTagEntity::getTagId).collect(Collectors.toList()));
             return Result.success(vo);
         }
 

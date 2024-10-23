@@ -24,7 +24,7 @@ public class UserEntity implements Serializable {
 	 * 主键
 	 */
 	@TableId
-	private String uid;
+	private String id;
 	/**
 	 * 用户名
 	 */
@@ -40,7 +40,7 @@ public class UserEntity implements Serializable {
 	/**
 	 * 头像图片id
 	 */
-	private String picUid;
+	private String picId;
 	/**
 	 * 邮箱
 	 */

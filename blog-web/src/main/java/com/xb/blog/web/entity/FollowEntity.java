@@ -14,15 +14,15 @@ public class FollowEntity implements Serializable {
      * 主键
      */
     @TableId(type = IdType.ASSIGN_UUID)
-    private String uid;
+    private String id;
     /**
      * 用户id
      */
-    private String userUid;
+    private String userId;
     /**
      * 关注的用户id
      */
-    private String targetUserUid;
+    private String targetUserId;
     /**
      * 逻辑删除 1：不删除，0：删除
      */

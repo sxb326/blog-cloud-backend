@@ -13,7 +13,7 @@ public class ContentVo {
     /**
      * 消息唯一id
      */
-    private Long uid;
+    private Long id;
     /**
      * 发送时间
      */

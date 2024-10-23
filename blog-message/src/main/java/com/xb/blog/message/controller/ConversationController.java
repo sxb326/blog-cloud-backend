@@ -46,8 +46,8 @@ public class ConversationController {
 
     @PostMapping("/save")
     public Result save(@RequestBody SaveConversationVo vo) {
-        String conversationUid = conversationService.save(vo);
-        return Result.success("", conversationUid);
+        String conversationId = conversationService.save(vo);
+        return Result.success("", conversationId);
     }
 
 }

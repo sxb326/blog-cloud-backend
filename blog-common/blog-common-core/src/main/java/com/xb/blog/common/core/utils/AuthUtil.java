@@ -29,9 +29,9 @@ public class AuthUtil {
      * @param username
      * @return
      */
-    public static String createToken(String uid, String username) {
+    public static String createToken(String id, String username) {
         Map<String, Object> payload = new HashMap<>();
-        payload.put("uid", uid);
+        payload.put("id", id);
         payload.put("username", username);
         return JWTUtil.createToken(payload, KEY.getBytes());
     }
@@ -48,13 +48,13 @@ public class AuthUtil {
     }
 
     /**
-     * 获取登录用户的uid
+     * 获取登录用户的id
      *
      * @param token
      * @return
      */
-    public static String getLoginUid(String token) {
+    public static String getLoginId(String token) {
         JWT jwt = JWTUtil.parseToken(token);
-        return jwt.getPayload("uid").toString();
+        return jwt.getPayload("id").toString();
     }
 }

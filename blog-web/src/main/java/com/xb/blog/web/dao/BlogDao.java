@@ -25,16 +25,16 @@ public interface BlogDao extends BaseMapper<BlogEntity> {
      *
      * @return
      */
-    List<BlogListVo> listBlog(@Param("page") Long page, @Param("categoryUid") String categoryUid, @Param("orderType") String orderType, @Param("userUid") String userUid, @Param("loginUserUid") String loginUserUid);
+    List<BlogListVo> listBlog(@Param("page") Long page, @Param("categoryId") String categoryId, @Param("orderType") String orderType, @Param("userId") String userId, @Param("loginUserId") String loginUserId);
 
     /**
      * 博客预览时 查询出预览数据
      *
-     * @param uid
-     * @param userUid
+     * @param id
+     * @param userId
      * @return
      */
-    BlogPreviewVo getBlogPreviewById(@Param("uid") String uid, @Param("userUid") String userUid);
+    BlogPreviewVo getBlogPreviewById(@Param("id") String id, @Param("userId") String userId);
 
     /**
      * 根据博客id 更新点赞数

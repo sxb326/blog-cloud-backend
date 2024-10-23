@@ -26,8 +26,8 @@ public class ChatServiceImpl extends ServiceImpl<ChatDao, ChatEntity> implements
     private ConversationService conversationService;
 
     @Override
-    public List<ContentVo> list(String contactUid, Long cursor) {
-        List<ContentVo> list = baseMapper.list(UserUtil.getUserId(), contactUid, cursor);
+    public List<ContentVo> list(String contactId, Long cursor) {
+        List<ContentVo> list = baseMapper.list(UserUtil.getUserId(), contactId, cursor);
         CollUtil.reverse(list);
         return list;
     }
@@ -36,26 +36,26 @@ public class ChatServiceImpl extends ServiceImpl<ChatDao, ChatEntity> implements
     public void send(SendVo vo) {
         //保存消息
         ChatEntity entity = new ChatEntity();
-        entity.setSendUserUid(UserUtil.getUserId());
-        entity.setReceiveUserUid(vo.getContactUid());
+        entity.setSendUserId(UserUtil.getUserId());
+        entity.setReceiveUserId(vo.getContactId());
         entity.setIsReceive(false);
         entity.setContent(vo.getContent());
         save(entity);
 
         //检查对方是否有对应会话 如果没有则创建
-        String conversationUid = conversationService.checkAndCreate(vo.getContactUid(), UserUtil.getUserId());
+        String conversationId = conversationService.checkAndCreate(vo.getContactId(), UserUtil.getUserId());
 
         //更新对方会话的未读数
-        conversationService.updateNotReceiveCount(conversationUid,1);
+        conversationService.updateNotReceiveCount(conversationId, 1);
 
         //发送消息
         if (StrUtil.isNotBlank(vo.getContent())) {
-            messagePublisher.sendMessage(5, "", UserUtil.getUserId(), vo.getContactUid(), "", "");
+            messagePublisher.sendMessage(5, "", UserUtil.getUserId(), vo.getContactId(), "", "");
         }
     }
 
     @Override
-    public List<ContentVo> newest(String contactUid, Long cursor) {
-        return baseMapper.newest(UserUtil.getUserId(), contactUid, cursor);
+    public List<ContentVo> newest(String contactId, Long cursor) {
+        return baseMapper.newest(UserUtil.getUserId(), contactId, cursor);
     }
 }

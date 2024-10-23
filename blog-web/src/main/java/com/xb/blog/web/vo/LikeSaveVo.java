@@ -18,7 +18,7 @@ public class LikeSaveVo implements Serializable {
     /**
      * 点赞目标id 点赞文章时为文章id 点赞评论时为评论id
      */
-    private String objUid;
+    private String objId;
     /**
      * 点赞状态 true为点赞 false为取消点赞
      */

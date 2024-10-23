@@ -14,6 +14,6 @@ import com.xb.blog.web.vo.UserInfoVo;
 public interface UserService extends IService<UserEntity> {
     UserEntity findByUsername(String username);
 
-    UserInfoVo getUserInfo(String userUid);
+    UserInfoVo getUserInfo(String userId);
 }
 

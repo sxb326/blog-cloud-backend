@@ -24,7 +24,7 @@ public class BlogEntity implements Serializable {
      * 主键
      */
     @TableId(type = IdType.ASSIGN_UUID)
-    private String uid;
+    private String id;
     /**
      * 博客标题
      */
@@ -40,11 +40,11 @@ public class BlogEntity implements Serializable {
     /**
      * 封面图片id
      */
-    private String picUid;
+    private String picId;
     /**
      * 分类id
      */
-    private String categoryUid;
+    private String categoryId;
     /**
      * 点击数
      */

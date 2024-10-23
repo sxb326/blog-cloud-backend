@@ -15,7 +15,7 @@ public class DraftEntity implements Serializable {
      * 主键
      */
     @TableId(type = IdType.ASSIGN_UUID)
-    private String uid;
+    private String id;
     /**
      * 博客标题
      */

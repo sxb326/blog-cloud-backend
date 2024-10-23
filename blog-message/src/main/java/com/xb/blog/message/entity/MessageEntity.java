@@ -14,7 +14,7 @@ public class MessageEntity implements Serializable {
      * 主键
      */
     @TableId(type = IdType.ASSIGN_UUID)
-    private String uid;
+    private String id;
     /**
      * 消息创建时间
      */
@@ -22,11 +22,11 @@ public class MessageEntity implements Serializable {
     /**
      * 发送消息用户id
      */
-    private String sendUserUid;
+    private String sendUserId;
     /**
      * 接收消息用户id
      */
-    private String receiveUserUid;
+    private String receiveUserId;
     /**
      * 消息类型 1点赞 2评论 3收藏 4关注 5私信 6通知
      */
@@ -34,11 +34,11 @@ public class MessageEntity implements Serializable {
     /**
      * 博客id 点赞/评论/收藏 场景需要
      */
-    private String blogUid;
+    private String blogId;
     /**
      * 评论id 评论 场景需要
      */
-    private String commentUid;
+    private String commentId;
     /**
      * 消息内容
      */

@@ -73,13 +73,13 @@ public class PreviewController {
      * 列出用户所有文章
      *
      * @param page
-     * @param userUid
+     * @param userId
      * @param orderType
      * @return
      */
     @GetMapping("/listBlogByUser")
-    public Result listBlogByUser(@RequestParam("page") Long page, @RequestParam("userUid") String userUid, @RequestParam("orderType") String orderType) {
-        List<BlogListVo> list = blogService.listBlogByUser(page, userUid, orderType);
+    public Result listBlogByUser(@RequestParam("page") Long page, @RequestParam("userId") String userId, @RequestParam("orderType") String orderType) {
+        List<BlogListVo> list = blogService.listBlogByUser(page, userId, orderType);
         return Result.success(list);
     }
 }

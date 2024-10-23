@@ -22,19 +22,19 @@ public class MessagePublisher {
      * @param content
      * @param sendUserId
      * @param receiveUserId
-     * @param blogUid
-     * @param commentUid
+     * @param blogId
+     * @param commentId
      */
-    public void sendMessage(int type, String content, String sendUserId, String receiveUserId, String blogUid, String commentUid) {
+    public void sendMessage(int type, String content, String sendUserId, String receiveUserId, String blogId, String commentId) {
         if (sendUserId != null && !sendUserId.equals(receiveUserId)) {
             MessageDto dto = new MessageDto();
 
-            dto.setUid(UUID.randomUUID().toString().replace("-", "").toLowerCase());
-            dto.setSendUserUid(sendUserId);
-            dto.setReceiveUserUid(receiveUserId);
+            dto.setId(UUID.randomUUID().toString().replace("-", "").toLowerCase());
+            dto.setSendUserId(sendUserId);
+            dto.setReceiveUserId(receiveUserId);
             dto.setType(type);
-            dto.setBlogUid(blogUid);
-            dto.setCommentUid(commentUid);
+            dto.setBlogId(blogId);
+            dto.setCommentId(commentId);
             dto.setContent(content);
             dto.setSendTime(LocalDateTime.now());
 

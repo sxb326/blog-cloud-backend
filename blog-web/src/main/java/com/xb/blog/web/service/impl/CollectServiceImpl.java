@@ -59,9 +59,9 @@ public class CollectServiceImpl extends ServiceImpl<CollectDao, CollectEntity> i
                 }
                 //保存收藏数据
                 CollectEntity entity = new CollectEntity();
-                entity.setBlogUid(blogId);
-                entity.setFavoriteUid(favoriteId);
-                entity.setUserUid(userId);
+                entity.setBlogId(blogId);
+                entity.setFavoriteId(favoriteId);
+                entity.setUserId(userId);
                 save(entity);
             }
         }

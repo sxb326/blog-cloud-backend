@@ -7,7 +7,7 @@ import lombok.Data;
  */
 @Data
 public class FavoriteVo {
-    private String uid;
+    private String id;
     private String name;
     private Boolean isDefault;
     private Boolean collected;

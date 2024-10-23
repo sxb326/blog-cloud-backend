@@ -18,7 +18,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     }
 
     @Override
-    public UserInfoVo getUserInfo(String userUid) {
-        return baseMapper.getUserInfo(userUid, UserUtil.getUserId());
+    public UserInfoVo getUserInfo(String userId) {
+        return baseMapper.getUserInfo(userId, UserUtil.getUserId());
     }
 }

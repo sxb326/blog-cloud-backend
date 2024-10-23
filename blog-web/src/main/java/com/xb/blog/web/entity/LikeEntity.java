@@ -15,7 +15,7 @@ public class LikeEntity implements Serializable {
      * 主键
      */
     @TableId(type = IdType.ASSIGN_UUID)
-    private String uid;
+    private String id;
     /**
      * 点赞类型 1文章点赞 2评论点赞
      */
@@ -23,11 +23,11 @@ public class LikeEntity implements Serializable {
     /**
      * 点赞目标id 点赞文章时为文章id 点赞评论时为评论id
      */
-    private String objUid;
+    private String objId;
     /**
      * 点赞用户id
      */
-    private String userUid;
+    private String userId;
     /**
      * 创建时间
      */

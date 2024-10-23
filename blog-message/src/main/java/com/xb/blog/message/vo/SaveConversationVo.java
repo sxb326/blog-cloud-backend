@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class SaveConversationVo {
-    private String receiveUserUid;
+    private String receiveUserId;
 }

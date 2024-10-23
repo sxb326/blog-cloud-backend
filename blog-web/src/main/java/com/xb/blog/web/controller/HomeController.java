@@ -26,8 +26,8 @@ public class HomeController {
     private CategoryService categoryService;
 
     @GetMapping("/list")
-    public Result list(@RequestParam("page") Long page, @RequestParam("categoryUid") String categoryUid, @RequestParam("orderType") String orderType) {
-        List<BlogListVo> vos = blogService.listBlog(page, categoryUid, orderType);
+    public Result list(@RequestParam("page") Long page, @RequestParam("categoryId") String categoryId, @RequestParam("orderType") String orderType) {
+        List<BlogListVo> vos = blogService.listBlog(page, categoryId, orderType);
         return Result.success(vos);
     }
 

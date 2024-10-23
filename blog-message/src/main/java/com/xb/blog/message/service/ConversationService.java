@@ -10,11 +10,11 @@ import java.util.List;
 public interface ConversationService extends IService<ConversationEntity> {
     List<ConversationVo> list(String keyword);
 
-    String checkAndCreate(String sendUserUid, String receiveUserUid);
+    String checkAndCreate(String sendUserId, String receiveUserId);
 
     String save(SaveConversationVo vo);
 
-    void updateNotReceiveCount(String conversationUid, int count);
+    void updateNotReceiveCount(String conversationId, int count);
 
-    void clearNotReceiveCount(String conversationUid);
+    void clearNotReceiveCount(String conversationId);
 }

@@ -18,7 +18,7 @@ public class FavoriteEntity implements Serializable {
      * 主键
      */
     @TableId(type = IdType.ASSIGN_UUID)
-    private String uid;
+    private String id;
     /**
      * 收藏夹名称
      */
@@ -26,7 +26,7 @@ public class FavoriteEntity implements Serializable {
     /**
      * 用户id
      */
-    private String userUid;
+    private String userId;
     /**
      * 是否为默认收藏夹
      */

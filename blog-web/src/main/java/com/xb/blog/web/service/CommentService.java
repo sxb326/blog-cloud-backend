@@ -37,8 +37,8 @@ public interface CommentService extends IService<CommentEntity> {
     /**
      * 根据id获取评论的点赞数
      *
-     * @param objUid
+     * @param objId
      * @return
      */
-    Long getLikeCount(String objUid);
+    Long getLikeCount(String objId);
 }

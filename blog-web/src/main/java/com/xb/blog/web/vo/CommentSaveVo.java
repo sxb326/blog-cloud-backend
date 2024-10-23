@@ -5,11 +5,11 @@ import lombok.Data;
 @Data
 public class CommentSaveVo {
 
-    private String blogUid;
+    private String blogId;
 
-    private String parentUid;
+    private String parentId;
 
-    private String replyToUid;
+    private String replyToId;
 
     private String content;
 }
