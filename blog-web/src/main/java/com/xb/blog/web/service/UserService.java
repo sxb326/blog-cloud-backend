@@ -15,5 +15,7 @@ public interface UserService extends IService<UserEntity> {
     UserEntity findByUsername(String username);
 
     UserInfoVo getUserInfo(String userId);
+
+    void updatePassword(String username, String newPassword);
 }
 

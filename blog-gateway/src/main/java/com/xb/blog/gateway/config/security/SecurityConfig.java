@@ -103,9 +103,9 @@ public class SecurityConfig {
      */
     @Bean
     public ReactiveAuthenticationManager reactiveAuthenticationManager() {
-        LinkedList<ReactiveAuthenticationManager> managers = new LinkedList<>();
-        managers.add(new UserDetailsRepositoryReactiveAuthenticationManager(authenticationUserDetailsService));
-        return new DelegatingReactiveAuthenticationManager(managers);
+        UserDetailsRepositoryReactiveAuthenticationManager manager = new UserDetailsRepositoryReactiveAuthenticationManager(authenticationUserDetailsService);
+        manager.setUserDetailsPasswordService(authenticationUserDetailsService);
+        return new DelegatingReactiveAuthenticationManager(Arrays.asList(manager));
     }
 
     /**

@@ -6,6 +6,7 @@ import com.xb.blog.gateway.feign.UserService;
 import com.xb.blog.gateway.pojo.AuthUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.ReactiveUserDetailsPasswordService;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,11 +18,17 @@ import reactor.core.publisher.Mono;
  */
 @Slf4j
 @Component
-public class AuthenticationReactiveUserDetailsService implements ReactiveUserDetailsService {
+public class AuthenticationReactiveUserDetailsService implements ReactiveUserDetailsService, ReactiveUserDetailsPasswordService {
 
     @Autowired
     private UserService userService;
 
+    /**
+     * 根据用户名查询用户
+     *
+     * @param username the username to look up
+     * @return
+     */
     @Override
     public Mono<UserDetails> findByUsername(String username) {
         Result<AuthUserDto> result = userService.findByUsername(username);
@@ -37,5 +44,23 @@ public class AuthenticationReactiveUserDetailsService implements ReactiveUserDet
             }
         }
         throw new UsernameNotFoundException("用户不存在");
+    }
+
+    /**
+     * 密码升级
+     *
+     * @param user        the user to modify the password for
+     * @param newPassword the password to change to
+     * @return
+     */
+    @Override
+    public Mono<UserDetails> updatePassword(UserDetails user, String newPassword) {
+        Result result = userService.updatePassword(user.getUsername(), newPassword);
+        if ("0".equals(result.getCode())) {
+            AuthUser authUser = (AuthUser) user;
+            authUser.setPassword(newPassword);
+            return Mono.just(authUser);
+        }
+        return Mono.just(user);
     }
 }

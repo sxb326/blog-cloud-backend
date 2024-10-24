@@ -70,4 +70,10 @@ public class UserController {
         }
         return Result.success(null);
     }
+
+    @PostMapping("/updatePassword")
+    public Result updatePassword(@RequestParam("username") String username, @RequestParam("newPassword") String newPassword) {
+        userService.updatePassword(username, newPassword);
+        return Result.success();
+    }
 }

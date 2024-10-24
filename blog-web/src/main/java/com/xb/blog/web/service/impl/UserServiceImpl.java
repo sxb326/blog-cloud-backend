@@ -21,4 +21,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
     public UserInfoVo getUserInfo(String userId) {
         return baseMapper.getUserInfo(userId, UserUtil.getUserId());
     }
+
+    @Override
+    public void updatePassword(String username, String newPassword) {
+        baseMapper.updatePassword(username, newPassword);
+    }
 }
