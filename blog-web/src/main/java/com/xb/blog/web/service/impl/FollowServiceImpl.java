@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xb.blog.common.core.utils.UserUtil;
 import com.xb.blog.web.dao.FollowDao;
 import com.xb.blog.web.entity.FollowEntity;
+import com.xb.blog.web.entity.UserEntity;
 import com.xb.blog.web.publisher.MessagePublisher;
 import com.xb.blog.web.service.FollowService;
+import com.xb.blog.web.service.UserService;
 import com.xb.blog.web.vo.FollowSaveVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,17 @@ public class FollowServiceImpl extends ServiceImpl<FollowDao, FollowEntity> impl
     @Autowired
     private MessagePublisher messagePublisher;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public void save(FollowSaveVo vo) {
         Boolean isFollow = vo.getIsFollow();
+        String targetUserId = vo.getTargetUserId();
+        UserEntity user = userService.getById(targetUserId);
+        if (user == null) {
+            throw new RuntimeException("该用户不存在！");
+        }
         if (isFollow) {
             FollowEntity entity = new FollowEntity();
             entity.setUserId(UserUtil.getUserId());

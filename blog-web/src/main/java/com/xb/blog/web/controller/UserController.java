@@ -67,10 +67,10 @@ public class UserController {
     @GetMapping("/getUserInfo")
     public Result getUserInfo(@RequestParam("id") String id) {
         UserInfoVo vo = userService.getUserInfo(id);
-        if (vo != null) {
-            return Result.success(vo);
+        if (vo == null || StrUtil.isBlank(vo.getId())) {
+            throw new RuntimeException("该用户不存在！");
         }
-        return Result.success(null);
+        return Result.success(vo);
     }
 
     @InternalApi

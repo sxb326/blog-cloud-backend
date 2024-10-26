@@ -21,8 +21,6 @@ public class InternalApiAspect {
     public void before(JoinPoint joinPoint, InternalApi internalApi) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-        System.out.println(request.getRequestURI());
-        System.out.println(request.getHeader("Token"));
         //受保护的接口 一般都是登录后才可访问。如果未登录，自然会被拦截。如果登录了，这里抛出异常。因为这是内部api
         String token = request.getHeader("Token");
         if (StrUtil.isNotBlank(token)) {
