@@ -1,6 +1,7 @@
 package com.xb.blog.web.controller;
 
 import cn.hutool.core.util.StrUtil;
+import com.xb.blog.common.core.annotation.InternalApi;
 import com.xb.blog.common.core.constants.Result;
 import com.xb.blog.common.core.dto.AuthUserDto;
 import com.xb.blog.common.core.utils.AuthUtil;
@@ -21,6 +22,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @InternalApi
     @GetMapping("/findByUsername/{username}")
     public Result<AuthUserDto> findByUsername(@PathVariable("username") String username) {
         UserEntity user = userService.findByUsername(username);
@@ -71,6 +73,7 @@ public class UserController {
         return Result.success(null);
     }
 
+    @InternalApi
     @PostMapping("/updatePassword")
     public Result updatePassword(@RequestParam("username") String username, @RequestParam("newPassword") String newPassword) {
         userService.updatePassword(username, newPassword);

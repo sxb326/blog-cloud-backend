@@ -1,1 +1,3 @@
 com.xb.blog.common.core.config.WebMvcConfig
+com.xb.blog.common.core.config.ExceptionConfig
+com.xb.blog.common.core.config.AspectConfig

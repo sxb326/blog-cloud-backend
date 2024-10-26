@@ -63,6 +63,7 @@ auth:
   # 不需要登录 即可访问的地址
   excludePaths:
     - /api/picture/**
-    - /api/web/user/**
+    - /api/web/user/getAuthUser
+    - /api/web/user/getUserInfo
     - /api/web/home/**
     - /api/web/preview/**
