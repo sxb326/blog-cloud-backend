@@ -1,0 +1,64 @@
+version: '3'
+services:
+  blog-gateway:
+    container_name: blog-gateway
+    build: # 服务的 Docker 构建文件位置
+      context: ./blog-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "88:88"
+    networks:
+      - mynetwork
+
+  blog-message:
+    container_name: blog-message
+    build:
+      context: ./blog-message
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    networks:
+      - mynetwork
+#    depends_on: # 本服务依赖的服务，控制启动先后顺序
+#      - yuoj-backend-gateway
+
+  blog-picture:
+    container_name: blog-picture
+    build:
+      context: ./blog-picture
+      dockerfile: Dockerfile
+    ports:
+      - "7000:7000"
+    networks:
+      - mynetwork
+#    depends_on:
+#      - yuoj-backend-user-service
+#      - yuoj-backend-gateway
+
+  blog-search:
+    container_name: blog-search
+    build:
+      context: ./blog-search
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - mynetwork
+#    depends_on:
+#      - yuoj-backend-user-service
+#      - yuoj-backend-question-service
+#      - yuoj-backend-gateway
+
+  blog-web:
+    container_name: blog-web
+    build:
+      context: ./blog-web
+      dockerfile: Dockerfile
+    ports:
+      - "10000:10000"
+    networks:
+      - mynetwork
+# 网络，不定义的话就是默认网络
+networks:
+  mynetwork:
+    driver: bridge

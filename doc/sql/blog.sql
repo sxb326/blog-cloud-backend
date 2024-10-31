@@ -1,28 +1,13 @@
-/*
- Navicat Premium Data Transfer
+-- 创建库
+CREATE DATABASE IF NOT EXISTS blog;
 
- Source Server         : localhost_3306
- Source Server Type    : MySQL
- Source Server Version : 80037 (8.0.37)
- Source Host           : localhost:3306
- Source Schema         : blog
-
- Target Server Type    : MySQL
- Target Server Version : 80037 (8.0.37)
- File Encoding         : 65001
-
- Date: 25/06/2024 17:25:27
-*/
-
-SET NAMES utf8mb4;
-SET
-FOREIGN_KEY_CHECKS = 0;
+-- 切换库
+USE blog;
 
 -- ----------------------------
 -- Table structure for t_blog
 -- ----------------------------
-DROP TABLE IF EXISTS `t_blog`;
-CREATE TABLE `t_blog`
+CREATE TABLE IF NOT EXISTS `t_blog`
 (
     `id`           varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
     `title`         varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章标题',
@@ -44,8 +29,7 @@ CREATE TABLE `t_blog`
 -- ----------------------------
 -- Table structure for t_blog_tag
 -- ----------------------------
-DROP TABLE IF EXISTS `t_blog_tag`;
-CREATE TABLE `t_blog_tag`
+CREATE TABLE IF NOT EXISTS `t_blog_tag`
 (
     `id`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
     `blog_id`    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '博客id',
@@ -59,8 +43,7 @@ CREATE TABLE `t_blog_tag`
 -- ----------------------------
 -- Table structure for t_category
 -- ----------------------------
-DROP TABLE IF EXISTS `t_category`;
-CREATE TABLE `t_category`
+CREATE TABLE IF NOT EXISTS `t_category`
 (
     `id`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
     `name`        varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '分类名称',
@@ -75,8 +58,7 @@ CREATE TABLE `t_category`
 -- ----------------------------
 -- Table structure for t_chat
 -- ----------------------------
-DROP TABLE IF EXISTS `t_chat`;
-CREATE TABLE `t_chat`
+CREATE TABLE IF NOT EXISTS `t_chat`
 (
     `id`              bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
     `send_user_id`    varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发送消息用户id',
@@ -92,8 +74,7 @@ CREATE TABLE `t_chat`
 -- ----------------------------
 -- Table structure for t_collect
 -- ----------------------------
-DROP TABLE IF EXISTS `t_collect`;
-CREATE TABLE `t_collect`
+CREATE TABLE IF NOT EXISTS `t_collect`
 (
   `id`          varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ID',
   `blog_id`     varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '博客id',
@@ -106,8 +87,7 @@ CREATE TABLE `t_collect`
 -- ----------------------------
 -- Table structure for t_comment
 -- ----------------------------
-DROP TABLE IF EXISTS `t_comment`;
-CREATE TABLE `t_comment`
+CREATE TABLE IF NOT EXISTS `t_comment`
 (
     `id`           varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ID',
     `type`          tinyint(1) NULL DEFAULT NULL COMMENT '评论类型：1文章 2待定',
@@ -126,8 +106,7 @@ CREATE TABLE `t_comment`
 -- ----------------------------
 -- Table structure for t_conversation
 -- ----------------------------
-DROP TABLE IF EXISTS `t_conversation`;
-CREATE TABLE `t_conversation`
+CREATE TABLE IF NOT EXISTS `t_conversation`
 (
     `id`               varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
     `send_user_id`     varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发送消息用户id',
@@ -142,8 +121,7 @@ CREATE TABLE `t_conversation`
 -- ----------------------------
 -- Table structure for t_draft
 -- ----------------------------
-DROP TABLE IF EXISTS `t_draft`;
-CREATE TABLE `t_draft`
+CREATE TABLE IF NOT EXISTS `t_draft`
 (
     `id`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
     `title`       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章标题',
@@ -157,8 +135,7 @@ CREATE TABLE `t_draft`
 -- ----------------------------
 -- Table structure for t_favorite
 -- ----------------------------
-DROP TABLE IF EXISTS `t_favorite`;
-CREATE TABLE `t_favorite`
+CREATE TABLE IF NOT EXISTS `t_favorite`
 (
   `id`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ID',
   `name`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '收藏夹名称',
@@ -173,8 +150,7 @@ CREATE TABLE `t_favorite`
 -- ----------------------------
 -- Table structure for t_follow
 -- ----------------------------
-DROP TABLE IF EXISTS `t_follow`;
-CREATE TABLE `t_follow`
+CREATE TABLE IF NOT EXISTS `t_follow`
 (
     `id`             varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
     `user_id`        varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户id',
@@ -188,8 +164,7 @@ CREATE TABLE `t_follow`
 -- ----------------------------
 -- Table structure for t_like
 -- ----------------------------
-DROP TABLE IF EXISTS `t_like`;
-CREATE TABLE `t_like`
+CREATE TABLE IF NOT EXISTS `t_like`
 (
     `id`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ID',
     `type`        tinyint(1) NULL DEFAULT NULL COMMENT '点赞类型：1文章点赞 2评论点赞',
@@ -202,8 +177,7 @@ CREATE TABLE `t_like`
 -- ----------------------------
 -- Table structure for t_message
 -- ----------------------------
-DROP TABLE IF EXISTS `t_message`;
-CREATE TABLE `t_message`
+CREATE TABLE IF NOT EXISTS `t_message`
 (
     `id`              varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
     `send_time`        timestamp NULL DEFAULT NULL COMMENT '消息创建时间',
@@ -223,8 +197,7 @@ CREATE TABLE `t_message`
 -- ----------------------------
 -- Table structure for t_picture
 -- ----------------------------
-DROP TABLE IF EXISTS `t_picture`;
-CREATE TABLE `t_picture`
+CREATE TABLE IF NOT EXISTS `t_picture`
 (
     `id`          varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ID',
     `name`         varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图片名称',
@@ -241,8 +214,7 @@ CREATE TABLE `t_picture`
 -- ----------------------------
 -- Table structure for t_tag
 -- ----------------------------
-DROP TABLE IF EXISTS `t_tag`;
-CREATE TABLE `t_tag`
+CREATE TABLE IF NOT EXISTS `t_tag`
 (
     `id`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
     `name`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签名称',
@@ -256,8 +228,7 @@ CREATE TABLE `t_tag`
 -- ----------------------------
 -- Table structure for t_user
 -- ----------------------------
-DROP TABLE IF EXISTS `t_user`;
-CREATE TABLE `t_user`
+CREATE TABLE IF NOT EXISTS `t_user`
 (
     `id`             varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
     `username`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户名',
@@ -275,6 +246,3 @@ CREATE TABLE `t_user`
     `update_time`     timestamp NULL DEFAULT NULL COMMENT '修改时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
-
-SET
-FOREIGN_KEY_CHECKS = 1;
