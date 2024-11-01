@@ -20,13 +20,13 @@ public class MessageVo {
      */
     private String sendUserPicId;
     /**
-     * 博客id
+     * 文章id
      */
-    private String blogId;
+    private String articleId;
     /**
      * 博客标题
      */
-    private String blogTitle;
+    private String articleTitle;
     /**
      * 评论id
      */

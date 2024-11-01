@@ -6,13 +6,14 @@
 
 #### 软件架构
 
-- blog-auth：公共认证服务
-- blog-common：公共依赖服务
+- blog-article：文章服务
+- blog-common：公共依赖模块
 - blog-gateway：API网关服务
 - blog-message：消息服务
 - blog-picture：图片服务
 - blog-search：检索服务
-- blog-web：Web端api服务
+- blog-user：用户服务
+
 
 #### 安装教程
 

@@ -1,6 +1,6 @@
 package com.xb.blog.common.core.vo;
 
-import com.xb.blog.common.core.pojo.BlogDocument;
+import com.xb.blog.common.core.pojo.ArticleDocument;
 import lombok.Data;
 
 import java.util.List;
@@ -18,5 +18,5 @@ public class SearchVo {
     /**
      * 数据集合
      */
-    List<BlogDocument> list;
+    List<ArticleDocument> list;
 }

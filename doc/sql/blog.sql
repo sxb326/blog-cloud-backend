@@ -5,9 +5,9 @@ CREATE DATABASE IF NOT EXISTS blog;
 USE blog;
 
 -- ----------------------------
--- Table structure for t_blog
+-- Table structure for t_article
 -- ----------------------------
-CREATE TABLE IF NOT EXISTS `t_blog`
+CREATE TABLE IF NOT EXISTS `t_article`
 (
     `id`           varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
     `title`         varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章标题',
@@ -27,12 +27,12 @@ CREATE TABLE IF NOT EXISTS `t_blog`
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Table structure for t_blog_tag
+-- Table structure for t_article_tag
 -- ----------------------------
-CREATE TABLE IF NOT EXISTS `t_blog_tag`
+CREATE TABLE IF NOT EXISTS `t_article_tag`
 (
     `id`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键',
-    `blog_id`    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '博客id',
+    `article_id`    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章id',
     `tag_id`     varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '标签id',
     `status`      tinyint NULL DEFAULT NULL COMMENT '逻辑删除 1：不删除，0：删除',
     `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `t_chat`
 CREATE TABLE IF NOT EXISTS `t_collect`
 (
   `id`          varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ID',
-  `blog_id`     varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '博客id',
+  `article_id`     varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章id',
   `user_id`     varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户id',
   `favorite_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '收藏夹id',
   `create_time`  timestamp NULL DEFAULT NULL COMMENT '创建时间',
@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `t_message`
     `send_user_id`    varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发送消息用户id',
     `receive_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接收消息用户id',
     `type`             int NULL DEFAULT NULL COMMENT '消息类型 1点赞 2评论 3收藏 4关注 5私信 6通知',
-    `blog_id`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '博客id',
+    `article_id`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '文章id',
     `comment_id`      varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '评论id',
     `content`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '消息内容',
     `is_receive`       tinyint NULL DEFAULT NULL COMMENT '是否已接收 1：是 0：否',

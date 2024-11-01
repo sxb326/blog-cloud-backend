@@ -5,8 +5,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient("blog-web")
+@FeignClient("blog-article")
 public interface BlogFeignService {
-    @GetMapping("/web/blog/search")
+    @GetMapping("/article/blog/search")
     Result search(@RequestParam("keyword") String keyword, @RequestParam("page") Long page);
 }

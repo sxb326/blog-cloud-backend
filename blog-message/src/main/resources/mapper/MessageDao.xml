@@ -15,8 +15,8 @@
         SELECT m.send_user_id                                sendUserId,
                u.nick_name                                    sendUserNickName,
                u.pic_id                                      sendUserPicId,
-               m.blog_id                                     blogId,
-               b.title                                        blogTitle,
+               m.article_id                                     articleId,
+               b.title                                        articleTitle,
                c.id                                          commentId,
                c.content                                      commentContent,
                case when c.parent_id = '0' then 0 else 1 end commentLevel,
@@ -24,7 +24,7 @@
                TIMESTAMPDIFF(MINUTE, m.send_time, now())      sendTimeBefore
         FROM t_message m
                  LEFT JOIN t_user u ON u.id = m.send_user_id AND u.STATUS = 1
-                 LEFT JOIN t_blog b ON m.blog_id = b.id AND b.STATUS = 1
+                 LEFT JOIN t_article b ON m.article_id = b.id AND b.STATUS = 1
                  LEFT JOIN t_comment c ON m.comment_id = c.id AND c.STATUS = 1
         WHERE m.STATUS = 1
           AND m.type = #{type}

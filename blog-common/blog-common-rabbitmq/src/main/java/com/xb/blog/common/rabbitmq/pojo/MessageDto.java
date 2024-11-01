@@ -32,9 +32,9 @@ public class MessageDto implements Serializable {
      */
     private int type;
     /**
-     * 博客id
+     * 文章id
      */
-    private String blogId;
+    private String articleId;
     /**
      * 评论id
      */

@@ -16,19 +16,11 @@ spring:
 
     gateway:
       routes:
-        # web服务
-        - id: web_route
-          uri: lb://blog-web
+        # 文章服务
+        - id: article_route
+          uri: lb://blog-article
           predicates:
-            - Path=/api/web/**
-          filters:
-            - RewritePath=/api/(?<segment>.*),/$\{segment}
-
-        # 认证服务
-        - id: auth_route
-          uri: lb://blog-auth
-          predicates:
-            - Path=/api/auth/**
+            - Path=/api/article/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
@@ -56,6 +48,14 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
+        # 用户服务
+        - id: user_route
+          uri: lb://blog-user
+          predicates:
+            - Path=/api/user/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+
   config:
     import: application.yml
 
@@ -63,7 +63,7 @@ auth:
   # 不需要登录 即可访问的地址
   excludePaths:
     - /api/picture/**
-    - /api/web/user/getAuthUser
-    - /api/web/user/getUserInfo
-    - /api/web/home/**
-    - /api/web/preview/**
+    - /api/user/getAuthUser
+    - /api/user/getUserInfo
+    - /api/article/home/**
+    - /api/article/preview/**

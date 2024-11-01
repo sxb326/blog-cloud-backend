@@ -2,7 +2,7 @@ package com.xb.blog.search.controller;
 
 import cn.hutool.json.JSONUtil;
 import com.xb.blog.common.core.constants.Result;
-import com.xb.blog.common.core.pojo.BlogDocument;
+import com.xb.blog.common.core.pojo.ArticleDocument;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -28,8 +28,8 @@ public class PublishController {
      * @return
      */
     @PostMapping
-    public Result publish(@RequestBody BlogDocument doc) {
-        IndexRequest indexRequest = new IndexRequest("blog_list");
+    public Result publish(@RequestBody ArticleDocument doc) {
+        IndexRequest indexRequest = new IndexRequest("article_list");
 
         indexRequest.id(doc.getId());
         indexRequest.source(JSONUtil.toJsonStr(doc), XContentType.JSON);

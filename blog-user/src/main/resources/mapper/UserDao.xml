@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xb.blog.user.dao.UserDao">
+    <select id="getUserInfo" resultType="com.xb.blog.user.vo.UserInfoVo">
+        SELECT u.id,
+               u.nick_name                                            nickName,
+               u.pic_id                                               picId,
+               COUNT(b.id)                                            articleCount,
+               COALESCE(SUM(b.click_count), 0)                        clickCount,
+               COALESCE(SUM(b.like_count), 0)                         likeCount,
+               CASE WHEN COALESCE(SUM(f.id), 0) > 0 THEN 1 ELSE 0 END isFollow,
+               count(distinct f1.id)                                  followerCount,
+               count(distinct f2.id)                                  followingCount
+        FROM t_user u
+                 LEFT JOIN t_article b ON u.id = b.author AND b.STATUS = 1
+                 LEFT JOIN t_follow f ON u.id = f.target_user_id AND f.user_id = #{loginUserId} AND f.STATUS = 1
+                 LEFT JOIN t_follow f1 ON u.id = f1.target_user_id AND f1.STATUS = 1
+                 LEFT JOIN t_follow f2 ON u.id = f2.user_id AND f2.STATUS = 1
+        WHERE u.STATUS = 1
+          AND u.id = #{userId}
+    </select>
+    <update id="updatePassword">
+        UPDATE t_user set password = #{newPassword} WHERE status = 1 AND username = #{username}
+    </update>
+</mapper>

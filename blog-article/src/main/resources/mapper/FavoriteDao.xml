@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xb.blog.article.dao.FavoriteDao">
+    <select id="listFavorite" resultType="com.xb.blog.article.vo.FavoriteVo">
+        SELECT f.id,
+               f.NAME,
+               f.is_default                                  isDefault,
+               CASE WHEN c.id IS NOT NULL THEN 1 ELSE 0 END collected
+        FROM t_favorite f
+                 LEFT JOIN t_collect c ON f.id = c.favorite_id
+            AND f.user_id = c.user_id
+            AND c.article_id = #{articleId}
+        WHERE f.STATUS = 1
+          AND f.user_id = #{userId}
+        ORDER BY f.create_time DESC
+    </select>
+</mapper>

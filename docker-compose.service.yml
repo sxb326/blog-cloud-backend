@@ -1,5 +1,15 @@
 version: '3'
 services:
+  blog-article:
+    container_name: blog-article
+    build:
+      context: ./blog-article
+      dockerfile: Dockerfile
+    ports:
+      - "10000:10000"
+    networks:
+      - mynetwork
+
   blog-gateway:
     container_name: blog-gateway
     build: # 服务的 Docker 构建文件位置
@@ -49,15 +59,16 @@ services:
 #      - yuoj-backend-question-service
 #      - yuoj-backend-gateway
 
-  blog-web:
-    container_name: blog-web
+  blog-user:
+    container_name: blog-user
     build:
-      context: ./blog-web
+      context: ./blog-user
       dockerfile: Dockerfile
     ports:
-      - "10000:10000"
+      - "6000:6000"
     networks:
       - mynetwork
+
 # 网络，不定义的话就是默认网络
 networks:
   mynetwork:

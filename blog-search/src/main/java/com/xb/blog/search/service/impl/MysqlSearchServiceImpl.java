@@ -2,7 +2,7 @@ package com.xb.blog.search.service.impl;
 
 import cn.hutool.json.JSONUtil;
 import com.xb.blog.common.core.constants.Result;
-import com.xb.blog.common.core.pojo.BlogDocument;
+import com.xb.blog.common.core.pojo.ArticleDocument;
 import com.xb.blog.common.core.vo.SearchVo;
 import com.xb.blog.search.feign.BlogFeignService;
 import com.xb.blog.search.service.SearchService;
@@ -45,7 +45,7 @@ public class MysqlSearchServiceImpl implements SearchService {
     @Override
     public void beforeReturn(SearchVo vo) {
         String keyword = vo.getKeyword();
-        for (BlogDocument doc : vo.getList()) {
+        for (ArticleDocument doc : vo.getList()) {
             String title = doc.getTitle();
             doc.setTitle(title.replace(keyword, "<span style='color:red'>" + keyword + "</span>"));
         }

@@ -2,7 +2,7 @@ package com.xb.blog.search.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.xb.blog.common.core.pojo.BlogDocument;
+import com.xb.blog.common.core.pojo.ArticleDocument;
 import com.xb.blog.common.core.vo.SearchVo;
 import com.xb.blog.search.service.SearchService;
 import org.elasticsearch.action.search.SearchRequest;
@@ -42,7 +42,7 @@ public class EsSearchServiceImpl implements SearchService {
         if (page == null) page = 1L;
         page = (page - 1L) * 10L;
 
-        SearchRequest searchRequest = new SearchRequest("blog_list");
+        SearchRequest searchRequest = new SearchRequest("article_list");
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
@@ -69,9 +69,9 @@ public class EsSearchServiceImpl implements SearchService {
             SearchVo vo = new SearchVo();
             if (hits.getHits() != null) {
                 vo.setTotal(hits.getTotalHits().value);
-                List<BlogDocument> list = Arrays.stream(hits.getHits())
+                List<ArticleDocument> list = Arrays.stream(hits.getHits())
                         .map(hit -> {
-                            BlogDocument blogDocument = JSONUtil.toBean(hit.getSourceAsString(), BlogDocument.class);
+                            ArticleDocument blogDocument = JSONUtil.toBean(hit.getSourceAsString(), ArticleDocument.class);
                             //处理关键字高亮
                             HighlightField title = hit.getHighlightFields().get("title");
                             blogDocument.setTitle(title.getFragments()[0].toString());

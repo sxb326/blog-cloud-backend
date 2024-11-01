@@ -1,6 +1,7 @@
 package com.xb.blog.common.rabbitmq.config;
 
 import com.xb.blog.common.rabbitmq.constants.RabbitMQConstants;
+import com.xb.blog.common.rabbitmq.publisher.MessagePublisher;
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,5 +25,10 @@ public class RabbitMQConfig {
     @Bean
     public Binding messageBinding() {
         return BindingBuilder.bind(messageQueue()).to(messageExchange()).with(RabbitMQConstants.ROUTING_KEY_NAME).noargs();
+    }
+
+    @Bean
+    public MessagePublisher messagePublisher() {
+        return new MessagePublisher();
     }
 }
