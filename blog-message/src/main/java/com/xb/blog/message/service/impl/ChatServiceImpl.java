@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xb.blog.common.core.utils.UserUtil;
 import com.xb.blog.message.dao.ChatDao;
 import com.xb.blog.message.entity.ChatEntity;
-import com.xb.blog.message.publisher.MessagePublisher;
+import com.xb.blog.common.rabbitmq.publisher.MessagePublisher;
 import com.xb.blog.message.service.ChatService;
 import com.xb.blog.message.service.ConversationService;
 import com.xb.blog.message.vo.ContentVo;

@@ -67,3 +67,4 @@ auth:
     - /api/user/getUserInfo
     - /api/article/home/**
     - /api/article/preview/**
+    - /api/message/websocket/**
