@@ -11,4 +11,4 @@ ADD target/blog-search-0.0.1-SNAPSHOT.jar .
 EXPOSE 8000
   
 # 启动命令
-ENTRYPOINT ["java","-jar","/app/blog-search-0.0.1-SNAPSHOT.jar",""]
+ENTRYPOINT ["java","-jar","/app/blog-search-0.0.1-SNAPSHOT.jar","--spring.profiles.active=prod"]

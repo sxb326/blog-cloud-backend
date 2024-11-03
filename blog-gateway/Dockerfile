@@ -11,4 +11,4 @@ ADD target/blog-gateway-0.0.1-SNAPSHOT.jar .
 EXPOSE 88
   
 # 启动命令
-ENTRYPOINT ["java","-jar","/app/blog-gateway-0.0.1-SNAPSHOT.jar",""]
+ENTRYPOINT ["java","-jar","/app/blog-gateway-0.0.1-SNAPSHOT.jar","--spring.profiles.active=prod"]

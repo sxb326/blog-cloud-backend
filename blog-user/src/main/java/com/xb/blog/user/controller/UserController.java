@@ -49,9 +49,11 @@ public class UserController {
             if (isAuth) {
                 String username = AuthUtil.getLoginUsername(token);
                 UserEntity user = userService.findByUsername(username);
-                AuthUserVo authUser = new AuthUserVo();
-                BeanUtils.copyProperties(user, authUser);
-                return Result.success(authUser);
+                if (user != null) {
+                    AuthUserVo authUser = new AuthUserVo();
+                    BeanUtils.copyProperties(user, authUser);
+                    return Result.success(authUser);
+                }
             }
         }
         return Result.success(null);
