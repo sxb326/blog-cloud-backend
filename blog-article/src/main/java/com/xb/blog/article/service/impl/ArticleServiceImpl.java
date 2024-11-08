@@ -6,9 +6,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xb.blog.common.core.pojo.ArticleDocument;
-import com.xb.blog.common.core.utils.UserUtil;
-import com.xb.blog.common.core.vo.SearchVo;
 import com.xb.blog.article.dao.ArticleDao;
 import com.xb.blog.article.entity.ArticleEntity;
 import com.xb.blog.article.feign.SearchFeignService;
@@ -19,6 +16,11 @@ import com.xb.blog.article.vo.ArticleEditorVo;
 import com.xb.blog.article.vo.ArticleListVo;
 import com.xb.blog.article.vo.ArticlePreviewVo;
 import com.xb.blog.article.vo.ArticleTopVo;
+import com.xb.blog.common.core.pojo.ArticleDocument;
+import com.xb.blog.common.core.utils.UserUtil;
+import com.xb.blog.common.core.vo.SearchVo;
+import com.xb.blog.common.redis.constants.RedisKeyConstants;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -47,6 +49,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
     private StringRedisTemplate redisTemplate;
 
     @Autowired
+    private RedissonClient redissonClient;
+
+    @Autowired
     private SearchFeignService searchFeignService;
 
     /**
@@ -57,6 +62,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void publish(ArticleEditorVo vo) {
+        //如果文章没有被保存过，初始化布隆过滤器，用于保存点击过该文章的ip
+        if (getById(vo.getId()) == null) {
+            redissonClient.getBloomFilter(RedisKeyConstants.ARTICLE_CLICK_IP_FILTER + vo.getId()).tryInit(10000L, 0.01);
+        }
+
         //保存博客表
         ArticleEntity blog = new ArticleEntity();
         BeanUtil.copyProperties(vo, blog);

@@ -7,8 +7,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "10000:10000"
-    networks:
-      - mynetwork
 
   blog-gateway:
     container_name: blog-gateway
@@ -17,8 +15,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "88:88"
-    networks:
-      - mynetwork
 
   blog-message:
     container_name: blog-message
@@ -27,10 +23,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "9000:9000"
-    networks:
-      - mynetwork
-#    depends_on: # 本服务依赖的服务，控制启动先后顺序
-#      - yuoj-backend-gateway
 
   blog-picture:
     container_name: blog-picture
@@ -39,11 +31,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "7000:7000"
-    networks:
-      - mynetwork
-#    depends_on:
-#      - yuoj-backend-user-service
-#      - yuoj-backend-gateway
 
   blog-search:
     container_name: blog-search
@@ -52,12 +39,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
-    networks:
-      - mynetwork
-#    depends_on:
-#      - yuoj-backend-user-service
-#      - yuoj-backend-question-service
-#      - yuoj-backend-gateway
 
   blog-user:
     container_name: blog-user
@@ -66,10 +47,3 @@ services:
       dockerfile: Dockerfile
     ports:
       - "6000:6000"
-    networks:
-      - mynetwork
-
-# 网络，不定义的话就是默认网络
-networks:
-  mynetwork:
-    driver: bridge

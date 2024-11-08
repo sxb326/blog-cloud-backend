@@ -35,6 +35,13 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
+        <!--redis公共服务-->
+        <dependency>
+            <groupId>com.xb.blog</groupId>
+            <artifactId>blog-common-redis</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!--openfeign-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -45,12 +52,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-        </dependency>
-
-        <!--redis-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
         <dependency>

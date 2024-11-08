@@ -16,8 +16,9 @@
 
     <modules>
         <module>blog-common-core</module>
-        <module>blog-common-rabbitmq</module>
         <module>blog-common-datasource</module>
+        <module>blog-common-rabbitmq</module>
+        <module>blog-common-redis</module>
     </modules>
 
     <dependencies>

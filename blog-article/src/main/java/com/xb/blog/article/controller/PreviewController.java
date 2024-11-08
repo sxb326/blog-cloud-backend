@@ -1,10 +1,5 @@
 package com.xb.blog.article.controller;
 
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
-import com.xb.blog.common.core.constants.Result;
-import com.xb.blog.common.core.pojo.ArticleDocument;
-import com.xb.blog.common.core.utils.UserUtil;
 import com.xb.blog.article.common.utils.IpUtil;
 import com.xb.blog.article.feign.SearchFeignService;
 import com.xb.blog.article.service.ArticleService;
@@ -12,14 +7,18 @@ import com.xb.blog.article.service.CommentService;
 import com.xb.blog.article.vo.ArticleListVo;
 import com.xb.blog.article.vo.ArticlePreviewVo;
 import com.xb.blog.article.vo.CommentVo;
+import com.xb.blog.common.core.constants.Result;
+import com.xb.blog.common.core.pojo.ArticleDocument;
+import com.xb.blog.common.core.utils.UserUtil;
+import com.xb.blog.common.redis.constants.RedisKeyConstants;
+import org.redisson.api.RBloomFilter;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/preview")
@@ -35,20 +34,19 @@ public class PreviewController {
     private StringRedisTemplate redisTemplate;
 
     @Autowired
+    private RedissonClient redissonClient;
+
+    @Autowired
     private SearchFeignService searchFeignService;
 
     @GetMapping("/{id}")
     public Result getArticleById(HttpServletRequest request, @PathVariable("id") String id) {
         ArticlePreviewVo vo = articleService.getArticlePreviewById(id);
         if (vo != null) {
-            //统计点击量
+            //使用布隆过滤器统计点击量
+            RBloomFilter<Object> bloomFilter = redissonClient.getBloomFilter(RedisKeyConstants.ARTICLE_CLICK_IP_FILTER + id);
             String ip = IpUtil.getClientIp(request);
-            String key = "ARTICLE_CLICK_IP_SET_" + id;
-            Long l = redisTemplate.opsForSet().add(key, ip);
-            Date date = new Date();
-            DateTime dateTime = DateUtil.endOfMonth(date);
-            redisTemplate.expire(key, (dateTime.getTime() - date.getTime()) / 1000, TimeUnit.SECONDS);
-            if (l > 0L) {
+            if (!bloomFilter.contains(ip)) {
                 //代表这是一个新ip 返回的vo中点击数+1
                 vo.setClickCount(vo.getClickCount() + 1);
                 //更新文章的点击数
@@ -56,6 +54,8 @@ public class PreviewController {
                 //更新es
                 ArticleDocument doc = articleService.getArticleDocumentByArticleId(id);
                 searchFeignService.publish(doc);
+                //将当前ip添加到布隆过滤器
+                bloomFilter.add(ip);
             }
             vo.setIsAuthor(vo.getAuthorId().equals(UserUtil.getUserId()));
             return Result.success(vo);
