@@ -1,5 +1,6 @@
 package com.xb.blog.article.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.xb.blog.article.common.utils.IpUtil;
 import com.xb.blog.article.feign.SearchFeignService;
 import com.xb.blog.article.service.ArticleService;
@@ -45,8 +46,9 @@ public class PreviewController {
         if (vo != null) {
             //使用布隆过滤器统计点击量
             RBloomFilter<Object> bloomFilter = redissonClient.getBloomFilter(RedisKeyConstants.ARTICLE_CLICK_IP_FILTER + id);
-            String ip = IpUtil.getClientIp(request);
-            if (!bloomFilter.contains(ip)) {
+            String userId = UserUtil.getUserId();
+            String filterKey = IpUtil.getClientIp(request) + (StrUtil.isNotBlank(userId) ? "_" + userId : "");
+            if (!bloomFilter.contains(filterKey)) {
                 //代表这是一个新ip 返回的vo中点击数+1
                 vo.setClickCount(vo.getClickCount() + 1);
                 //更新文章的点击数
@@ -55,7 +57,7 @@ public class PreviewController {
                 ArticleDocument doc = articleService.getArticleDocumentByArticleId(id);
                 searchFeignService.publish(doc);
                 //将当前ip添加到布隆过滤器
-                bloomFilter.add(ip);
+                bloomFilter.add(filterKey);
             }
             vo.setIsAuthor(vo.getAuthorId().equals(UserUtil.getUserId()));
             return Result.success(vo);
