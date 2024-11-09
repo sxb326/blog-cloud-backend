@@ -3,14 +3,23 @@ package com.xb.blog.search.service.impl;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.xb.blog.common.core.pojo.ArticleDocument;
+import com.xb.blog.common.core.utils.UserUtil;
 import com.xb.blog.common.core.vo.SearchVo;
 import com.xb.blog.search.service.SearchService;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
@@ -18,6 +27,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +35,7 @@ import java.util.stream.Collectors;
 /**
  * 检索
  */
+@Slf4j
 @Service
 public class SearchServiceImpl implements SearchService {
 
@@ -99,12 +110,19 @@ public class SearchServiceImpl implements SearchService {
             builder.query(QueryBuilders.matchQuery("categoryId", categoryId));
         }
 
-        //todo 如果查看推荐文章，则需要根据用户点赞、评论、收藏、关注过的用户id、分类id、标签 来做过滤
+        //如果查看推荐文章，则需要根据用户点赞、评论、收藏过的文章的作者id、分类id、标签 来做过滤
         if ("recommend".equals(orderType)) {
-
+            String userId = UserUtil.getUserId();
+            if (StrUtil.isNotBlank(userId)) {
+                //用户已登录 按照用户的行为日志来分析
+                builder.query(getBoolQueryBuilder());
+            } else {
+                //用户未登录 按照点击量推荐
+                builder.sort("clickCount", SortOrder.DESC);
+            }
         }
 
-        //如果查看最新文章，只需要根据发布事件倒序排列
+        //如果查看最新文章，只需要根据发布时间倒序排列
         if ("newest".equals(orderType)) {
             builder.sort("publishTime", SortOrder.DESC);
         }
@@ -112,7 +130,7 @@ public class SearchServiceImpl implements SearchService {
         //设置分页参数
         builder.from(page.intValue());
         builder.size(10);
-
+        System.out.println("DSL：" + builder);
         try {
             searchRequest.source(builder);
             SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
@@ -123,8 +141,76 @@ public class SearchServiceImpl implements SearchService {
                         .collect(Collectors.toList());
             }
         } catch (Exception e) {
-
+            log.error("查询es中的文章列表时报错：{}", e.getMessage(), e);
         }
-        return null;
+        return new ArrayList<>();
+    }
+
+    /**
+     * 构建推荐文章查询条件
+     *
+     * @return
+     */
+    private QueryBuilder getBoolQueryBuilder() {
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+        //创建聚合查询，查询出用户最常关注的 作者、文章分类、文章标签
+        SearchSourceBuilder builder = new SearchSourceBuilder();
+        builder.query(QueryBuilders.matchPhraseQuery("userId", UserUtil.getUserId()));
+
+        //对常看的作者进行聚合 取前100个最常看的作者
+        builder.aggregation(getAggregationBuilder("authorAgg", "targetUserId.keyword", 100));
+
+        //对常看的文章分类进行聚合 取前20个最常看的分类
+        builder.aggregation(getAggregationBuilder("categoryAgg", "categoryId.keyword", 20));
+
+        //对常看的文章标签进行聚合 取前50最常看的标签
+        builder.aggregation(getAggregationBuilder("tagAgg", "tagIds.keyword", 50));
+
+        SearchRequest searchRequest = new SearchRequest("behavior_log");
+        searchRequest.source(builder);
+        try {
+            SearchResponse result = client.search(searchRequest, RequestOptions.DEFAULT);
+
+            //解析作者id
+            boolQueryBuilder.should(parseResultToQueryBuilder(result, "authorAgg", "authorId.keyword"));
+
+            //解析分类id
+            boolQueryBuilder.should(parseResultToQueryBuilder(result, "categoryAgg", "categoryId.keyword"));
+
+            //解析标签id
+            boolQueryBuilder.should(parseResultToQueryBuilder(result, "tagAgg", "tagIdList.keyword"));
+
+        } catch (Exception e) {
+            log.error("构建复杂查询条件时报错：{}", e.getMessage(), e);
+        }
+        return boolQueryBuilder;
+    }
+
+    /**
+     * 根据传入的聚合名称 聚合字段 数据条数 创建 聚合构建器
+     *
+     * @param aggName
+     * @param fieldName
+     * @param size
+     * @return
+     */
+    private AggregationBuilder getAggregationBuilder(String aggName, String fieldName, int size) {
+        TermsAggregationBuilder aggregationBuilder = AggregationBuilders.terms(aggName);
+        return aggregationBuilder.field(fieldName).size(size).order(BucketOrder.count(false));
+    }
+
+    /**
+     * 解析查询结果 封装为QueryBuilder
+     *
+     * @param result
+     * @param aggName
+     * @param fieldName
+     * @return
+     */
+    private QueryBuilder parseResultToQueryBuilder(SearchResponse result, String aggName, String fieldName) {
+        List<String> list = ((ParsedStringTerms) result.getAggregations().get(aggName)).getBuckets().stream()
+                .map(bucket -> bucket.getKey().toString()).collect(Collectors.toList());
+        return list.isEmpty() ? QueryBuilders.matchAllQuery() : QueryBuilders.termsQuery(fieldName, list);
     }
 }
