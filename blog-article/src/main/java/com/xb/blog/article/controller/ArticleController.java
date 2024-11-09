@@ -2,9 +2,6 @@ package com.xb.blog.article.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.xb.blog.common.core.constants.Result;
-import com.xb.blog.common.core.utils.UserUtil;
-import com.xb.blog.common.core.vo.SearchVo;
 import com.xb.blog.article.entity.ArticleEntity;
 import com.xb.blog.article.entity.ArticleTagEntity;
 import com.xb.blog.article.entity.DraftEntity;
@@ -12,6 +9,8 @@ import com.xb.blog.article.service.ArticleService;
 import com.xb.blog.article.service.ArticleTagService;
 import com.xb.blog.article.service.DraftService;
 import com.xb.blog.article.vo.ArticleEditorVo;
+import com.xb.blog.common.core.constants.Result;
+import com.xb.blog.common.core.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -99,18 +98,5 @@ public class ArticleController {
     public Result collectCount(@PathVariable("id") String id) {
         Long count = articleService.getCollectCount(id);
         return Result.success(count);
-    }
-
-    /**
-     * 根据传入的搜索关键字以及分页参数 返回查询数据
-     *
-     * @param keyword
-     * @param page
-     * @return
-     */
-    @GetMapping("/search")
-    public Result search(String keyword, Long page) {
-        SearchVo vo = articleService.search(keyword, page);
-        return Result.success(vo);
     }
 }

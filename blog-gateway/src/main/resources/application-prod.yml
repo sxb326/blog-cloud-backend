@@ -65,3 +65,4 @@ auth:
     - /api/article/home/**
     - /api/article/preview/**
     - /api/message/websocket/**
+    - /api/search/**

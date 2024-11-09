@@ -43,10 +43,4 @@ public class HomeController {
         list.addAll(categoryService.list(new QueryWrapper<CategoryEntity>().orderByAsc("sort")));
         return Result.success(list);
     }
-
-    @GetMapping("/top10")
-    public Result top10() {
-        List<ArticleTopVo> list = articleService.getTop10List();
-        return Result.success(list);
-    }
 }

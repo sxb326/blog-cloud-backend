@@ -5,14 +5,14 @@
         SELECT u.id,
                u.nick_name                                            nickName,
                u.pic_id                                               picId,
-               COUNT(b.id)                                            articleCount,
-               COALESCE(SUM(b.click_count), 0)                        clickCount,
-               COALESCE(SUM(b.like_count), 0)                         likeCount,
+               COUNT(a.id)                                            articleCount,
+               COALESCE(SUM(a.click_count), 0)                        clickCount,
+               COALESCE(SUM(a.like_count), 0)                         likeCount,
                CASE WHEN COALESCE(SUM(f.id), 0) > 0 THEN 1 ELSE 0 END isFollow,
                count(distinct f1.id)                                  followerCount,
                count(distinct f2.id)                                  followingCount
         FROM t_user u
-                 LEFT JOIN t_article b ON u.id = b.author AND b.STATUS = 1
+                 LEFT JOIN t_article a ON u.id = a.author AND a.STATUS = 1
                  LEFT JOIN t_follow f ON u.id = f.target_user_id AND f.user_id = #{loginUserId} AND f.STATUS = 1
                  LEFT JOIN t_follow f1 ON u.id = f1.target_user_id AND f1.STATUS = 1
                  LEFT JOIN t_follow f2 ON u.id = f2.user_id AND f2.STATUS = 1

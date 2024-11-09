@@ -1,8 +1,10 @@
 package com.xb.blog.common.core.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -49,7 +51,20 @@ public class ArticleDocument implements Serializable {
      */
     private String authorName;
     /**
+     * 分类id
+     */
+    private String categoryId;
+    /**
+     * 标签id
+     */
+    private List<String> tagIdList;
+    /**
      * 标签集合
      */
     private List<String> tagNameList;
+    /**
+     * 发布时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime publishTime;
 }

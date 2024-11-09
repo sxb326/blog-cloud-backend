@@ -1,7 +1,10 @@
 package com.xb.blog.search.service;
 
 
+import com.xb.blog.common.core.pojo.ArticleDocument;
 import com.xb.blog.common.core.vo.SearchVo;
+
+import java.util.List;
 
 /**
  * 检索
@@ -17,11 +20,12 @@ public interface SearchService {
     SearchVo search(String keyword, Long page);
 
     /**
-     * 在返回数据前 进行的额外操作 例如：当使用mysql查询时 需要额外进行高亮关键字的处理
+     * 根据传入的分页、分类id、排序参数，查询文章列表
      *
-     * @param vo
+     * @param page
+     * @param categoryId
+     * @param orderType
      * @return
      */
-    default void beforeReturn(SearchVo vo) {
-    }
+    List<ArticleDocument> list(Long page, String categoryId, String orderType);
 }

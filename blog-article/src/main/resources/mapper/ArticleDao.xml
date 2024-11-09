@@ -6,65 +6,65 @@
     </resultMap>
     <select id="list" resultMap="BlogListVo">
         SELECT
-            b.id,
-            b.title,
-            b.summary,
-            b.pic_id picId,
-            COALESCE(b.click_count, 0) clickCount,
-            COALESCE(b.like_count, 0) likeCount,
-            COALESCE(b.collect_count, 0) collectCount,
+            a.id,
+            a.title,
+            a.summary,
+            a.pic_id picId,
+            COALESCE(a.click_count, 0) clickCount,
+            COALESCE(a.like_count, 0) likeCount,
+            COALESCE(a.collect_count, 0) collectCount,
             u.id authorId,
             u.nick_name authorName,
             GROUP_CONCAT(t.name) tagNameList,
-            CASE WHEN #{loginUserId} = b.author THEN 1 ELSE 0 END isAuthor
+            CASE WHEN #{loginUserId} = a.author THEN 1 ELSE 0 END isAuthor
         FROM
-            t_article b
-                LEFT JOIN t_user u ON b.author = u.id
-                LEFT JOIN t_article_tag bt ON b.id = bt.article_id AND bt.status = 1
+            t_article a
+                LEFT JOIN t_user u ON a.author = u.id
+                LEFT JOIN t_article_tag bt ON a.id = bt.article_id AND bt.status = 1
                 LEFT JOIN t_tag t ON bt.tag_id = t.id AND t.status = 1
         WHERE
-            b.status = 1
+            a.status = 1
         <if test="categoryId != null and categoryId != ''">
-            AND b.category_id = #{categoryId}
+            AND a.category_id = #{categoryId}
         </if>
         <if test="userId != null and userId != ''">
-            AND b.author = #{userId}
+            AND a.author = #{userId}
         </if>
-        GROUP BY b.id, b.title, b.summary, b.pic_id, b.click_count, b.like_count, b.collect_count, u.id, u.nick_name
+        GROUP BY a.id, a.title, a.summary, a.pic_id, a.click_count, a.like_count, a.collect_count, u.id, u.nick_name
         <choose>
             <when test="orderType == 'recommend'">
-                ORDER BY COALESCE(b.click_count,0) * 0.1 + COALESCE(b.like_count,0) * 0.3 + COALESCE(b.comment_count,0) * 0.2 + COALESCE(b.collect_count,0) * 0.4 DESC
+                ORDER BY COALESCE(a.click_count,0) * 0.1 + COALESCE(a.like_count,0) * 0.3 + COALESCE(a.comment_count,0) * 0.2 + COALESCE(a.collect_count,0) * 0.4 DESC
             </when>
             <when test="orderType == 'newest'">
-                ORDER BY b.create_time DESC
+                ORDER BY a.create_time DESC
             </when>
             <otherwise>
-                ORDER BY b.create_time DESC
+                ORDER BY a.create_time DESC
             </otherwise>
         </choose>
         limit 10 OFFSET #{page}
     </select>
     <select id="getArticlePreviewById" parameterType="String" resultType="com.xb.blog.article.vo.ArticlePreviewVo">
         SELECT
-            b.id,
-            b.title,
-            b.content,
-            IFNULL(b.click_count, 0) clickCount,
-            IFNULL(b.like_count, 0) likeCount,
-            IFNULL(b.comment_count, 0) commentCount,
-            IFNULL(b.collect_count, 0) collectCount,
+            a.id,
+            a.title,
+            a.content,
+            IFNULL(a.click_count, 0) clickCount,
+            IFNULL(a.like_count, 0) likeCount,
+            IFNULL(a.comment_count, 0) commentCount,
+            IFNULL(a.collect_count, 0) collectCount,
             u.id authorId,
             u.nick_name authorName,
-            b.create_time createTime,
+            a.create_time createTime,
             CASE WHEN l.id IS NOT NULL THEN 1 ELSE 0 END liked,
             CASE WHEN c.id IS NOT NULL THEN 1 ELSE 0 END collected
         FROM
-            t_article b
-                LEFT JOIN t_user u ON b.author = u.id
-                LEFT JOIN t_like l ON l.type = 1 AND b.id = l.obj_id AND l.user_id = #{userId}
-                LEFT JOIN t_collect c ON c.article_id = b.id AND c.user_id = #{userId}
+            t_article a
+                LEFT JOIN t_user u ON a.author = u.id
+                LEFT JOIN t_like l ON l.type = 1 AND a.id = l.obj_id AND l.user_id = #{userId}
+                LEFT JOIN t_collect c ON c.article_id = a.id AND c.user_id = #{userId}
         WHERE
-            b.status = 1 AND b.id = #{id}
+            a.status = 1 AND a.id = #{id}
     </select>
     <update id="updateLikeCount">
         update t_article set like_count = COALESCE(like_count, 0) + #{count} where id = #{articleId}
@@ -93,42 +93,23 @@
         <result column="tagNameList" property="tagNameList" typeHandler="com.xb.blog.article.config.mybatis.typeHandler.ConvertCommaSeparatedStrToListTypeHandler"/>
     </resultMap>
     <select id="getArticleDocumentByArticleId" resultMap="BlogDocument">
-        SELECT b.id,
-               b.title,
-               b.summary,
-               b.pic_id                  picId,
-               COALESCE(b.click_count, 0) clickCount,
-               COALESCE(b.like_count, 0) likeCount,
-               COALESCE(b.collect_count, 0) collectCount,
-               u.id                      authorId,
-               u.nick_name                authorName,
-               GROUP_CONCAT(t.name) tagNameList
-        FROM t_article b
-                 LEFT JOIN t_user u ON b.author = u.id
-                 LEFT JOIN t_article_tag bt ON b.id = bt.article_id AND bt.status = 1
+        SELECT a.id,
+               a.title,
+               a.summary,
+               a.pic_id                     picId,
+               COALESCE(a.click_count, 0)   clickCount,
+               COALESCE(a.like_count, 0)    likeCount,
+               COALESCE(a.collect_count, 0) collectCount,
+               u.id                         authorId,
+               u.nick_name                  authorName,
+               a.category_id                categoryId,
+               GROUP_CONCAT(t.id)           tagIdList,
+               GROUP_CONCAT(t.name)         tagNameList,
+               a.create_time                publishTime
+        FROM t_article a
+                 LEFT JOIN t_user u ON a.author = u.id
+                 LEFT JOIN t_article_tag bt ON a.id = bt.article_id AND bt.status = 1
                  LEFT JOIN t_tag t ON bt.tag_id = t.id AND t.status = 1
-        WHERE b.status = 1 AND b.id = #{articleId}
-    </select>
-    <select id="search" resultType="com.xb.blog.common.core.pojo.ArticleDocument">
-        SELECT b.id,
-               b.title,
-               b.summary,
-               b.pic_id                  picId,
-               u.id                      authorId,
-               u.nick_name                authorName
-        FROM t_article b
-                 LEFT JOIN t_user u ON b.author = u.id
-        WHERE b.status = 1 AND b.title like CONCAT('%', #{keyword}, '%')
-        ORDER BY b.create_time DESC
-        <if test="page != null">
-            limit 10 OFFSET #{page}
-        </if>
-    </select>
-    <select id="getTop10List" resultType="com.xb.blog.article.vo.ArticleTopVo">
-        SELECT id, title
-        FROM t_article b
-        WHERE b.STATUS = 1
-        ORDER BY COALESCE ( b.click_count, 0 ) * 0.1 + COALESCE ( b.like_count, 0 ) * 0.3 + COALESCE ( b.comment_count, 0 ) * 0.2 + COALESCE ( b.collect_count, 0 ) * 0.4 DESC
-        LIMIT 10
+        WHERE a.status = 1 AND a.id = #{articleId}
     </select>
 </mapper>

@@ -68,11 +68,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
         }
 
         //保存博客表
-        ArticleEntity blog = new ArticleEntity();
-        BeanUtil.copyProperties(vo, blog);
-        blog.setStatus(1);
-        blog.setAuthor(UserUtil.getUserId());
-        saveOrUpdate(blog);
+        ArticleEntity article = new ArticleEntity();
+        BeanUtil.copyProperties(vo, article);
+        article.setStatus(1);
+        article.setAuthor(UserUtil.getUserId());
+        saveOrUpdate(article);
 
         //保存标签绑定数据
         articleTagService.save(vo.getId(), vo.getTagIds());
@@ -81,7 +81,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
         draftService.removeById(vo.getId());
 
         //调用检索服务，将博客检索信息上传到es
-        ArticleDocument doc = getArticleDocumentByArticleId(blog.getId());
+        ArticleDocument doc = getArticleDocumentByArticleId(article.getId());
         searchFeignService.publish(doc);
     }
 
@@ -257,28 +257,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
     }
 
     /**
-     * 根据传入的搜索关键字以及分页参数 返回查询数据
-     *
-     * @param keyword
-     * @param page
-     * @return
-     */
-    @Override
-    public SearchVo search(String keyword, Long page) {
-        if (page == null) page = 1L;
-        page = (page - 1L) * 10L;
-
-        Integer total = baseMapper.selectCount(new QueryWrapper<ArticleEntity>().eq("status", 1).like("title", keyword));
-        List<ArticleDocument> list = baseMapper.search(keyword, page);
-
-        SearchVo vo = new SearchVo();
-        vo.setKeyword(keyword);
-        vo.setTotal(total.longValue());
-        vo.setList(list);
-        return vo;
-    }
-
-    /**
      * 根据文章id 封装BlogDocument 用于 发送给es保存数据 以及 检索页面返回
      *
      * @param articleId
@@ -287,16 +265,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
     @Override
     public ArticleDocument getArticleDocumentByArticleId(String articleId) {
         return baseMapper.getArticleDocumentByArticleId(articleId);
-    }
-
-    /**
-     * 获取文章推荐排行前10的文章
-     *
-     * @return
-     */
-    @Override
-    public List<ArticleTopVo> getTop10List() {
-        return baseMapper.getTop10List();
     }
 
     /**

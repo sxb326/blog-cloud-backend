@@ -100,28 +100,12 @@ public interface ArticleService extends IService<ArticleEntity> {
     Long getCollectCount(String id);
 
     /**
-     * 根据传入的搜索关键字以及分页参数 返回查询数据
-     *
-     * @param keyword
-     * @param page
-     * @return
-     */
-    SearchVo search(String keyword, Long page);
-
-    /**
      * 根据文章id 获取到最新数据 更新es中的数据
      *
      * @param articleId
      * @return
      */
     ArticleDocument getArticleDocumentByArticleId(String articleId);
-
-    /**
-     * 获取文章推荐排行前10的文章
-     *
-     * @return
-     */
-    List<ArticleTopVo> getTop10List();
 
     /**
      * 列出用户所有文章

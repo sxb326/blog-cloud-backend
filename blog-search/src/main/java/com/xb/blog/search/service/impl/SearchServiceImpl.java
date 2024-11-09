@@ -14,6 +14,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +23,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 从Es检索
+ * 检索
  */
-@Service("es")
-public class EsSearchServiceImpl implements SearchService {
+@Service
+public class SearchServiceImpl implements SearchService {
 
     @Autowired
     private RestHighLevelClient client;
@@ -83,5 +84,47 @@ public class EsSearchServiceImpl implements SearchService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public List<ArticleDocument> list(Long page, String categoryId, String orderType) {
+        if (page == null) page = 1L;
+        page = (page - 1L) * 10L;
+
+        SearchRequest searchRequest = new SearchRequest("article_list");
+        SearchSourceBuilder builder = new SearchSourceBuilder();
+
+        //设置文章分类检索参数
+        if (StrUtil.isNotBlank(categoryId)) {
+            builder.query(QueryBuilders.matchQuery("categoryId", categoryId));
+        }
+
+        //todo 如果查看推荐文章，则需要根据用户点赞、评论、收藏、关注过的用户id、分类id、标签 来做过滤
+        if ("recommend".equals(orderType)) {
+
+        }
+
+        //如果查看最新文章，只需要根据发布事件倒序排列
+        if ("newest".equals(orderType)) {
+            builder.sort("publishTime", SortOrder.DESC);
+        }
+
+        //设置分页参数
+        builder.from(page.intValue());
+        builder.size(10);
+
+        try {
+            searchRequest.source(builder);
+            SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+            SearchHits hits = searchResponse.getHits();
+            if (hits.getHits() != null) {
+                return Arrays.stream(hits.getHits())
+                        .map(hit -> JSONUtil.toBean(hit.getSourceAsString(), ArticleDocument.class))
+                        .collect(Collectors.toList());
+            }
+        } catch (Exception e) {
+
+        }
+        return null;
     }
 }

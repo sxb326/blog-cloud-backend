@@ -1,6 +1,7 @@
 package com.xb.blog.search.controller;
 
 import cn.hutool.json.JSONUtil;
+import com.xb.blog.common.core.annotation.InternalApi;
 import com.xb.blog.common.core.constants.Result;
 import com.xb.blog.common.core.pojo.ArticleDocument;
 import org.elasticsearch.action.index.IndexRequest;
@@ -27,6 +28,7 @@ public class PublishController {
      * @param doc
      * @return
      */
+    @InternalApi
     @PostMapping
     public Result publish(@RequestBody ArticleDocument doc) {
         IndexRequest indexRequest = new IndexRequest("article_list");

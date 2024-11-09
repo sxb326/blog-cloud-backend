@@ -99,20 +99,4 @@ public interface ArticleDao extends BaseMapper<ArticleEntity> {
      * @return
      */
     ArticleDocument getArticleDocumentByArticleId(@Param("articleId") String articleId);
-
-    /**
-     * 根据传入的搜索关键字以及分页参数 返回查询数据
-     *
-     * @param keyword
-     * @param page
-     * @return
-     */
-    List<ArticleDocument> search(@Param("keyword") String keyword, @Param("page") Long page);
-
-    /**
-     * 获取文章推荐排行前10的文章
-     *
-     * @return
-     */
-    List<ArticleTopVo> getTop10List();
 }

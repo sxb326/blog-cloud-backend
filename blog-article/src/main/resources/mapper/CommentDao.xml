@@ -14,14 +14,14 @@
                u.id                                              userId,
                u.nick_name                                        userNickName,
                u.pic_id                                          userPicId,
-               CASE WHEN b.author = c.user_id THEN 1 ELSE 0 END  isAuthor,
-               CASE WHEN b.author = c2.user_id THEN 1 ELSE 0 END isReplyToAuthor
+               CASE WHEN a.author = c.user_id THEN 1 ELSE 0 END  isAuthor,
+               CASE WHEN a.author = c2.user_id THEN 1 ELSE 0 END isReplyToAuthor
         FROM t_comment c
                  INNER JOIN t_user u ON c.user_id = u.id
                  LEFT JOIN t_comment c2 ON c2.type = 1 AND c.reply_to_id = c2.id
                  LEFT JOIN t_user u2 ON c2.user_id = u2.id
                  LEFT JOIN t_like l ON l.type = 2 AND c.id = l.obj_id AND l.user_id = #{userId}
-                 LEFT JOIN t_article b ON b.id = c.obj_id AND b.status = 1
+                 LEFT JOIN t_article a ON a.id = c.obj_id AND a.status = 1
         WHERE c.type = 1
           AND c.STATUS = 1
           AND c.obj_id = #{articleId}
