@@ -62,7 +62,7 @@ auth:
     - /api/picture/**
     - /api/user/getAuthUser
     - /api/user/getUserInfo
-    - /api/article/home/**
+    - /api/article/category/**
     - /api/article/preview/**
     - /api/message/websocket/**
     - /api/search/**

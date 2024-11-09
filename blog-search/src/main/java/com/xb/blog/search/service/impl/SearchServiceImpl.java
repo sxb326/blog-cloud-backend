@@ -105,9 +105,12 @@ public class SearchServiceImpl implements SearchService {
         SearchRequest searchRequest = new SearchRequest("article_list");
         SearchSourceBuilder builder = new SearchSourceBuilder();
 
+        //构建复杂查询条件
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
         //设置文章分类检索参数
         if (StrUtil.isNotBlank(categoryId)) {
-            builder.query(QueryBuilders.matchQuery("categoryId", categoryId));
+            boolQueryBuilder.must(QueryBuilders.matchQuery("categoryId", categoryId));
         }
 
         //如果查看推荐文章，则需要根据用户点赞、评论、收藏过的文章的作者id、分类id、标签 来做过滤
@@ -115,7 +118,8 @@ public class SearchServiceImpl implements SearchService {
             String userId = UserUtil.getUserId();
             if (StrUtil.isNotBlank(userId)) {
                 //用户已登录 按照用户的行为日志来分析
-                builder.query(getBoolQueryBuilder());
+                buildBoolQueryBuilder(boolQueryBuilder);
+                builder.query(boolQueryBuilder);
             } else {
                 //用户未登录 按照点击量推荐
                 builder.sort("clickCount", SortOrder.DESC);
@@ -130,7 +134,7 @@ public class SearchServiceImpl implements SearchService {
         //设置分页参数
         builder.from(page.intValue());
         builder.size(10);
-        System.out.println("DSL：" + builder);
+
         try {
             searchRequest.source(builder);
             SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
@@ -151,9 +155,7 @@ public class SearchServiceImpl implements SearchService {
      *
      * @return
      */
-    private QueryBuilder getBoolQueryBuilder() {
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
+    private QueryBuilder buildBoolQueryBuilder(BoolQueryBuilder boolQueryBuilder) {
         //创建聚合查询，查询出用户最常关注的 作者、文章分类、文章标签
         SearchSourceBuilder builder = new SearchSourceBuilder();
         builder.query(QueryBuilders.matchPhraseQuery("userId", UserUtil.getUserId()));

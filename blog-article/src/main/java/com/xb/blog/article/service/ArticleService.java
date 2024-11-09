@@ -27,13 +27,6 @@ public interface ArticleService extends IService<ArticleEntity> {
     void publish(ArticleEditorVo vo);
 
     /**
-     * 查询博客列表
-     *
-     * @return
-     */
-    List<ArticleListVo> list(Long page, String categoryId, String orderType);
-
-    /**
      * 根据id获取博客预览数据
      *
      * @param id
