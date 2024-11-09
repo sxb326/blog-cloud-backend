@@ -119,11 +119,11 @@ public class SearchServiceImpl implements SearchService {
             if (StrUtil.isNotBlank(userId)) {
                 //用户已登录 按照用户的行为日志来分析
                 buildBoolQueryBuilder(boolQueryBuilder);
-                builder.query(boolQueryBuilder);
             } else {
                 //用户未登录 按照点击量推荐
                 builder.sort("clickCount", SortOrder.DESC);
             }
+            builder.query(boolQueryBuilder);
         }
 
         //如果查看最新文章，只需要根据发布时间倒序排列
