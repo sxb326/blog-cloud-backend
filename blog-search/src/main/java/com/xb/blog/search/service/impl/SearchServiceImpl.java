@@ -155,7 +155,7 @@ public class SearchServiceImpl implements SearchService {
      *
      * @return
      */
-    private QueryBuilder buildBoolQueryBuilder(BoolQueryBuilder boolQueryBuilder) {
+    private void buildBoolQueryBuilder(BoolQueryBuilder boolQueryBuilder) {
         //创建聚合查询，查询出用户最常关注的 作者、文章分类、文章标签
         SearchSourceBuilder builder = new SearchSourceBuilder();
         builder.query(QueryBuilders.matchPhraseQuery("userId", UserUtil.getUserId()));
@@ -186,7 +186,6 @@ public class SearchServiceImpl implements SearchService {
         } catch (Exception e) {
             log.error("构建复杂查询条件时报错：{}", e.getMessage(), e);
         }
-        return boolQueryBuilder;
     }
 
     /**
