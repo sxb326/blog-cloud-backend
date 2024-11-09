@@ -1,6 +1,7 @@
 package com.xb.blog.article.controller;
 
 import cn.hutool.core.util.StrUtil;
+import com.xb.blog.article.common.constants.BehaviorType;
 import com.xb.blog.article.common.utils.IpUtil;
 import com.xb.blog.article.feign.SearchFeignService;
 import com.xb.blog.article.service.ArticleService;
@@ -9,6 +10,7 @@ import com.xb.blog.article.vo.ArticleListVo;
 import com.xb.blog.article.vo.ArticlePreviewVo;
 import com.xb.blog.article.vo.CommentVo;
 import com.xb.blog.common.core.constants.Result;
+import com.xb.blog.common.core.dto.BehaviorLogDto;
 import com.xb.blog.common.core.pojo.ArticleDocument;
 import com.xb.blog.common.core.utils.UserUtil;
 import com.xb.blog.common.redis.constants.RedisKeyConstants;
@@ -44,22 +46,35 @@ public class PreviewController {
     public Result getArticleById(HttpServletRequest request, @PathVariable("id") String id) {
         ArticlePreviewVo vo = articleService.getArticlePreviewById(id);
         if (vo != null) {
+            vo.setIsAuthor(vo.getAuthorId().equals(UserUtil.getUserId()));
+
             //使用布隆过滤器统计点击量
             RBloomFilter<Object> bloomFilter = redissonClient.getBloomFilter(RedisKeyConstants.ARTICLE_CLICK_IP_FILTER + id);
             String userId = UserUtil.getUserId();
             String filterKey = IpUtil.getClientIp(request) + (StrUtil.isNotBlank(userId) ? "_" + userId : "");
+            ArticleDocument doc = articleService.getArticleDocumentByArticleId(id);
             if (!bloomFilter.contains(filterKey)) {
                 //代表这是一个新ip 返回的vo中点击数+1
                 vo.setClickCount(vo.getClickCount() + 1);
                 //更新文章的点击数
                 articleService.updateClickCount(id, 1L);
                 //更新es
-                ArticleDocument doc = articleService.getArticleDocumentByArticleId(id);
                 searchFeignService.publish(doc);
                 //将当前ip添加到布隆过滤器
                 bloomFilter.add(filterKey);
             }
-            vo.setIsAuthor(vo.getAuthorId().equals(UserUtil.getUserId()));
+
+            //保存行为数据到es
+            if (StrUtil.isNotBlank(userId) && !userId.equals(doc.getAuthorId())) {
+                BehaviorLogDto dto = new BehaviorLogDto();
+                dto.setUserId(userId);
+                dto.setBehaviorType(BehaviorType.READ.name());
+                dto.setCategoryId(doc.getCategoryId());
+                dto.setTagIds(doc.getTagIdList());
+                dto.setTargetUserId(doc.getAuthorId());
+                searchFeignService.saveBehaviorLog(dto);
+            }
+
             return Result.success(vo);
         }
         return Result.redirect("文章不存在");

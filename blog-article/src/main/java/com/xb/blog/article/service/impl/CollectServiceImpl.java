@@ -2,15 +2,17 @@ package com.xb.blog.article.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xb.blog.common.core.pojo.ArticleDocument;
-import com.xb.blog.common.core.utils.UserUtil;
+import com.xb.blog.article.common.constants.BehaviorType;
 import com.xb.blog.article.dao.CollectDao;
 import com.xb.blog.article.entity.CollectEntity;
 import com.xb.blog.article.feign.SearchFeignService;
-import com.xb.blog.common.rabbitmq.publisher.MessagePublisher;
 import com.xb.blog.article.service.ArticleService;
 import com.xb.blog.article.service.CollectService;
 import com.xb.blog.article.vo.CollectSaveVo;
+import com.xb.blog.common.core.dto.BehaviorLogDto;
+import com.xb.blog.common.core.pojo.ArticleDocument;
+import com.xb.blog.common.core.utils.UserUtil;
+import com.xb.blog.common.rabbitmq.publisher.MessagePublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -71,7 +73,18 @@ public class CollectServiceImpl extends ServiceImpl<CollectDao, CollectEntity> i
 
         //推送消息
         if (isNewCollect) {
-            messagePublisher.sendMessage(3, null, UserUtil.getUserId(), doc.getAuthorId(),articleId,null);
+            messagePublisher.sendMessage(3, null, UserUtil.getUserId(), doc.getAuthorId(), articleId, null);
+        }
+
+        //保存行为数据到es
+        if (!userId.equals(doc.getAuthorId())) {
+            BehaviorLogDto dto = new BehaviorLogDto();
+            dto.setUserId(userId);
+            dto.setBehaviorType(BehaviorType.COLLECT.name());
+            dto.setCategoryId(doc.getCategoryId());
+            dto.setTagIds(doc.getTagIdList());
+            dto.setTargetUserId(doc.getAuthorId());
+            searchFeignService.saveBehaviorLog(dto);
         }
     }
 }

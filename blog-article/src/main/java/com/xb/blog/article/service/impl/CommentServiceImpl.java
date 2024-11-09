@@ -3,18 +3,20 @@ package com.xb.blog.article.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xb.blog.common.core.pojo.ArticleDocument;
-import com.xb.blog.common.core.utils.UserUtil;
+import com.xb.blog.article.common.constants.BehaviorType;
 import com.xb.blog.article.dao.CommentDao;
 import com.xb.blog.article.dto.CommentDto;
 import com.xb.blog.article.entity.CommentEntity;
 import com.xb.blog.article.feign.SearchFeignService;
-import com.xb.blog.common.rabbitmq.publisher.MessagePublisher;
 import com.xb.blog.article.service.ArticleService;
 import com.xb.blog.article.service.CommentService;
 import com.xb.blog.article.vo.CommentListVo;
 import com.xb.blog.article.vo.CommentSaveVo;
 import com.xb.blog.article.vo.CommentVo;
+import com.xb.blog.common.core.dto.BehaviorLogDto;
+import com.xb.blog.common.core.pojo.ArticleDocument;
+import com.xb.blog.common.core.utils.UserUtil;
+import com.xb.blog.common.rabbitmq.publisher.MessagePublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -93,11 +95,13 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public void save(CommentSaveVo vo) {
+        String userId = UserUtil.getUserId();
+
         //保存评论表
         CommentEntity entity = new CommentEntity();
         entity.setType(1);
         entity.setObjId(vo.getArticleId());
-        entity.setUserId(UserUtil.getUserId());
+        entity.setUserId(userId);
         entity.setParentId(vo.getParentId());
         entity.setReplyToId(StrUtil.isNotBlank(vo.getReplyToId()) ? vo.getReplyToId() : null);
         entity.setContent(vo.getContent());
@@ -127,7 +131,18 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
                 receiveUserId = getById(vo.getParentId()).getUserId();
             }
         }
-        messagePublisher.sendMessage(2, null, UserUtil.getUserId(), receiveUserId, vo.getArticleId(), entity.getId());
+        messagePublisher.sendMessage(2, null, userId, receiveUserId, vo.getArticleId(), entity.getId());
+
+        //保存行为数据到es
+        if (!userId.equals(doc.getAuthorId())) {
+            BehaviorLogDto dto = new BehaviorLogDto();
+            dto.setUserId(userId);
+            dto.setBehaviorType(BehaviorType.COMMENT.name());
+            dto.setCategoryId(doc.getCategoryId());
+            dto.setTagIds(doc.getTagIdList());
+            dto.setTargetUserId(doc.getAuthorId());
+            searchFeignService.saveBehaviorLog(dto);
+        }
     }
 
     /**

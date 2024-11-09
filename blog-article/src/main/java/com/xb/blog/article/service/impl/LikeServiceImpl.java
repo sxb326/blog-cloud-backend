@@ -3,17 +3,19 @@ package com.xb.blog.article.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xb.blog.common.core.pojo.ArticleDocument;
-import com.xb.blog.common.core.utils.UserUtil;
+import com.xb.blog.article.common.constants.BehaviorType;
 import com.xb.blog.article.dao.LikeDao;
 import com.xb.blog.article.entity.CommentEntity;
 import com.xb.blog.article.entity.LikeEntity;
 import com.xb.blog.article.feign.SearchFeignService;
-import com.xb.blog.common.rabbitmq.publisher.MessagePublisher;
 import com.xb.blog.article.service.ArticleService;
 import com.xb.blog.article.service.CommentService;
 import com.xb.blog.article.service.LikeService;
 import com.xb.blog.article.vo.LikeSaveVo;
+import com.xb.blog.common.core.dto.BehaviorLogDto;
+import com.xb.blog.common.core.pojo.ArticleDocument;
+import com.xb.blog.common.core.utils.UserUtil;
+import com.xb.blog.common.rabbitmq.publisher.MessagePublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -72,6 +74,17 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
             //发送消息
             if (status) {
                 messagePublisher.sendMessage(1, null, userId, doc.getAuthorId(), vo.getObjId(), null);
+            }
+
+            //保存行为数据到es
+            if (status && !userId.equals(doc.getAuthorId())) {
+                BehaviorLogDto dto = new BehaviorLogDto();
+                dto.setUserId(userId);
+                dto.setBehaviorType(BehaviorType.LIKE.name());
+                dto.setCategoryId(doc.getCategoryId());
+                dto.setTagIds(doc.getTagIdList());
+                dto.setTargetUserId(doc.getAuthorId());
+                searchFeignService.saveBehaviorLog(dto);
             }
 
             //返回最新点赞数
