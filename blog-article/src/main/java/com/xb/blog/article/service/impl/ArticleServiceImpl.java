@@ -190,22 +190,4 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
     public ArticleDocument getArticleDocumentByArticleId(String articleId) {
         return baseMapper.getArticleDocumentByArticleId(articleId);
     }
-
-    /**
-     * 列出用户所有文章
-     *
-     * @param page
-     * @param userId
-     * @param orderType
-     * @return
-     */
-    @Override
-    public List<ArticleListVo> listByUser(Long page, String userId, String orderType) {
-        //处理特殊情况
-        if (page == null) page = 1L;
-        //换算分页参数（使用OFFSET关键字进行分页，故此处起始页码应为0）
-        page = (page - 1L) * 10L;
-        List<ArticleListVo> list = baseMapper.list(page, null, orderType, userId, UserUtil.getUserId());
-        return list;
-    }
 }

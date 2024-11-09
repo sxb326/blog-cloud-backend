@@ -1,15 +1,10 @@
 package com.xb.blog.article.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xb.blog.common.core.pojo.ArticleDocument;
-import com.xb.blog.common.core.vo.SearchVo;
 import com.xb.blog.article.entity.ArticleEntity;
 import com.xb.blog.article.vo.ArticleEditorVo;
-import com.xb.blog.article.vo.ArticleListVo;
 import com.xb.blog.article.vo.ArticlePreviewVo;
-import com.xb.blog.article.vo.ArticleTopVo;
-
-import java.util.List;
+import com.xb.blog.common.core.pojo.ArticleDocument;
 
 /**
  * 博客表
@@ -99,15 +94,5 @@ public interface ArticleService extends IService<ArticleEntity> {
      * @return
      */
     ArticleDocument getArticleDocumentByArticleId(String articleId);
-
-    /**
-     * 列出用户所有文章
-     *
-     * @param page
-     * @param userId
-     * @param orderType
-     * @return
-     */
-    List<ArticleListVo> listByUser(Long page, String userId, String orderType);
 }
 

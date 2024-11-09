@@ -4,46 +4,6 @@
     <resultMap id="BlogListVo" type="com.xb.blog.article.vo.ArticleListVo">
         <result column="tagNameList" property="tagNameList" typeHandler="com.xb.blog.article.config.mybatis.typeHandler.ConvertCommaSeparatedStrToListTypeHandler"/>
     </resultMap>
-    <select id="list" resultMap="BlogListVo">
-        SELECT
-            a.id,
-            a.title,
-            a.summary,
-            a.pic_id picId,
-            COALESCE(a.click_count, 0) clickCount,
-            COALESCE(a.like_count, 0) likeCount,
-            COALESCE(a.collect_count, 0) collectCount,
-            u.id authorId,
-            u.nick_name authorName,
-            GROUP_CONCAT(t.name) tagNameList,
-            CASE WHEN #{loginUserId} = a.author THEN 1 ELSE 0 END isAuthor
-        FROM
-            t_article a
-                LEFT JOIN t_user u ON a.author = u.id
-                LEFT JOIN t_article_tag bt ON a.id = bt.article_id AND bt.status = 1
-                LEFT JOIN t_tag t ON bt.tag_id = t.id AND t.status = 1
-        WHERE
-            a.status = 1
-        <if test="categoryId != null and categoryId != ''">
-            AND a.category_id = #{categoryId}
-        </if>
-        <if test="userId != null and userId != ''">
-            AND a.author = #{userId}
-        </if>
-        GROUP BY a.id, a.title, a.summary, a.pic_id, a.click_count, a.like_count, a.collect_count, u.id, u.nick_name
-        <choose>
-            <when test="orderType == 'recommend'">
-                ORDER BY COALESCE(a.click_count,0) * 0.1 + COALESCE(a.like_count,0) * 0.3 + COALESCE(a.comment_count,0) * 0.2 + COALESCE(a.collect_count,0) * 0.4 DESC
-            </when>
-            <when test="orderType == 'newest'">
-                ORDER BY a.create_time DESC
-            </when>
-            <otherwise>
-                ORDER BY a.create_time DESC
-            </otherwise>
-        </choose>
-        limit 10 OFFSET #{page}
-    </select>
     <select id="getArticlePreviewById" parameterType="String" resultType="com.xb.blog.article.vo.ArticlePreviewVo">
         SELECT
             a.id,

@@ -36,4 +36,10 @@ public class SearchController {
         List<ArticleDocument> list = searchService.list(page, categoryId, orderType);
         return Result.success("检索成功！", list);
     }
+
+    @GetMapping("/listByUser")
+    public Result listByUser(@RequestParam("page") Long page, @RequestParam("userId") String userId, @RequestParam("orderType") String orderType) {
+        List<ArticleDocument> list = searchService.listByUser(page, userId, orderType);
+        return Result.success("检索成功！", list);
+    }
 }

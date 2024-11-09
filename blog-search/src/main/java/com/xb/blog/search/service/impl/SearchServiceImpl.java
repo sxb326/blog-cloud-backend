@@ -150,6 +150,46 @@ public class SearchServiceImpl implements SearchService {
         return new ArrayList<>();
     }
 
+    @Override
+    public List<ArticleDocument> listByUser(Long page, String userId, String orderType) {
+        if (page == null) page = 1L;
+        page = (page - 1L) * 10L;
+
+        SearchRequest searchRequest = new SearchRequest("article_list");
+        SearchSourceBuilder builder = new SearchSourceBuilder();
+
+        //查询指定用户的文章数据
+        builder.query(QueryBuilders.matchPhraseQuery("authorId", userId));
+
+        //如果查看推荐文章，根据文章点击量倒序排列
+        if ("recommend".equals(orderType)) {
+            builder.sort("clickCount", SortOrder.DESC);
+        }
+
+        //如果查看最新文章，根据发布时间倒序排列
+        if ("newest".equals(orderType)) {
+            builder.sort("publishTime", SortOrder.DESC);
+        }
+
+        //设置分页参数
+        builder.from(page.intValue());
+        builder.size(10);
+
+        try {
+            searchRequest.source(builder);
+            SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+            SearchHits hits = searchResponse.getHits();
+            if (hits.getHits() != null) {
+                return Arrays.stream(hits.getHits())
+                        .map(hit -> JSONUtil.toBean(hit.getSourceAsString(), ArticleDocument.class))
+                        .collect(Collectors.toList());
+            }
+        } catch (Exception e) {
+            log.error("查询es中的文章列表时报错：{}", e.getMessage(), e);
+        }
+        return new ArrayList<>();
+    }
+
     /**
      * 构建推荐文章查询条件
      *

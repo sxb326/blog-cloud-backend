@@ -1,15 +1,11 @@
 package com.xb.blog.article.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xb.blog.common.core.pojo.ArticleDocument;
 import com.xb.blog.article.entity.ArticleEntity;
-import com.xb.blog.article.vo.ArticleListVo;
 import com.xb.blog.article.vo.ArticlePreviewVo;
-import com.xb.blog.article.vo.ArticleTopVo;
+import com.xb.blog.common.core.pojo.ArticleDocument;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * 博客表
@@ -20,13 +16,6 @@ import java.util.List;
  */
 @Mapper
 public interface ArticleDao extends BaseMapper<ArticleEntity> {
-    /**
-     * 查询博客列表数据
-     *
-     * @return
-     */
-    List<ArticleListVo> list(@Param("page") Long page, @Param("categoryId") String categoryId, @Param("orderType") String orderType, @Param("userId") String userId, @Param("loginUserId") String loginUserId);
-
     /**
      * 博客预览时 查询出预览数据
      *

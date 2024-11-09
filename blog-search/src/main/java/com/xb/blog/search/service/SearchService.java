@@ -28,4 +28,14 @@ public interface SearchService {
      * @return
      */
     List<ArticleDocument> list(Long page, String categoryId, String orderType);
+
+    /**
+     * 根据传入的分页、用户id、排序参数，查询文章列表
+     *
+     * @param page
+     * @param userId
+     * @param orderType
+     * @return
+     */
+    List<ArticleDocument> listByUser(Long page, String userId, String orderType);
 }

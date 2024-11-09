@@ -6,7 +6,6 @@ import com.xb.blog.article.common.utils.IpUtil;
 import com.xb.blog.article.feign.SearchFeignService;
 import com.xb.blog.article.service.ArticleService;
 import com.xb.blog.article.service.CommentService;
-import com.xb.blog.article.vo.ArticleListVo;
 import com.xb.blog.article.vo.ArticlePreviewVo;
 import com.xb.blog.article.vo.CommentVo;
 import com.xb.blog.common.core.constants.Result;
@@ -18,10 +17,12 @@ import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController
 @RequestMapping("/preview")
@@ -84,19 +85,5 @@ public class PreviewController {
     public Result getById(@PathVariable("id") String id, @PathVariable("page") Long page) {
         CommentVo vo = commentService.getTreeDataById(id, null, page);
         return Result.success(vo);
-    }
-
-    /**
-     * 列出用户所有文章
-     *
-     * @param page
-     * @param userId
-     * @param orderType
-     * @return
-     */
-    @GetMapping("/listByUser")
-    public Result listByUser(@RequestParam("page") Long page, @RequestParam("userId") String userId, @RequestParam("orderType") String orderType) {
-        List<ArticleListVo> list = articleService.listByUser(page, userId, orderType);
-        return Result.success(list);
     }
 }
