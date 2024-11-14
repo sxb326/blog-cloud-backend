@@ -88,11 +88,19 @@ public interface ArticleService extends IService<ArticleEntity> {
     Long getCollectCount(String id);
 
     /**
-     * 根据文章id 获取到最新数据 更新es中的数据
+     * 根据文章id 上传文章数据到es 并返回文章数据对象
      *
      * @param articleId
      * @return
      */
-    ArticleDocument getArticleDocumentByArticleId(String articleId);
+    ArticleDocument updateToEs(String articleId);
+
+    /**
+     * 根据文章id 上传文章数据到es 并返回文章数据对象（同步执行）
+     *
+     * @param articleId
+     * @return
+     */
+    ArticleDocument updateToEsSync(String articleId);
 }
 

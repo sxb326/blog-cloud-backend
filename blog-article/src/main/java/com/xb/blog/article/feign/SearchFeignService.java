@@ -15,6 +15,9 @@ public interface SearchFeignService {
     @PostMapping("/publish")
     Result publish(@RequestBody ArticleDocument doc);
 
+    @PostMapping("/publish")
+    Result publishSync(@RequestBody ArticleDocument doc);
+
     @Async
     @PostMapping("/behaviorLog/save")
     Result saveBehaviorLog(@RequestBody BehaviorLogDto dto);

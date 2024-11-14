@@ -41,7 +41,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
      * 根据文章id获取评论数据
      *
      * @param articleId
-     * @param parentId 如果不为null 查询这个父id及其子评论数据
+     * @param parentId  如果不为null 查询这个父id及其子评论数据
      * @param page
      * @return
      */
@@ -118,8 +118,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao, CommentEntity> i
         articleService.updateCommentCount(vo.getArticleId(), 1L);
 
         //更新es中的数据
-        ArticleDocument doc = articleService.getArticleDocumentByArticleId(vo.getArticleId());
-        searchFeignService.publish(doc);
+        ArticleDocument doc = articleService.updateToEs(vo.getArticleId());
 
         //推送消息
         String receiveUserId = doc.getAuthorId();

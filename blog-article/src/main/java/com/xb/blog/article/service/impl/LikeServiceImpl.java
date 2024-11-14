@@ -68,8 +68,7 @@ public class LikeServiceImpl extends ServiceImpl<LikeDao, LikeEntity> implements
             articleService.updateLikeCount(vo.getObjId(), status ? 1L : -1L);
 
             //更新es
-            ArticleDocument doc = articleService.getArticleDocumentByArticleId(vo.getObjId());
-            searchFeignService.publish(doc);
+            ArticleDocument doc = articleService.updateToEs(vo.getObjId());
 
             //发送消息
             if (status) {

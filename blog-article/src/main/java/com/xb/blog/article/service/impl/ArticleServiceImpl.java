@@ -81,8 +81,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
         draftService.removeById(vo.getId());
 
         //调用检索服务，将博客检索信息上传到es
-        ArticleDocument doc = getArticleDocumentByArticleId(article.getId());
-        searchFeignService.publish(doc);
+        updateToEsSync(article.getId());
     }
 
     /**
@@ -100,7 +99,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
      * 修改点赞数
      *
      * @param articleId 文章id
-     * @param count  点赞数 1/-1
+     * @param count     点赞数 1/-1
      * @return
      */
     @Override
@@ -180,14 +179,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
         return baseMapper.getCollectCountByArticleId(id);
     }
 
-    /**
-     * 根据文章id 封装BlogDocument 用于 发送给es保存数据 以及 检索页面返回
-     *
-     * @param articleId
-     * @return
-     */
     @Override
-    public ArticleDocument getArticleDocumentByArticleId(String articleId) {
-        return baseMapper.getArticleDocumentByArticleId(articleId);
+    public ArticleDocument updateToEs(String articleId) {
+        ArticleDocument doc = baseMapper.getArticleDocumentByArticleId(articleId);
+        searchFeignService.publish(doc);
+        return doc;
+    }
+
+    @Override
+    public ArticleDocument updateToEsSync(String articleId) {
+        ArticleDocument doc = baseMapper.getArticleDocumentByArticleId(articleId);
+        searchFeignService.publishSync(doc);
+        return doc;
     }
 }

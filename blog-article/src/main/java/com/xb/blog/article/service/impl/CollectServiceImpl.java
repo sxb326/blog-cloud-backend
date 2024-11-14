@@ -68,8 +68,7 @@ public class CollectServiceImpl extends ServiceImpl<CollectDao, CollectEntity> i
             }
         }
         //更新es中的数据
-        ArticleDocument doc = articleService.getArticleDocumentByArticleId(articleId);
-        searchFeignService.publish(doc);
+        ArticleDocument doc = articleService.updateToEs(articleId);
 
         //推送消息
         if (isNewCollect) {

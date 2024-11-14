@@ -4,6 +4,7 @@ import com.xb.blog.common.core.constants.Result;
 import com.xb.blog.common.core.pojo.ArticleDocument;
 import com.xb.blog.common.core.vo.SearchVo;
 import com.xb.blog.search.service.SearchService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("/search")
 public class SearchController {
@@ -34,6 +35,7 @@ public class SearchController {
     @GetMapping("/list")
     public Result list(@RequestParam("page") Long page, @RequestParam("categoryId") String categoryId, @RequestParam("orderType") String orderType) {
         List<ArticleDocument> list = searchService.list(page, categoryId, orderType);
+        log.error("\n\n检索成功\n\n");
         return Result.success("检索成功！", list);
     }
 

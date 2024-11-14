@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.xb.blog.common.core.annotation.InternalApi;
 import com.xb.blog.common.core.constants.Result;
 import com.xb.blog.common.core.pojo.ArticleDocument;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+@Slf4j
 @RestController
 @RequestMapping("/publish")
 public class PublishController {
@@ -38,6 +39,7 @@ public class PublishController {
 
         try {
             IndexResponse indexResponse = client.index(indexRequest, RequestOptions.DEFAULT);
+            log.error("\n\n上传成功\n\n");
             return Result.success("文章上传到es成功！");
         } catch (Exception e) {
             return Result.error("文章上传到es失败！" + e.getMessage());
