@@ -39,7 +39,6 @@ public class PublishController {
 
         try {
             IndexResponse indexResponse = client.index(indexRequest, RequestOptions.DEFAULT);
-            log.error("\n\n上传成功\n\n");
             return Result.success("文章上传到es成功！");
         } catch (Exception e) {
             return Result.error("文章上传到es失败！" + e.getMessage());

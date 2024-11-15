@@ -35,7 +35,6 @@ public class SearchController {
     @GetMapping("/list")
     public Result list(@RequestParam("page") Long page, @RequestParam("categoryId") String categoryId, @RequestParam("orderType") String orderType) {
         List<ArticleDocument> list = searchService.list(page, categoryId, orderType);
-        log.error("\n\n检索成功\n\n");
         return Result.success("检索成功！", list);
     }
 

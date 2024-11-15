@@ -33,7 +33,7 @@ public interface ArticleService extends IService<ArticleEntity> {
      * 修改点赞数
      *
      * @param articleId 文章id
-     * @param count  点赞数 1/-1
+     * @param count     点赞数 1/-1
      * @return
      */
     void updateLikeCount(String articleId, Long count);
@@ -86,6 +86,14 @@ public interface ArticleService extends IService<ArticleEntity> {
      * @return
      */
     Long getCollectCount(String id);
+
+    /**
+     * 根据文章id 获取到最新数据 更新es中的数据
+     *
+     * @param articleId
+     * @return
+     */
+    ArticleDocument getArticleDocumentByArticleId(String articleId);
 
     /**
      * 根据文章id 上传文章数据到es 并返回文章数据对象

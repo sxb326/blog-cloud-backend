@@ -53,19 +53,19 @@ public class PreviewController {
             RBloomFilter<Object> bloomFilter = redissonClient.getBloomFilter(RedisKeyConstants.ARTICLE_CLICK_IP_FILTER + id);
             String userId = UserUtil.getUserId();
             String filterKey = IpUtil.getClientIp(request) + (StrUtil.isNotBlank(userId) ? "_" + userId : "");
-            ArticleDocument doc = new ArticleDocument();
             if (!bloomFilter.contains(filterKey)) {
                 //代表这是一个新ip 返回的vo中点击数+1
                 vo.setClickCount(vo.getClickCount() + 1);
                 //更新文章的点击数
                 articleService.updateClickCount(id, 1L);
                 //更新es
-                doc = articleService.updateToEs(id);
+                articleService.updateToEs(id);
                 //将当前ip添加到布隆过滤器
                 bloomFilter.add(filterKey);
             }
 
             //保存行为数据到es
+            ArticleDocument doc = articleService.getArticleDocumentByArticleId(id);
             if (StrUtil.isNotBlank(userId) && !userId.equals(doc.getAuthorId())) {
                 BehaviorLogDto dto = new BehaviorLogDto();
                 dto.setUserId(userId);

@@ -180,6 +180,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
     }
 
     @Override
+    public ArticleDocument getArticleDocumentByArticleId(String articleId) {
+        return baseMapper.getArticleDocumentByArticleId(articleId);
+    }
+
+    @Override
     public ArticleDocument updateToEs(String articleId) {
         ArticleDocument doc = baseMapper.getArticleDocumentByArticleId(articleId);
         searchFeignService.publish(doc);
