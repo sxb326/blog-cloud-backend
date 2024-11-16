@@ -134,12 +134,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleDao, ArticleEntity> i
 
     /**
      * 根据文章id修改博客的点击量
-     * 因为修改点击量的场景是在预览文章时，所以这里采用异步调用的方式，不影响文章数据的返回
      *
      * @param articleId
      * @param count
      */
-    @Async
     @Override
     public void updateClickCount(String articleId, Long count) {
         baseMapper.updateClickCount(articleId, count);
