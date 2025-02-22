@@ -1,9 +1,9 @@
-package com.xb.blog.user.vo;
+package com.xb.blog.common.core.pojo;
 
 import lombok.Data;
 
 @Data
-public class UserInfoVo {
+public class UserInfo {
     /**
      * 唯一ID
      */

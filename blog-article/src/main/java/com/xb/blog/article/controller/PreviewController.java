@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.xb.blog.article.common.constants.BehaviorType;
 import com.xb.blog.article.common.utils.IpUtil;
 import com.xb.blog.article.feign.SearchFeignService;
+import com.xb.blog.article.feign.UserFeignService;
 import com.xb.blog.article.service.ArticleService;
 import com.xb.blog.article.service.CommentService;
 import com.xb.blog.article.vo.ArticlePreviewVo;
@@ -11,12 +12,12 @@ import com.xb.blog.article.vo.CommentVo;
 import com.xb.blog.common.core.constants.Result;
 import com.xb.blog.common.core.dto.BehaviorLogDto;
 import com.xb.blog.common.core.pojo.ArticleDocument;
+import com.xb.blog.common.core.pojo.UserInfo;
 import com.xb.blog.common.core.utils.UserUtil;
 import com.xb.blog.common.redis.constants.RedisKeyConstants;
 import org.redisson.api.RBloomFilter;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,13 +36,13 @@ public class PreviewController {
     private CommentService commentService;
 
     @Autowired
-    private StringRedisTemplate redisTemplate;
-
-    @Autowired
     private RedissonClient redissonClient;
 
     @Autowired
     private SearchFeignService searchFeignService;
+
+    @Autowired
+    private UserFeignService userFeignService;
 
     @GetMapping("/{id}")
     public Result getArticleById(HttpServletRequest request, @PathVariable("id") String id) {
@@ -62,6 +63,12 @@ public class PreviewController {
                 articleService.updateToEs(id);
                 //将当前ip添加到布隆过滤器
                 bloomFilter.add(filterKey);
+            }
+
+            //查询作者数据
+            Result<UserInfo> result = userFeignService.getUserInfo(vo.getAuthorId());
+            if (result.isSuccess()) {
+                vo.setAuthorInfo(result.getData());
             }
 
             //保存行为数据到es

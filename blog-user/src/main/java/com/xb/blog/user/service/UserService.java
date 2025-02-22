@@ -1,8 +1,8 @@
 package com.xb.blog.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xb.blog.common.core.pojo.UserInfo;
 import com.xb.blog.user.entity.UserEntity;
-import com.xb.blog.user.vo.UserInfoVo;
 
 /**
  * 用户表
@@ -14,7 +14,7 @@ import com.xb.blog.user.vo.UserInfoVo;
 public interface UserService extends IService<UserEntity> {
     UserEntity findByUsername(String username);
 
-    UserInfoVo getUserInfo(String userId);
+    UserInfo getUserInfo(String userId);
 
     void updatePassword(String username, String newPassword);
 }

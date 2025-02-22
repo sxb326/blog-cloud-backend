@@ -4,11 +4,11 @@ import cn.hutool.core.util.StrUtil;
 import com.xb.blog.common.core.annotation.InternalApi;
 import com.xb.blog.common.core.constants.Result;
 import com.xb.blog.common.core.dto.AuthUserDto;
+import com.xb.blog.common.core.pojo.UserInfo;
 import com.xb.blog.common.core.utils.AuthUtil;
 import com.xb.blog.user.entity.UserEntity;
 import com.xb.blog.user.service.UserService;
 import com.xb.blog.user.vo.AuthUserVo;
-import com.xb.blog.user.vo.UserInfoVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -66,12 +66,12 @@ public class UserController {
      * @return
      */
     @GetMapping("/getUserInfo")
-    public Result getUserInfo(@RequestParam("id") String id) {
-        UserInfoVo vo = userService.getUserInfo(id);
-        if (vo == null || StrUtil.isBlank(vo.getId())) {
+    public Result<UserInfo> getUserInfo(@RequestParam("id") String id) {
+        UserInfo userInfo = userService.getUserInfo(id);
+        if (userInfo == null || StrUtil.isBlank(userInfo.getId())) {
             throw new RuntimeException("该用户不存在！");
         }
-        return Result.success(vo);
+        return Result.success(userInfo);
     }
 
     @InternalApi

@@ -48,4 +48,8 @@ public class Result<T> implements Serializable {
         result.setMessage(message);
         return result;
     }
+
+    public boolean isSuccess() {
+        return "0".equals(code);
+    }
 }

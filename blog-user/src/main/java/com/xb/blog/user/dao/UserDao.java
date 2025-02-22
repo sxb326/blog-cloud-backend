@@ -1,8 +1,8 @@
 package com.xb.blog.user.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.xb.blog.common.core.pojo.UserInfo;
 import com.xb.blog.user.entity.UserEntity;
-import com.xb.blog.user.vo.UserInfoVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,7 +15,7 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface UserDao extends BaseMapper<UserEntity> {
-    UserInfoVo getUserInfo(@Param("userId") String userId, @Param("loginUserId") String loginUserId);
+    UserInfo getUserInfo(@Param("userId") String userId, @Param("loginUserId") String loginUserId);
 
     void updatePassword(@Param("username") String username, @Param("newPassword") String newPassword);
 }

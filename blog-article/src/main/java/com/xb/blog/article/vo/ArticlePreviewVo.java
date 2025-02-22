@@ -1,6 +1,7 @@
 package com.xb.blog.article.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.xb.blog.common.core.pojo.UserInfo;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -66,4 +67,8 @@ public class ArticlePreviewVo implements Serializable {
      * 当前登录用户是否为该文章作者
      */
     private Boolean isAuthor;
+    /**
+     * 作者信息
+     */
+    private UserInfo authorInfo;
 }
