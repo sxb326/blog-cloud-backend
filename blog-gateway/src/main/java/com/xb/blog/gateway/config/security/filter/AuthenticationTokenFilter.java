@@ -11,7 +11,6 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
@@ -19,13 +18,13 @@ import reactor.core.publisher.Mono;
  * token过滤器：解析请求头中的token 并放到上下文中 方便后面对用户登录状态进行判断
  */
 @Component
-public class AuthenticationTokenFilter implements WebFilter {
+public class AuthenticationTokenFilter extends AbstractGatewayOncePerRequestFilter {
 
     @Autowired
     private UserService userService;
 
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+    public Mono<Void> doFilter(ServerWebExchange exchange, WebFilterChain chain) {
         String token = exchange.getRequest().getHeaders().getFirst("Token");
 
         if (StrUtil.isNotBlank(token)) {
