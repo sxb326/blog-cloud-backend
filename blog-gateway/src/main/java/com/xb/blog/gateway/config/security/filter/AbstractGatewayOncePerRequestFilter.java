@@ -25,7 +25,8 @@ public abstract class AbstractGatewayOncePerRequestFilter implements WebFilter {
             //当前过滤器未执行过 设置标记并执行
             exchange.getAttributes().put(alreadyFilteredAttributeName, true);
 
-            return doFilter(exchange, chain);
+            return doFilter(exchange, chain)
+                    .doOnSuccess(v -> exchange.getAttributes().remove(alreadyFilteredAttributeName));
         }
 
         //当前过滤器已执行过 跳过
