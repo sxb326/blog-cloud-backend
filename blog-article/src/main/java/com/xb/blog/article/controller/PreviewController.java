@@ -10,6 +10,7 @@ import com.xb.blog.article.service.CommentService;
 import com.xb.blog.article.vo.ArticlePreviewVo;
 import com.xb.blog.article.vo.CommentVo;
 import com.xb.blog.common.core.constants.Result;
+import com.xb.blog.common.core.constants.ResultEnum;
 import com.xb.blog.common.core.dto.BehaviorLogDto;
 import com.xb.blog.common.core.pojo.ArticleDocument;
 import com.xb.blog.common.core.pojo.UserInfo;
@@ -85,7 +86,7 @@ public class PreviewController {
 
             return Result.success(vo);
         }
-        return Result.redirect("文章不存在");
+        return Result.build(ResultEnum.NO_EXISTS);
     }
 
     @GetMapping("/comment/{id}/{page}")

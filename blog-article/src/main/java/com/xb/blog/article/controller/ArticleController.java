@@ -10,6 +10,7 @@ import com.xb.blog.article.service.ArticleTagService;
 import com.xb.blog.article.service.DraftService;
 import com.xb.blog.article.vo.ArticleEditorVo;
 import com.xb.blog.common.core.constants.Result;
+import com.xb.blog.common.core.constants.ResultEnum;
 import com.xb.blog.common.core.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,7 @@ public class ArticleController {
         DraftEntity draft = draftService.getById(id);
         if (draft != null) {
             if (!userId.equals(draft.getAuthor())) {
-                return Result.redirect("权限不足");
+                return Result.build(ResultEnum.NO_PERMISSION);
             }
             ArticleEditorVo vo = new ArticleEditorVo();
             BeanUtil.copyProperties(draft, vo);
@@ -55,7 +56,7 @@ public class ArticleController {
         ArticleEntity article = articleService.getById(id);
         if (article != null) {
             if (!userId.equals(article.getAuthor())) {
-                return Result.redirect("权限不足");
+                return Result.build(ResultEnum.NO_PERMISSION);
             }
             ArticleEditorVo vo = new ArticleEditorVo();
             BeanUtil.copyProperties(article, vo);

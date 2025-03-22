@@ -2,9 +2,9 @@ package com.xb.blog.gateway.config.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xb.blog.common.core.constants.Result;
+import com.xb.blog.common.core.constants.ResultEnum;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.AuthenticationException;
@@ -27,9 +27,7 @@ public class AuthenticationEntryPoint implements ServerAuthenticationEntryPoint 
         ServerHttpResponse response = exchange.getResponse();
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
-        Result result = new Result();
-        result.setCode("999");
-        result.setMessage("请先登录");
+        Result result = new Result(ResultEnum.NO_LOGIN);
 
         byte[] bytes = new ObjectMapper().writeValueAsBytes(result);
         return response.writeWith(Mono.fromSupplier(() -> response.bufferFactory().wrap(bytes)));
